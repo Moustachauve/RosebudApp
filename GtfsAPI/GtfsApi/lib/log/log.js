@@ -3,7 +3,7 @@ var mkdirp = require('mkdirp')
 
 const LOG_DIRECTORY = './logs/'
 
-winston.emitErrs = true;
+winston.emitErrs = true
 
 mkdirp.sync(LOG_DIRECTORY)
 
@@ -27,11 +27,12 @@ var logger = new winston.Logger({
 		})
 	],
 	exitOnError: false
-});
+})
 
-var exports = module.exports = logger;
-exports.stream = {
+logger.stream = {
 	write: function (message, encoding) {
-		logger.info(message);
+		logger.info(message)
 	}
-};
+}
+
+module.exports = logger
