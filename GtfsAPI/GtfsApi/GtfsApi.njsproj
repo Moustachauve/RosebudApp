@@ -40,7 +40,6 @@
     <Compile Include="bin\www" />
     <Content Include="lib\sqlHelper\sqlConfig.json" />
     <Content Include="package.json" />
-    <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
