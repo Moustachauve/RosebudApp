@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
 	})
 })
 
-router.get('/feedInfo', function (req, res, next) {
+router.get('/info', function (req, res, next) {
 	feedAccessor.getFeedDetails('1', function (err, data) {
 		if (err) return next(err)
 		
