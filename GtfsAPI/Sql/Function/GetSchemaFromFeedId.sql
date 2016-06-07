@@ -7,15 +7,14 @@ CREATE FUNCTION `my_bus`.`GetSchemaFromFeedId`
 )
 RETURNS VARCHAR(20)
 BEGIN
-	DECLARE database_name VARCHAR(20);
-	SET database_name = 0;
+	DECLARE return_value VARCHAR(20);
 
 	SELECT 
-		`database_name` INTO database_name
+		`database_name` INTO return_value
 	FROM `my_bus`.`feed` 
 	WHERE `feed_id` = pFeedId;
 
-	RETURN database_name;
+	RETURN return_value;
     
 END$$
 

@@ -8,8 +8,8 @@ CREATE PROCEDURE `my_bus`.`GetFeedDetails`
 BEGIN
 
 	DECLARE schemaName VARCHAR(20) DEFAULT `my_bus`.`GetSchemaFromFeedId`(pFeedId);
-    
-	SET @sqlQuery= '
+
+	SET @sqlQuery= CONCAT('
 		SELECT
 			`agency_id`,
 			`agency_name`,
@@ -19,11 +19,10 @@ BEGIN
 			`agency_phone`,
 			`agency_fare_url`,
 			`agency_email`
-		FROM ' + schemaName + '.`agency`;
-    ';
-    
+		FROM `', schemaName,'`.`agency`');
+
     PREPARE stmt FROM @sqlQuery;
-    EXECUTE sqlQuery;
+    EXECUTE stmt;
     DEALLOCATE PREPARE stmt;
 
 END$$
