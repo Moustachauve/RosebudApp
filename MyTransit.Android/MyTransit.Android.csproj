@@ -50,6 +50,9 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Adapters\FeedAdapter.cs" />
+    <Compile Include="FeedDetailsActivity.cs" />
+    <Compile Include="Adapters\RouteAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -63,10 +66,14 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\layout\feed_listitem.axml" />
+    <AndroidResource Include="Resources\layout\feed_details.axml" />
+    <AndroidResource Include="Resources\layout\route_listitem.axml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
     <Folder Include="Assets\" />
+    <Folder Include="Adapters\" />
   </ItemGroup>
   <Import Project="..\MyTransit.Core\MyTransit.Core.projitems" Label="Shared" Condition="Exists('..\MyTransit.Core\MyTransit.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

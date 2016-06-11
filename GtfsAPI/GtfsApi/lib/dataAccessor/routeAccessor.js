@@ -14,7 +14,7 @@ exports.getAllRoutes = function (feedId, callback) {
 			
 			if (err) return callback(err)
 			
-			callback(null, rows)
+			callback(null, rows[0])
 		})
 	})
 }

@@ -16,5 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\HttpHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\FeedAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Feed.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\RouteAccessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Route.cs" />
   </ItemGroup>
 </Project>

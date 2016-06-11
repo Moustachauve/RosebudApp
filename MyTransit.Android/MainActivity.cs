@@ -2,29 +2,52 @@
 using Android.Widget;
 using Android.OS;
 using MyTransit.Core;
+using Android.Views;
+using Android.Content;
+using Newtonsoft.Json;
 
 namespace MyTransit.Android
 {
 	[Activity(Label = "MyTransit", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : Activity
 	{
-		int count = 1;
+		private FeedAdapter feedAdapter;
+		private ListView feedListView;
+		private ProgressBar feedProgressBar;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-
-			// Set our view from the "main" layout resource
 			SetContentView(Resource.Layout.Main);
 
-			// Get our button from the layout resource,
-			// and attach an event to it
-			Button button = FindViewById<Button>(Resource.Id.myButton);
+			feedListView = FindViewById<ListView>(Resource.Id.feed_listview);
+			feedProgressBar = FindViewById<ProgressBar>(Resource.Id.feed_progress_bar);
 
-			button.Click += async delegate { 
-				button.Text = string.Format("{0} clicks!", count++);
-				var test = await FeedAccessor.GetAllFeeds();
+			LoadFeeds();
+
+			feedListView.ItemClick += delegate (object sender, AdapterView.ItemClickEventArgs args)
+			{
+				Feed clickedFeed = feedAdapter[args.Position];
+				Intent detailsIntent = new Intent(this, typeof(FeedDetailsActivity));
+				detailsIntent.PutExtra("feedInfos", JsonConvert.SerializeObject(clickedFeed));
+				StartActivity(detailsIntent);
 			};
+		}
+
+		private async void LoadFeeds()
+		{
+			feedProgressBar.Visibility = ViewStates.Visible;
+			var feeds = await FeedAccessor.GetAllFeeds();
+
+			if (feedAdapter == null)
+			{
+				feedAdapter = new FeedAdapter(this, feeds);
+				feedListView.Adapter = new FeedAdapter(this, feeds);
+			}
+			else
+				feedAdapter.ReplaceData(feeds);
+			
+			feedProgressBar.Visibility = ViewStates.Gone;
 		}
 	}
 }

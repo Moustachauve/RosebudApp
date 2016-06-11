@@ -19,6 +19,7 @@ BEGIN
 			`route_url`,
 			`route_color`,
 			`route_text_color`
+            
 		FROM `', schemaName,'`.`routes` AS routes');
 
     PREPARE stmt FROM @sqlQuery;
