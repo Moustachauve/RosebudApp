@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using MyTransit.Core;
+using Android.Graphics;
 
 namespace MyTransit
 {
@@ -39,7 +40,16 @@ namespace MyTransit
 			lblRouteShortName.Text = currentRoute.route_short_name;
 			lblRouteLongName.Text = currentRoute.route_long_name;
 
-			return convertView;
+            if (!string.IsNullOrWhiteSpace(currentRoute.route_color))
+            {
+                lblRouteShortName.SetBackgroundColor(Color.ParseColor(FormatColor(currentRoute.route_color)));
+            }
+            if (!string.IsNullOrWhiteSpace(currentRoute.route_text_color))
+            {
+                lblRouteShortName.SetTextColor(Color.ParseColor(FormatColor(currentRoute.route_text_color)));
+            }
+
+            return convertView;
 		}
 
 		public void ReplaceData(List<Route> routes)
@@ -47,5 +57,13 @@ namespace MyTransit
 			this.routes = routes;
 			NotifyDataSetChanged();
 		}
+
+        private string FormatColor(string color)
+        {
+            if (color[0] != '#')
+                color = "#" + color;
+
+            return color;
+        }
 	}
 }

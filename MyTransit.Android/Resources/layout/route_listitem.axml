@@ -4,19 +4,23 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="15dp">
     <TextView
         android:id="@+id/lbl_route_short_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:padding="10dp"
+        android:gravity="center"
+        android:padding="7dp"
         style="?android:attr/textAppearanceLarge"
-        tools:text="ROUTE" />
+        tools:text="ROUTE"
+        android:elevation="6dp"
+        android:background="#aaa"
+        android:minWidth="65dp" />
     <TextView
         android:id="@+id/lbl_route_long_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        tools:text="Route name" />
+        tools:text="Route name"
+        android:layout_marginLeft="10dp" />
 </LinearLayout>
