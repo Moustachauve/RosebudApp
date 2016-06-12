@@ -21,7 +21,8 @@ BEGIN
                  'ON feed.database_name = ''',database_name,''' ') 
                  SEPARATOR ' union all ')
    FROM (SELECT database_name 
-         FROM `my_bus`.`feed` 
+         FROM `my_bus`.`feed`
+         WHERE data_valid = 1
          GROUP BY database_name) AS dbdata);
 
 prepare stmt from @stmt;
