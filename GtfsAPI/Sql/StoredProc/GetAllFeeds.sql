@@ -4,29 +4,31 @@ DELIMITER $$
 CREATE PROCEDURE `my_bus`.`GetAllFeeds`
 ()
 BEGIN
-    
-    set @stmt = 
-  (select group_concat(concat(
-                 'SELECT feed_id,',
-					 'last_update,',
-					 'agency_name,',
-					 'agency_url,',
-					 'agency_timezone,',
-					 'agency_lang,',
-					 'agency_phone,',
-					 'agency_fare_url,',
-					 'agency_email ',
+    SET SESSION group_concat_max_len = 10000;
+    SET @stmt = 
+	(SELECT CONCAT(GROUP_CONCAT(CONCAT(
+                 'SELECT `feed_id`,',
+					 '`last_update`,',
+					 '`agency_name`,',
+					 '`agency_url`,',
+					 '`agency_timezone`,',
+					 '`agency_lang`,',
+					 '`agency_phone`,',
+					 '`agency_fare_url`,',
+					 '`agency_email` ',
                  'FROM `my_bus`.`feed` feed ',
                  'JOIN `',database_name,'`.`agency` agency ', 
-                 'ON feed.database_name = ''',database_name,''' ') 
-                 SEPARATOR ' union all ')
-   FROM (SELECT database_name 
+                 'ON feed.database_name = ''',database_name,''' ')
+                 SEPARATOR ' union all '),
+                 ' ORDER BY `agency_name`')
+			
+	FROM (SELECT database_name 
          FROM `my_bus`.`feed`
          WHERE data_valid = 1
          GROUP BY database_name) AS dbdata);
-
-prepare stmt from @stmt;
-execute stmt;
+	#SELECT @stmt;
+	PREPARE stmt FROM @stmt;
+	EXECUTE stmt;
 
 END$$
 

@@ -13,11 +13,15 @@ using Android.Widget;
 using Newtonsoft.Json;
 using MyTransit.Core;
 using MyTransit.Android;
+using Android.Support.V7.App;
+using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
+using SearchViewCompat = Android.Support.V7.Widget.SearchView;
+
 
 namespace MyTransit
 {
 	[Activity(Label = "FeedDetailsActivity", ParentActivity = typeof(MainActivity))]
-	public class FeedDetailsActivity : Activity
+	public class FeedDetailsActivity : AppCompatActivity
 	{
 		private Feed feedInfo;
 		private RouteAdapter routeAdapter;
@@ -28,6 +32,10 @@ namespace MyTransit
 		{
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.feed_details);
+
+			var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
+			SetSupportActionBar(toolbar);
+			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
 			routeListView = FindViewById<ListView>(Resource.Id.route_listview);
 			routeProgressBar = FindViewById<ProgressBar>(Resource.Id.route_progress_bar);
@@ -49,7 +57,7 @@ namespace MyTransit
 				routeListView.Adapter = routeAdapter;
 			}
 			else {
-				routeAdapter.ReplaceData(routes);
+				routeAdapter.ReplaceItems(routes);
 			}
 
 			routeProgressBar.Visibility = ViewStates.Gone;

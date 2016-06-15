@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,10 +24,15 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ListView
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/feed_pull_to_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/feed_listview" />
+                android:layout_height="match_parent">
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/feed_listview" />
+            </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

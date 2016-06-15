@@ -10,40 +10,14 @@ using Android.App;
 
 namespace MyTransit
 {
-	public class FeedAdapter : BaseAdapter<Feed>
+	public class FeedAdapter : GenericAdapter<Feed>
 	{
-		LayoutInflater inflater;
 
-        private Context context;
-        private List<Feed> feeds;
-        private List<Feed> filteredFeeds;
-        private string filter;
-
-        public override Feed this[int position] { get { return filteredFeeds[position]; } }
-		public override int Count { get { return filteredFeeds.Count; } }
-
-        public string Filter
-        {
-            get { return filter; }
-            set
-            {
-                if (value.ToLower() == filter)
-                    return;
-
-                filter = value.ToLower();
-                ApplyFilter();
-            }
-        }
-
-        public FeedAdapter(Context context, List<Feed> feeds)
+        public FeedAdapter(Context context, List<Feed> feeds) : base(context, feeds)
 		{
-            this.context = context;
-			this.inflater = LayoutInflater.FromContext(context);
-			this.feeds = feeds;
-            ApplyFilter();
 		}
 
-        public override long GetItemId(int position) { return filteredFeeds[position].feed_id; }
+		public override long GetItemId(int position) { return this[position].feed_id; }
 
 		public override View GetView(int position, View convertView, ViewGroup parent)
 		{
@@ -62,21 +36,12 @@ namespace MyTransit
 			return convertView;
 		}
 
-		public void ReplaceData(List<Feed> feeds)
-		{
-			this.feeds = feeds;
-            ApplyFilter();
-        }
-
-        private void ApplyFilter()
+        protected override List<Feed> ApplyFilter()
         {
-            if (string.IsNullOrWhiteSpace(filter))
-                filteredFeeds = new List<Feed>(feeds);
+			if (string.IsNullOrWhiteSpace(Filter))
+				return new List<Feed>(allItems);
             else
-                filteredFeeds = feeds.Where(feed => feed.agency_name.ToLower().Contains(filter)).ToList();
-
-            
-            NotifyDataSetChanged();
+				return allItems.Where(feed => feed.agency_name.ToLower().Contains(Filter)).ToList();
         }
     }
 }

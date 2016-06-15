@@ -12,7 +12,7 @@ BEGIN
 	SET @sqlQuery= CONCAT('
 		SELECT
 			`route_id`,
-			`route_short_name`,
+			REPLACE(REPLACE(`route_short_name`, \'\r\', \'\'), \'\n\', \'\') AS route_short_name,
 			`route_long_name`,
 			`route_desc`,
 			`route_type`,
@@ -20,7 +20,8 @@ BEGIN
 			`route_color`,
 			`route_text_color`
             
-		FROM `', schemaName,'`.`routes` AS routes');
+		FROM `', schemaName,'`.`routes` AS routes
+        ORDER BY `route_short_name` + 0');
 
     PREPARE stmt FROM @sqlQuery;
     EXECUTE stmt;

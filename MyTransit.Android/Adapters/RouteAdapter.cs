@@ -8,21 +8,11 @@ using Android.Graphics;
 
 namespace MyTransit
 {
-	public class RouteAdapter : BaseAdapter<Route>
+	public class RouteAdapter : GenericAdapter<Route>
 	{
-		LayoutInflater inflater;
-		private List<Route> routes;
-
-		public override Route this[int position] { get { return routes[position]; } }
-		public override int Count { get { return routes.Count; } }
-
-		public RouteAdapter(Context context, List<Route> routes)
+		public RouteAdapter(Context context, List<Route> routes) : base(context, routes)
 		{
-			this.inflater = LayoutInflater.FromContext(context);
-			this.routes = routes;
 		}
-
-		public override long GetItemId(int position) { return position; }
 
 		public override View GetView(int position, View convertView, ViewGroup parent)
 		{
@@ -52,13 +42,12 @@ namespace MyTransit
             return convertView;
 		}
 
-		public void ReplaceData(List<Route> routes)
+		protected override List<Route> ApplyFilter()
 		{
-			this.routes = routes;
-			NotifyDataSetChanged();
+			return allItems;
 		}
 
-        private string FormatColor(string color)
+		private string FormatColor(string color)
         {
             if (color[0] != '#')
                 color = "#" + color;

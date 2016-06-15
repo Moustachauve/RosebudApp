@@ -11,73 +11,96 @@ using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using System;
 using Android.Support.V4.View;
 using Android.Runtime;
+using Android.Support.V7.View.Menu;
+using Android.Support.V7.Widget;
+using Android.Support.V4.Widget;
+using System.Threading.Tasks;
 
 namespace MyTransit.Android
 {
-    [Activity(Label = "MyTransit", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : AppCompatActivity
-    {
-        private FeedAdapter feedAdapter;
-        private ListView feedListView;
-        private ProgressBar feedProgressBar;
+	[Activity(Label = "MyTransit", MainLauncher = true, Icon = "@mipmap/icon")]
+	public class MainActivity : AppCompatActivity
+	{
+		private FeedAdapter feedAdapter;
+		private ListView feedListView;
+		private SwipeRefreshLayout feedPullToRefresh;
+		private ProgressBar feedProgressBar;
+		private IMenuItem searchMenu;
 
-        protected override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.Main);
+		protected override void OnCreate(Bundle savedInstanceState)
+		{
+			base.OnCreate(savedInstanceState);
+			SetContentView(Resource.Layout.Main);
 
-            var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
-            SetSupportActionBar(toolbar);
+			var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
+			SetSupportActionBar(toolbar);
 
-            feedListView = FindViewById<ListView>(Resource.Id.feed_listview);
-            feedProgressBar = FindViewById<ProgressBar>(Resource.Id.feed_progress_bar);
+			feedListView = FindViewById<ListView>(Resource.Id.feed_listview);
+			feedPullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh);
+			feedProgressBar = FindViewById<ProgressBar>(Resource.Id.feed_progress_bar);
 
-            feedListView.TextFilterEnabled = true;
+			feedListView.TextFilterEnabled = true;
 
-            LoadFeeds();
+			LoadFeeds();
 
-            feedListView.ItemClick += delegate (object sender, AdapterView.ItemClickEventArgs args)
-                    {
-                        Feed clickedFeed = feedAdapter[args.Position];
-                        Intent detailsIntent = new Intent(this, typeof(FeedDetailsActivity));
-                        detailsIntent.PutExtra("feedInfos", JsonConvert.SerializeObject(clickedFeed));
+			feedListView.ItemClick += delegate (object sender, AdapterView.ItemClickEventArgs args)
+			{
+				Feed clickedFeed = feedAdapter[args.Position];
+				Intent detailsIntent = new Intent(this, typeof(FeedDetailsActivity));
+				detailsIntent.PutExtra("feedInfos", JsonConvert.SerializeObject(clickedFeed));
 
-                        StartActivity(detailsIntent);
-                    };
-        }
+				StartActivity(detailsIntent);
+			};
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
+			feedPullToRefresh.Refresh += async delegate
+			{
+				await LoadFeeds();
+				feedPullToRefresh.Refreshing = false;
+			};
+		}
 
-            var searchItem = menu.FindItem(Resource.Id.action_search);
-            var test = MenuItemCompat.GetActionView(searchItem);
-            SearchViewCompat searchView = test.JavaCast<SearchViewCompat>();
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
+			MenuInflater.Inflate(Resource.Menu.menu_main, menu);
 
-            searchView.QueryTextSubmit += (sender, args) =>
-            {
-                feedAdapter.Filter = args.Query;
-            };
+			searchMenu = menu.FindItem(Resource.Id.action_search);
+			searchMenu.SetVisible(feedAdapter != null);
+			//InvalidateOptionsMenu();
 
-            return true;
-        }
+			var searchViewJava = MenuItemCompat.GetActionView(searchMenu);
+			SearchViewCompat searchView = searchViewJava.JavaCast<SearchViewCompat>();
+			//searchView.QueryTextSubmit
 
-        private async void LoadFeeds()
-        {
-            feedProgressBar.Visibility = ViewStates.Visible;
-            var feeds = await FeedAccessor.GetAllFeeds();
+			searchView.QueryTextChange += (sender, args) =>
+			{
+				feedAdapter.Filter = args.NewText;
+			};
 
-            if (feedAdapter == null)
-            {
-                feedAdapter = new FeedAdapter(this, feeds);
-                feedListView.Adapter = feedAdapter;
-            }
-            else
-                feedAdapter.ReplaceData(feeds);
+			return true;
+		}
 
-            feedProgressBar.Visibility = ViewStates.Gone;
-        }
-    }
+		private async Task LoadFeeds()
+		{
+			feedPullToRefresh.Refreshing = true;
+			feedProgressBar.Visibility = ViewStates.Visible;
+			var feeds = await FeedAccessor.GetAllFeeds();
+
+			if (feedAdapter == null)
+			{
+				feedAdapter = new FeedAdapter(this, feeds);
+				feedListView.Adapter = feedAdapter;
+				RunOnUiThread(() =>
+				{
+					InvalidateOptionsMenu();
+				});
+			}
+			else
+				feedAdapter.ReplaceItems(feeds);
+
+			feedProgressBar.Visibility = ViewStates.Gone;
+			feedPullToRefresh.Refreshing = false;
+		}
+	}
 }
 
 
