@@ -20,6 +20,8 @@ using MyTransit.Android.Adapters;
 using MyTransit.Core.DataAccessor;
 using Android.Support.V4.Widget;
 using System.Threading.Tasks;
+using Android.Support.V4.View;
+using MyTransit.Core.Model;
 
 namespace MyTransit.Android
 {
@@ -30,6 +32,7 @@ namespace MyTransit.Android
 		private RouteAdapter routeAdapter;
 		private ListView routeListView;
 		private SwipeRefreshLayout routePullToRefresh;
+		private IMenuItem searchMenu;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -57,6 +60,26 @@ namespace MyTransit.Android
 			};
 		}
 
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
+			MenuInflater.Inflate(Resource.Menu.menu_main, menu);
+
+			searchMenu = menu.FindItem(Resource.Id.action_search);
+			searchMenu.SetVisible(routeAdapter != null);
+
+			var searchViewJava = MenuItemCompat.GetActionView(searchMenu);
+			SearchViewCompat searchView = searchViewJava.JavaCast<SearchViewCompat>();
+			//searchView.QueryTextSubmit
+
+			searchView.QueryTextChange += (sender, args) =>
+			{
+				routeAdapter.Filter = args.NewText;
+			};
+
+			return true;
+		}
+
+
 		private async Task LoadRoutes()
 		{
 			routePullToRefresh.Refreshing = true;
@@ -66,6 +89,7 @@ namespace MyTransit.Android
 			{
 				routeAdapter = new RouteAdapter(this, routes);
 				routeListView.Adapter = routeAdapter;
+				InvalidateOptionsMenu();
 			}
 			else {
 				routeAdapter.ReplaceItems(routes);

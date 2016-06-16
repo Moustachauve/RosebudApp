@@ -7,6 +7,8 @@ using MyTransit.Core;
 using System.Linq;
 using MyTransit.Android;
 using Android.App;
+using MyTransit.Core.Model;
+using MyTransit.Core.Utils;
 
 namespace MyTransit.Android.Adapters
 {
@@ -41,7 +43,9 @@ namespace MyTransit.Android.Adapters
 			if (string.IsNullOrWhiteSpace(Filter))
 				return new List<Feed>(allItems);
             else
-				return allItems.Where(feed => feed.agency_name.ToLower().Contains(Filter)).ToList();
+				return allItems.Where(feed => feed.agency_name.ContainsInsensitive(Filter)
+				                      || feed.keywords.ContainsInsensitive(Filter))
+					           .ToList();
         }
     }
 }

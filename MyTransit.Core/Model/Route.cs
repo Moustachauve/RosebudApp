@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyTransit.Core
+namespace MyTransit.Core.Model
 {
 	public class Route
 	{

@@ -53,6 +53,7 @@ namespace MyTransit.Android.Adapters
 		public void ReplaceItems(List<T> routes)
 		{
 			this.allItems = routes;
+			displayedItems = ApplyFilter();
 			NotifyDataSetChanged();
 		}
 

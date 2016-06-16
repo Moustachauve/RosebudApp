@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyTransit.Core.Model;
 using Newtonsoft.Json;
 
 namespace MyTransit.Core.DataAccessor

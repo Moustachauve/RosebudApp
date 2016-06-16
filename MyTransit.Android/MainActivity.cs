@@ -17,6 +17,7 @@ using Android.Support.V4.Widget;
 using System.Threading.Tasks;
 using MyTransit.Android.Adapters;
 using MyTransit.Core.DataAccessor;
+using MyTransit.Core.Model;
 
 namespace MyTransit.Android
 {
