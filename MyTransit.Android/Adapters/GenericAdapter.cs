@@ -11,7 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace MyTransit
+namespace MyTransit.Android.Adapters
 {
 	public abstract class GenericAdapter<T> : BaseAdapter<T>
 	{

@@ -8,7 +8,7 @@ using System.Linq;
 using MyTransit.Android;
 using Android.App;
 
-namespace MyTransit
+namespace MyTransit.Android.Adapters
 {
 	public class FeedAdapter : GenericAdapter<Feed>
 	{

@@ -16,9 +16,10 @@ using MyTransit.Android;
 using Android.Support.V7.App;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
+using MyTransit.Android.Adapters;
+using MyTransit.Core.DataAccessor;
 
-
-namespace MyTransit
+namespace MyTransit.Android
 {
 	[Activity(Label = "FeedDetailsActivity", ParentActivity = typeof(MainActivity))]
 	public class FeedDetailsActivity : AppCompatActivity

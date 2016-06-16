@@ -15,6 +15,8 @@ using Android.Support.V7.View.Menu;
 using Android.Support.V7.Widget;
 using Android.Support.V4.Widget;
 using System.Threading.Tasks;
+using MyTransit.Android.Adapters;
+using MyTransit.Core.DataAccessor;
 
 namespace MyTransit.Android
 {
@@ -89,10 +91,7 @@ namespace MyTransit.Android
 			{
 				feedAdapter = new FeedAdapter(this, feeds);
 				feedListView.Adapter = feedAdapter;
-				RunOnUiThread(() =>
-				{
-					InvalidateOptionsMenu();
-				});
+				InvalidateOptionsMenu();
 			}
 			else
 				feedAdapter.ReplaceItems(feeds);

@@ -6,7 +6,7 @@ using Android.Widget;
 using MyTransit.Core;
 using Android.Graphics;
 
-namespace MyTransit
+namespace MyTransit.Android.Adapters
 {
 	public class RouteAdapter : GenericAdapter<Route>
 	{

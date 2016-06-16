@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace MyTransit.Core
+namespace MyTransit.Core.DataAccessor
 {
 	public static class RouteAccessor
 	{
