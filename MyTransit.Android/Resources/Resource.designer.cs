@@ -1679,7 +1679,7 @@ namespace MyTransit.Android
 			public const int route_listview = 2131492946;
 			
 			// aapt resource value: 0x7f0c0051
-			public const int route_progress_bar = 2131492945;
+			public const int route_pull_to_refresh = 2131492945;
 			
 			// aapt resource value: 0x7f0c0015
 			public const int screen = 2131492885;

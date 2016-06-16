@@ -18,6 +18,8 @@ using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using MyTransit.Android.Adapters;
 using MyTransit.Core.DataAccessor;
+using Android.Support.V4.Widget;
+using System.Threading.Tasks;
 
 namespace MyTransit.Android
 {
@@ -27,7 +29,7 @@ namespace MyTransit.Android
 		private Feed feedInfo;
 		private RouteAdapter routeAdapter;
 		private ListView routeListView;
-		private ProgressBar routeProgressBar;
+		private SwipeRefreshLayout routePullToRefresh;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -39,17 +41,25 @@ namespace MyTransit.Android
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
 			routeListView = FindViewById<ListView>(Resource.Id.route_listview);
-			routeProgressBar = FindViewById<ProgressBar>(Resource.Id.route_progress_bar);
+			routePullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.route_pull_to_refresh);
 
 			feedInfo = JsonConvert.DeserializeObject<Feed>(Intent.GetStringExtra("feedInfos"));
 			this.Title = feedInfo.agency_name;
 
-			LoadRoutes();
+			routePullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+			routePullToRefresh.Post(async () =>
+			{
+				await LoadRoutes();
+			});
+			routePullToRefresh.Refresh += async delegate
+			{
+				await LoadRoutes();
+			};
 		}
 
-		private async void LoadRoutes()
+		private async Task LoadRoutes()
 		{
-			routeProgressBar.Visibility = ViewStates.Visible;
+			routePullToRefresh.Refreshing = true;
 			var routes = await RouteAccessor.GetAllRoutes(feedInfo.feed_id);
 
 			if (routeAdapter == null)
@@ -61,7 +71,7 @@ namespace MyTransit.Android
 				routeAdapter.ReplaceItems(routes);
 			}
 
-			routeProgressBar.Visibility = ViewStates.Gone;
+			routePullToRefresh.Refreshing = false;
 		}
 	}
 }
