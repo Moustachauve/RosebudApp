@@ -16,9 +16,14 @@ using MyTransit.Android;
 using Android.Support.V7.App;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
+using MyTransit.Android.Adapters;
+using MyTransit.Core.DataAccessor;
+using Android.Support.V4.Widget;
+using System.Threading.Tasks;
+using Android.Support.V4.View;
+using MyTransit.Core.Model;
 
-
-namespace MyTransit
+namespace MyTransit.Android
 {
 	[Activity(Label = "FeedDetailsActivity", ParentActivity = typeof(MainActivity))]
 	public class FeedDetailsActivity : AppCompatActivity
@@ -26,7 +31,8 @@ namespace MyTransit
 		private Feed feedInfo;
 		private RouteAdapter routeAdapter;
 		private ListView routeListView;
-		private ProgressBar routeProgressBar;
+		private SwipeRefreshLayout routePullToRefresh;
+		private IMenuItem searchMenu;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -38,29 +44,58 @@ namespace MyTransit
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
 			routeListView = FindViewById<ListView>(Resource.Id.route_listview);
-			routeProgressBar = FindViewById<ProgressBar>(Resource.Id.route_progress_bar);
+			routePullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.route_pull_to_refresh);
 
 			feedInfo = JsonConvert.DeserializeObject<Feed>(Intent.GetStringExtra("feedInfos"));
 			this.Title = feedInfo.agency_name;
 
-			LoadRoutes();
+			routePullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+			routePullToRefresh.Post(async () =>
+			{
+				await LoadRoutes();
+			});
+			routePullToRefresh.Refresh += async delegate
+			{
+				await LoadRoutes();
+			};
 		}
 
-		private async void LoadRoutes()
+		public override bool OnCreateOptionsMenu(IMenu menu)
 		{
-			routeProgressBar.Visibility = ViewStates.Visible;
+			MenuInflater.Inflate(Resource.Menu.menu_main, menu);
+
+			searchMenu = menu.FindItem(Resource.Id.action_search);
+			searchMenu.SetVisible(routeAdapter != null);
+
+			var searchViewJava = MenuItemCompat.GetActionView(searchMenu);
+			SearchViewCompat searchView = searchViewJava.JavaCast<SearchViewCompat>();
+			//searchView.QueryTextSubmit
+
+			searchView.QueryTextChange += (sender, args) =>
+			{
+				routeAdapter.Filter = args.NewText;
+			};
+
+			return true;
+		}
+
+
+		private async Task LoadRoutes()
+		{
+			routePullToRefresh.Refreshing = true;
 			var routes = await RouteAccessor.GetAllRoutes(feedInfo.feed_id);
 
 			if (routeAdapter == null)
 			{
 				routeAdapter = new RouteAdapter(this, routes);
 				routeListView.Adapter = routeAdapter;
+				InvalidateOptionsMenu();
 			}
 			else {
 				routeAdapter.ReplaceItems(routes);
 			}
 
-			routeProgressBar.Visibility = ViewStates.Gone;
+			routePullToRefresh.Refreshing = false;
 		}
 	}
 }

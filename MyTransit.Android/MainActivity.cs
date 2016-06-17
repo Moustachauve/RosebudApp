@@ -15,6 +15,9 @@ using Android.Support.V7.View.Menu;
 using Android.Support.V7.Widget;
 using Android.Support.V4.Widget;
 using System.Threading.Tasks;
+using MyTransit.Android.Adapters;
+using MyTransit.Core.DataAccessor;
+using MyTransit.Core.Model;
 
 namespace MyTransit.Android
 {
@@ -24,7 +27,6 @@ namespace MyTransit.Android
 		private FeedAdapter feedAdapter;
 		private ListView feedListView;
 		private SwipeRefreshLayout feedPullToRefresh;
-		private ProgressBar feedProgressBar;
 		private IMenuItem searchMenu;
 
 		protected override void OnCreate(Bundle savedInstanceState)
@@ -37,11 +39,13 @@ namespace MyTransit.Android
 
 			feedListView = FindViewById<ListView>(Resource.Id.feed_listview);
 			feedPullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh);
-			feedProgressBar = FindViewById<ProgressBar>(Resource.Id.feed_progress_bar);
 
 			feedListView.TextFilterEnabled = true;
 
-			LoadFeeds();
+			feedPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+			feedPullToRefresh.Post(async () => {
+				await LoadFeeds();
+			});
 
 			feedListView.ItemClick += delegate (object sender, AdapterView.ItemClickEventArgs args)
 			{
@@ -55,7 +59,6 @@ namespace MyTransit.Android
 			feedPullToRefresh.Refresh += async delegate
 			{
 				await LoadFeeds();
-				feedPullToRefresh.Refreshing = false;
 			};
 		}
 
@@ -65,7 +68,6 @@ namespace MyTransit.Android
 
 			searchMenu = menu.FindItem(Resource.Id.action_search);
 			searchMenu.SetVisible(feedAdapter != null);
-			//InvalidateOptionsMenu();
 
 			var searchViewJava = MenuItemCompat.GetActionView(searchMenu);
 			SearchViewCompat searchView = searchViewJava.JavaCast<SearchViewCompat>();
@@ -82,22 +84,17 @@ namespace MyTransit.Android
 		private async Task LoadFeeds()
 		{
 			feedPullToRefresh.Refreshing = true;
-			feedProgressBar.Visibility = ViewStates.Visible;
 			var feeds = await FeedAccessor.GetAllFeeds();
 
 			if (feedAdapter == null)
 			{
 				feedAdapter = new FeedAdapter(this, feeds);
 				feedListView.Adapter = feedAdapter;
-				RunOnUiThread(() =>
-				{
-					InvalidateOptionsMenu();
-				});
+				InvalidateOptionsMenu();
 			}
 			else
 				feedAdapter.ReplaceItems(feeds);
 
-			feedProgressBar.Visibility = ViewStates.Gone;
 			feedPullToRefresh.Refreshing = false;
 		}
 	}

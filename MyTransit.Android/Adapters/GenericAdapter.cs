@@ -11,7 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace MyTransit
+namespace MyTransit.Android.Adapters
 {
 	public abstract class GenericAdapter<T> : BaseAdapter<T>
 	{
@@ -53,6 +53,7 @@ namespace MyTransit
 		public void ReplaceItems(List<T> routes)
 		{
 			this.allItems = routes;
+			displayedItems = ApplyFilter();
 			NotifyDataSetChanged();
 		}
 

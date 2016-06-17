@@ -5,8 +5,11 @@ using Android.Views;
 using Android.Widget;
 using MyTransit.Core;
 using Android.Graphics;
+using System.Linq;
+using MyTransit.Core.Model;
+using MyTransit.Core.Utils;
 
-namespace MyTransit
+namespace MyTransit.Android.Adapters
 {
 	public class RouteAdapter : GenericAdapter<Route>
 	{
@@ -44,7 +47,12 @@ namespace MyTransit
 
 		protected override List<Route> ApplyFilter()
 		{
-			return allItems;
+			if (string.IsNullOrWhiteSpace(Filter))
+				return new List<Route>(allItems);
+			else
+				return allItems.Where(r => r.route_short_name.ContainsInsensitive(Filter) 
+			                      || r.route_long_name.ContainsInsensitive(Filter))
+					           .ToList();
 		}
 
 		private string FormatColor(string color)

@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace MyTransit.Core
+namespace MyTransit.Core.DataAccessor
 {
 	public static class HttpHelper
 	{

@@ -11,6 +11,7 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)DataAccessor\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\HttpHelper.cs" />
@@ -18,5 +19,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Feed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\RouteAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Route.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\StringExtensions.cs" />
   </ItemGroup>
 </Project>

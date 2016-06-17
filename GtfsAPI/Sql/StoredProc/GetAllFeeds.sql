@@ -9,6 +9,7 @@ BEGIN
 	(SELECT CONCAT(GROUP_CONCAT(CONCAT(
                  'SELECT `feed_id`,',
 					 '`last_update`,',
+					 '`keywords`,',
 					 '`agency_name`,',
 					 '`agency_url`,',
 					 '`agency_timezone`,',
