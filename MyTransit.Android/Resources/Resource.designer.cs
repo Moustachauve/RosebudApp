@@ -1531,8 +1531,8 @@ namespace MyTransit.Android
 			// aapt resource value: 0x7f0c0023
 			public const int action_mode_close_button = 2131492899;
 			
-			// aapt resource value: 0x7f0c0066
-			public const int action_search = 2131492966;
+			// aapt resource value: 0x7f0c006d
+			public const int action_search = 2131492973;
 			
 			// aapt resource value: 0x7f0c0024
 			public const int activity_chooser_view_content = 2131492900;
@@ -1624,11 +1624,20 @@ namespace MyTransit.Android
 			// aapt resource value: 0x7f0c0054
 			public const int lbl_agency_name = 2131492948;
 			
-			// aapt resource value: 0x7f0c0065
-			public const int lbl_route_long_name = 2131492965;
+			// aapt resource value: 0x7f0c006b
+			public const int lbl_end_time = 2131492971;
 			
-			// aapt resource value: 0x7f0c0064
-			public const int lbl_route_short_name = 2131492964;
+			// aapt resource value: 0x7f0c006c
+			public const int lbl_headsign = 2131492972;
+			
+			// aapt resource value: 0x7f0c0067
+			public const int lbl_route_long_name = 2131492967;
+			
+			// aapt resource value: 0x7f0c0066
+			public const int lbl_route_short_name = 2131492966;
+			
+			// aapt resource value: 0x7f0c006a
+			public const int lbl_start_time = 2131492970;
 			
 			// aapt resource value: 0x7f0c005c
 			public const int line1 = 2131492956;
@@ -1756,6 +1765,12 @@ namespace MyTransit.Android
 			// aapt resource value: 0x7f0c0059
 			public const int status_bar_latest_event_content = 2131492953;
 			
+			// aapt resource value: 0x7f0c0069
+			public const int stop_listview = 2131492969;
+			
+			// aapt resource value: 0x7f0c0068
+			public const int stop_pull_to_refresh = 2131492968;
+			
 			// aapt resource value: 0x7f0c004c
 			public const int submit_area = 2131492940;
 			
@@ -1782,6 +1797,12 @@ namespace MyTransit.Android
 			
 			// aapt resource value: 0x7f0c002e
 			public const int topPanel = 2131492910;
+			
+			// aapt resource value: 0x7f0c0065
+			public const int trip_listview = 2131492965;
+			
+			// aapt resource value: 0x7f0c0064
+			public const int trip_pull_to_refresh = 2131492964;
 			
 			// aapt resource value: 0x7f0c0008
 			public const int up = 2131492872;
@@ -1945,19 +1966,28 @@ namespace MyTransit.Android
 			public const int notification_template_part_time = 2130968611;
 			
 			// aapt resource value: 0x7f040024
-			public const int route_listitem = 2130968612;
+			public const int route_details = 2130968612;
 			
 			// aapt resource value: 0x7f040025
-			public const int select_dialog_item_material = 2130968613;
+			public const int route_listitem = 2130968613;
 			
 			// aapt resource value: 0x7f040026
-			public const int select_dialog_multichoice_material = 2130968614;
+			public const int select_dialog_item_material = 2130968614;
 			
 			// aapt resource value: 0x7f040027
-			public const int select_dialog_singlechoice_material = 2130968615;
+			public const int select_dialog_multichoice_material = 2130968615;
 			
 			// aapt resource value: 0x7f040028
-			public const int support_simple_spinner_dropdown_item = 2130968616;
+			public const int select_dialog_singlechoice_material = 2130968616;
+			
+			// aapt resource value: 0x7f040029
+			public const int support_simple_spinner_dropdown_item = 2130968617;
+			
+			// aapt resource value: 0x7f04002a
+			public const int trip_details = 2130968618;
+			
+			// aapt resource value: 0x7f04002b
+			public const int trip_listitem = 2130968619;
 			
 			static Layout()
 			{

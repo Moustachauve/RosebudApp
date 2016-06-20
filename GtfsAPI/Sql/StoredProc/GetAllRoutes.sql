@@ -18,7 +18,8 @@ BEGIN
 			`route_type`,
 			`route_url`,
 			`route_color`,
-			`route_text_color`
+			`route_text_color`,
+			`feed_id` = ', pFeedId',
             
 		FROM `', schemaName,'`.`routes` AS routes
         ORDER BY `route_short_name` + 0');

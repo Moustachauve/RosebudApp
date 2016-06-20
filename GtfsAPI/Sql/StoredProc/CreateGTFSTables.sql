@@ -16,7 +16,7 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`agency` 
 	(
-		`agency_id`				varchar(3)			NOT		NULL,
+		`agency_id`				varchar(15)			NOT		NULL,
 		`agency_name`			varchar(50)			NOT		NULL,
 		`agency_url`			varchar(60)			NOT		NULL,
 		`agency_timezone`		varchar(20)			NOT		NULL,
@@ -30,7 +30,7 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`stops` 
 	(
-		`stop_id`				varchar(8)			NOT		NULL,
+		`stop_id`				varchar(30)			NOT		NULL,
 		`stop_code`				varchar(5)			DEFAULT NULL,
 		`stop_name`				varchar(60)			NOT		NULL,
 		`stop_desc`				varchar(150)		DEFAULT NULL,
@@ -48,8 +48,8 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`routes` 
 	(
-		`route_id`				varchar(3)			NOT		NULL,
-		`agency_id`				varchar(3)			DEFAULT NULL,
+		`route_id`				varchar(30)			NOT		NULL,
+		`agency_id`				varchar(15)			DEFAULT NULL,
 		`route_short_name`		varchar(10)			NOT		NULL,
 		`route_long_name`		varchar(75)			NOT		NULL,
 		`route_desc`			varchar(100)		DEFAULT NULL,
@@ -63,14 +63,14 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`trips` 
 	(
-		`trip_id`				varchar(20)			NOT		NULL,
-		`service_id`			varchar(3)			NOT		NULL,
-		`route_id`				varchar(3)			NOT		NULL,
+		`trip_id`				varchar(30)			NOT		NULL,
+		`service_id`			varchar(30)			NOT		NULL,
+		`route_id`				varchar(30)			NOT		NULL,
 		`trip_headsign`			varchar(60)			DEFAULT NULL,
 		`trip_short_name`		varchar(20)			DEFAULT NULL,
 		`direction_id`			tinyint				DEFAULT NULL,
-		`block_id`				varchar(20)			DEFAULT NULL,
-		`shape_id`				varchar(15)			DEFAULT NULL,
+		`block_id`				varchar(30)			DEFAULT NULL,
+		`shape_id`				varchar(30)			DEFAULT NULL,
 		`wheelchair_accessible`	tinyint				DEFAULT 0,
 		`bikes_allowed`			tinyint				DEFAULT 0,
 		`note_fr`				varchar(255)		DEFAULT NULL,
@@ -81,21 +81,23 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`stop_times` 
 	(
-		`trip_id`				varchar(20)			NOT		NULL,
+		`trip_id`				varchar(30)			NOT		NULL,
 		`arrival_time`			char(8)				NOT		NULL,
 		`departure_time`		char(8)				NOT		NULL,
-		`stop_id`				varchar(8)			NOT		NULL,
+		`stop_id`				varchar(30)			NOT		NULL,
 		`stop_sequence`			smallint UNSIGNED 	NOT		NULL,
 		`stop_headsign`			varchar(50)			DEFAULT NULL,
 		`pickup_type`			tinyint				DEFAULT 0,
 		`drop_off_type`			tinyint				DEFAULT 0,
 		`shape_dist_traveled`	varchar(10)			DEFAULT NULL,
-		`timepoint`				tinyint				DEFAULT 1
+		`timepoint`				tinyint				DEFAULT 1,
+        
+        INDEX `stop_times_trip_id` (`trip_id`)
 	);'));
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`calendar` 
 	(
-		`service_id`			varchar(3)			NOT		NULL,
+		`service_id`			varchar(30)			NOT		NULL,
 		`monday`				tinyint				NOT		NULL,
 		`tuesday`				tinyint				NOT		NULL,
 		`wednesday`				tinyint				NOT		NULL,
@@ -111,7 +113,7 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`calendar_dates` 
 	(
-		`service_id`			varchar(3)			NOT		NULL,
+		`service_id`			varchar(30)			NOT		NULL,
 		`date`					char(8)				NOT		NULL,
 		`exception_type`		tinyint				NOT		NULL,
 
@@ -120,7 +122,7 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`fare_attributes` 
 	(
-		`fare_id`				varchar(15)			NOT		NULL,
+		`fare_id`				varchar(30)			NOT		NULL,
 		`price`					decimal(6,2)		NOT		NULL,
 		`currency_type`			char(3)				NOT		NULL,
 		`payment_method`		tinyint				NOT		NULL,
@@ -132,16 +134,16 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`fare_rules` 
 	(
-		`fare_id`				varchar(15)			NOT		NULL,
-		`route_id`				varchar(3)			DEFAULT NULL,
-		`origin_id`				varchar(15)			DEFAULT NULL,
-		`destination_id`		varchar(15)			DEFAULT NULL,
-		`contains_id`			varchar(15)			DEFAULT NULL
+		`fare_id`				varchar(30)			NOT		NULL,
+		`route_id`				varchar(30)			DEFAULT NULL,
+		`origin_id`				varchar(30)			DEFAULT NULL,
+		`destination_id`		varchar(30)			DEFAULT NULL,
+		`contains_id`			varchar(30)			DEFAULT NULL
 	);'));
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`shapes` 
 	(
-		`shape_id`				varchar(15)			NOT		NULL,
+		`shape_id`				varchar(30)			NOT		NULL,
 		`shape_pt_lat`			varchar(10)			NOT		NULL,
 		`shape_pt_lon`			varchar(10)			NOT		NULL,
 		`shape_pt_sequence`		smallint UNSIGNED 	NOT		NULL,
@@ -150,7 +152,7 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`frequencies` 
 	(
-		`trip_id`				varchar(20)			NOT		NULL,
+		`trip_id`				varchar(30)			NOT		NULL,
 		`start_time`			char(8)				NOT		NULL,
 		`end_time`				char(8)				NOT		NULL,
 		`headway_secs`			smallint UNSIGNED	NOT		NULL,
@@ -159,8 +161,8 @@ BEGIN
 
 	CALL ExecuteQuery(CONCAT('CREATE TABLE IF NOT EXISTS `', schemaNameTemp,'`.`transfers` 
 	(
-		`from_stop_id`			varchar(8)			NOT		NULL,
-		`to_stop_id`			varchar(8)			NOT		NULL,
+		`from_stop_id`			varchar(30)			NOT		NULL,
+		`to_stop_id`			varchar(30)			NOT		NULL,
 		`transfer_type`			tinyint				DEFAULT 0,
 		`min_transfer_time`		int UNSIGNED 		DEFAULT 0
 	);'));
