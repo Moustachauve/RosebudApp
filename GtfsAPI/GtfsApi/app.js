@@ -5,10 +5,10 @@ var log = require('./lib/log/log.js')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 
-var home = require('./routes/index')
-var users = require('./routes/users')
-var feeds = require('./routes/feeds')
-var routes = require('./routes/routes')
+var homeRouter = require('./router/homeRouter')
+var feedRouter = require('./router/feedRouter')
+var routeRouter = require('./router/routeRouter')
+var tripRouter = require('./router/tripRouter')
 
 var app = express()
 
@@ -18,10 +18,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', home)
-app.use('/users', users)
-app.use('/feeds', feeds)
-app.use('/routes', routes)
+app.use('/', homeRouter)
+routeRouter.use('/:routeId/trips', tripRouter)
+feedRouter.use('/:feedId/routes', routeRouter)
+app.use('/feeds', feedRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -72,6 +72,9 @@
     <Compile Include="FeedDetailsActivity.cs" />
     <Compile Include="Adapters\RouteAdapter.cs" />
     <Compile Include="Adapters\GenericAdapter.cs" />
+    <Compile Include="TripDetailsActivity.cs" />
+    <Compile Include="RouteDetailsActivity.cs" />
+    <Compile Include="Adapters\TripAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml">
@@ -92,6 +95,9 @@
     <AndroidResource Include="Resources\layout\feed_listitem.axml" />
     <AndroidResource Include="Resources\layout\feed_details.axml" />
     <AndroidResource Include="Resources\layout\route_listitem.axml" />
+    <AndroidResource Include="Resources\layout\trip_details.axml" />
+    <AndroidResource Include="Resources\layout\route_details.axml" />
+    <AndroidResource Include="Resources\layout\trip_listitem.axml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />

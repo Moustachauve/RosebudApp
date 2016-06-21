@@ -10,27 +10,26 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Newtonsoft.Json;
-using MyTransit.Core;
-using MyTransit.Android;
 using Android.Support.V7.App;
+using MyTransit.Core.Model;
+using MyTransit.Android.Adapters;
+using Android.Support.V4.Widget;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
-using MyTransit.Android.Adapters;
-using MyTransit.Core.DataAccessor;
-using Android.Support.V4.Widget;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Android.Support.V4.View;
-using MyTransit.Core.Model;
+using System.Threading.Tasks;
+using MyTransit.Core;
+using Android.Support.V4.App;
 
 namespace MyTransit.Android
 {
-	[Activity(Label = "FeedDetailsActivity", ParentActivity = typeof(MainActivity))]
-	public class FeedDetailsActivity : AppCompatActivity
+	[Activity(Label = "RouteDetailsActivity")]
+	public class RouteDetailsActivity : AppCompatActivity
 	{
-		private Feed feedInfo;
-		private RouteAdapter routeAdapter;
-		private ListView routeListView;
+		private Route routeInfo;
+		private TripAdapter tripAdapter;
+		private ListView tripListView;
 		private SwipeRefreshLayout routePullToRefresh;
 		private IMenuItem searchMenu;
 
@@ -43,11 +42,16 @@ namespace MyTransit.Android
 			SetSupportActionBar(toolbar);
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
-			routeListView = FindViewById<ListView>(Resource.Id.route_listview);
+			toolbar.NavigationClick += delegate
+			{
+				OnBackPressed();
+			};
+
+			tripListView = FindViewById<ListView>(Resource.Id.route_listview);
 			routePullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.route_pull_to_refresh);
 
-			feedInfo = JsonConvert.DeserializeObject<Feed>(Intent.GetStringExtra("feedInfos"));
-			this.Title = feedInfo.agency_name;
+			routeInfo = JsonConvert.DeserializeObject<Route>(Intent.GetStringExtra("routeInfos"));
+			this.Title = routeInfo.route_short_name + " " + routeInfo.route_long_name;
 
 			routePullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
 			routePullToRefresh.Post(async () =>
@@ -58,15 +62,6 @@ namespace MyTransit.Android
 			{
 				await LoadRoutes();
 			};
-			routeListView.ItemClick += delegate (object sender, AdapterView.ItemClickEventArgs args)
-			{
-				Route clickedRoute = routeAdapter[args.Position];
-				Intent detailsIntent = new Intent(this, typeof(RouteDetailsActivity));
-				detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(clickedRoute));
-
-				StartActivity(detailsIntent);
-			};
-
 		}
 
 		public override bool OnCreateOptionsMenu(IMenu menu)
@@ -74,35 +69,38 @@ namespace MyTransit.Android
 			MenuInflater.Inflate(Resource.Menu.menu_main, menu);
 
 			searchMenu = menu.FindItem(Resource.Id.action_search);
-			searchMenu.SetVisible(routeAdapter != null);
+			searchMenu.SetVisible(tripAdapter != null);
 
 			var searchViewJava = MenuItemCompat.GetActionView(searchMenu);
 			SearchViewCompat searchView = searchViewJava.JavaCast<SearchViewCompat>();
-			//searchView.QueryTextSubmit
 
 			searchView.QueryTextChange += (sender, args) =>
 			{
-				routeAdapter.Filter = args.NewText;
+				tripAdapter.Filter = args.NewText;
 			};
 
 			return true;
 		}
 
-
 		private async Task LoadRoutes()
 		{
 			routePullToRefresh.Refreshing = true;
-			var routes = await RouteAccessor.GetAllRoutes(feedInfo.feed_id);
+			var trips = await TripAccessor.GetTripsForRoute(routeInfo.feed_id, routeInfo.route_id);
 
-			if (routeAdapter == null)
+			if (tripAdapter == null)
 			{
-				routeAdapter = new RouteAdapter(this, routes);
-				routeListView.Adapter = routeAdapter;
+				tripAdapter = new TripAdapter(this, trips);
+				tripListView.Adapter = tripAdapter;
 				InvalidateOptionsMenu();
 			}
 			else {
-				routeAdapter.ReplaceItems(routes);
+				tripAdapter.ReplaceItems(trips);
 			}
+
+			tripListView.Post(() =>
+			{
+				tripListView.SmoothScrollToPositionFromTop(tripAdapter.GetPositionOfNextTrip(), 50);
+			});
 
 			routePullToRefresh.Refreshing = false;
 		}

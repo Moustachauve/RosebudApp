@@ -29,7 +29,10 @@ namespace MyTransit.Core.DataAccessor
 			return client;
 		}
 
-
+		public static HttpClient GetHttpClient(string apiEndpoint, params object[] apiParameters)
+		{
+			return GetHttpClient(string.Format(apiEndpoint, apiParameters));
+		}
 	}
 }
 
