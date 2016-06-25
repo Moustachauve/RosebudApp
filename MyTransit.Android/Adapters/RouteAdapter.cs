@@ -8,6 +8,7 @@ using Android.Graphics;
 using System.Linq;
 using MyTransit.Core.Model;
 using MyTransit.Core.Utils;
+using Android.Support.V4.Graphics;
 
 namespace MyTransit.Android.Adapters
 {
@@ -35,11 +36,8 @@ namespace MyTransit.Android.Adapters
 
             if (!string.IsNullOrWhiteSpace(currentRoute.route_color))
             {
-                lblRouteShortName.SetBackgroundColor(Color.ParseColor(FormatColor(currentRoute.route_color)));
-            }
-            if (!string.IsNullOrWhiteSpace(currentRoute.route_text_color))
-            {
-                lblRouteShortName.SetTextColor(Color.ParseColor(FormatColor(currentRoute.route_text_color)));
+				lblRouteShortName.SetBackgroundColor(Color.ParseColor(ColorHelper.FormatColor(currentRoute.route_color)));
+				lblRouteShortName.SetTextColor(ColorHelper.ContrastColor(currentRoute.route_color));
             }
 
             return convertView;
@@ -55,12 +53,5 @@ namespace MyTransit.Android.Adapters
 					           .ToList();
 		}
 
-		private string FormatColor(string color)
-        {
-            if (color[0] != '#')
-                color = "#" + color;
-
-            return color;
-        }
 	}
 }

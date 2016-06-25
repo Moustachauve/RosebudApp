@@ -5,7 +5,7 @@ using MyTransit.Core.DataAccessor;
 using MyTransit.Core.Model;
 using Newtonsoft.Json;
 
-namespace MyTransit.Core
+namespace MyTransit.Core.DataAccessor
 {
 	public class TripAccessor
 	{
@@ -21,7 +21,6 @@ namespace MyTransit.Core
 				return JsonConvert.DeserializeObject<List<Trip>>(debug);
 			}
 		}
-
 	}
 }
 

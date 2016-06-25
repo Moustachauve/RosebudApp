@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace MyTransit.Core
+
+namespace MyTransit.Core.Model
 {
 	public class Trip
 	{
@@ -10,6 +11,7 @@ namespace MyTransit.Core
 		public string direction_id { get; set; }
 		public string block_id { get; set; }
 		public string shape_id { get; set; }
+		public int? headway_secs { get; set; }
 		public WheelchairAccessibility wheelchair_accessible { get; set; }
 		public BikesAllowed bikes_allowed { get; set; }
 		public string note_fr { get; set; }

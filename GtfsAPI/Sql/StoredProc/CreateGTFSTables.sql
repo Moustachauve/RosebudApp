@@ -146,7 +146,7 @@ BEGIN
 		`shape_id`				varchar(30)			NOT		NULL,
 		`shape_pt_lat`			varchar(10)			NOT		NULL,
 		`shape_pt_lon`			varchar(10)			NOT		NULL,
-		`shape_pt_sequence`		smallint UNSIGNED 	NOT		NULL,
+		`shape_pt_sequence`		int UNSIGNED 		NOT		NULL,
 		`shape_dist_traveled`	varchar(20)			DEFAULT NULL
 	);'));
 
@@ -155,7 +155,7 @@ BEGIN
 		`trip_id`				varchar(30)			NOT		NULL,
 		`start_time`			char(8)				NOT		NULL,
 		`end_time`				char(8)				NOT		NULL,
-		`headway_secs`			smallint UNSIGNED	NOT		NULL,
+		`headway_secs`			int UNSIGNED		NOT		NULL,
 		`exact_times`			tinyint				DEFAULT 0
 	);'));
 

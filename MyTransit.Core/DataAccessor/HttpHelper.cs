@@ -9,7 +9,7 @@ namespace MyTransit.Core.DataAccessor
 	public static class HttpHelper
 	{
 		//public const string API_URL = "http://localhost:1337/";
-		public const string API_URL = "http://10.0.2.2:1337/";		//Emulator
+		public const string API_URL = "http://cgagnier.ca:1337/";		//Emulator
 
 		public static HttpClient GetHttpClient()
 		{

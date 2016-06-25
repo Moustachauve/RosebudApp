@@ -3,6 +3,8 @@ namespace MyTransit.Core
 {
 	public static class TimeFormatter
 	{
+		//TODO: Use datetime instead of timespan
+
 		/// <summary>
 		/// Parse a string representing a time with the format "HH:MM:SS". Hours can be over 24h
 		/// </summary>
@@ -16,7 +18,17 @@ namespace MyTransit.Core
 		/// Formats a time in receive as "HH:MM:SS" to "HH:MM" where hours can be over 24h.
 		/// </summary>
 		public static string FormatHoursMinutes(string time) {
-			return StringToTimeSpan(time).ToString(@"hh\:mm");
+			return FormatHoursMinutes(StringToTimeSpan(time));
+		}
+
+		public static string FormatHoursMinutes(double seconds) {
+			TimeSpan time = TimeSpan.FromSeconds(seconds);
+			return FormatHoursMinutes(time);
+		}
+
+		public static string FormatHoursMinutes(TimeSpan time)
+		{
+			return time.ToString(@"hh\:mm");
 		}
 	}
 }

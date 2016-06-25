@@ -29,12 +29,20 @@ namespace MyTransit.Android.Adapters
 			Trip currentTrip = this[position];
 
 			TextView lblHeadsign = convertView.FindViewById<TextView>(Resource.Id.lbl_headsign);
+			TextView lblFrequency = convertView.FindViewById<TextView>(Resource.Id.lbl_frequency);
 			TextView lblStartTime = convertView.FindViewById<TextView>(Resource.Id.lbl_start_time);
 			TextView lblEndTime = convertView.FindViewById<TextView>(Resource.Id.lbl_end_time);
 
 			lblHeadsign.Text = currentTrip.trip_headsign;
 			lblStartTime.Text = TimeFormatter.FormatHoursMinutes(currentTrip.start_time);
 			lblEndTime.Text = TimeFormatter.FormatHoursMinutes(currentTrip.end_time);
+
+			if(currentTrip.headway_secs.HasValue) {
+				lblFrequency.Text = string.Format("À toutes les {0} min.", formatFrequencyTime(currentTrip.headway_secs.Value));
+			}
+			else {
+				lblFrequency.Visibility = ViewStates.Gone;
+			}
 
 			return convertView;
 		}
@@ -65,6 +73,12 @@ namespace MyTransit.Android.Adapters
 			}
 
 			return closestTimePosition;
+		}
+
+		private string formatFrequencyTime(int timeSeconds) {
+			TimeSpan time = TimeSpan.FromSeconds(timeSeconds);
+
+			return time.Minutes.ToString();
 		}
 	}
 }

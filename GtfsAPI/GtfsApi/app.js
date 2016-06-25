@@ -9,6 +9,7 @@ var homeRouter = require('./router/homeRouter')
 var feedRouter = require('./router/feedRouter')
 var routeRouter = require('./router/routeRouter')
 var tripRouter = require('./router/tripRouter')
+var stopRouter = require('./router/stopRouter')
 
 var app = express()
 
@@ -19,6 +20,8 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', homeRouter)
+
+tripRouter.use('/:tripId/stops', stopRouter)
 routeRouter.use('/:routeId/trips', tripRouter)
 feedRouter.use('/:feedId/routes', routeRouter)
 app.use('/feeds', feedRouter)

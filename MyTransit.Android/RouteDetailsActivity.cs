@@ -21,6 +21,7 @@ using Android.Support.V4.View;
 using System.Threading.Tasks;
 using MyTransit.Core;
 using Android.Support.V4.App;
+using MyTransit.Core.DataAccessor;
 
 namespace MyTransit.Android
 {
@@ -61,6 +62,15 @@ namespace MyTransit.Android
 			routePullToRefresh.Refresh += async delegate
 			{
 				await LoadRoutes();
+			};
+			tripListView.ItemClick += delegate (object sender, AdapterView.ItemClickEventArgs args)
+			{
+				Trip clickedTrip = tripAdapter[args.Position];
+				Intent detailsIntent = new Intent(this, typeof(TripDetailsActivity));
+				detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(routeInfo));
+				detailsIntent.PutExtra("tripInfos", JsonConvert.SerializeObject(clickedTrip));
+
+				StartActivity(detailsIntent);
 			};
 		}
 

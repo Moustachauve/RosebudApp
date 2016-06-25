@@ -14,7 +14,8 @@
         style="?android:attr/textAppearanceLarge"
         tools:text="ROUTE"
         android:elevation="6dp"
-        android:background="#aaa"
+        android:background="@color/default_item_color"
+        android:textColor="#ffffff"
         android:minWidth="65dp" />
     <TextView
         android:id="@+id/lbl_route_long_name"
@@ -22,5 +23,6 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         tools:text="Route name"
+        style="@android:style/TextAppearance.Medium"
         android:layout_marginLeft="10dp" />
 </LinearLayout>

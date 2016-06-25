@@ -13,4 +13,8 @@
   <color name="refresh_progress_1">@color/primary_dark</color>
   <color name="refresh_progress_2">@color/accent</color>
   <color name="refresh_progress_3">@color/primary</color>
+
+  <color name="default_item_color">@color/primary_dark</color>
+  <color name="black_alpha_40">#66000000</color>
+	
 </resources>
