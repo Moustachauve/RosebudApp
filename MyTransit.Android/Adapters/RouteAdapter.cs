@@ -9,49 +9,52 @@ using System.Linq;
 using MyTransit.Core.Model;
 using MyTransit.Core.Utils;
 using Android.Support.V4.Graphics;
+using Android.Support.V7.Widget;
 
 namespace MyTransit.Android.Adapters
 {
-	public class RouteAdapter : GenericAdapter<Route>
+	public class RouteAdapter : BaseRecyclerAdapter<Route>
 	{
 		public RouteAdapter(Context context, List<Route> routes) : base(context, routes)
 		{
 		}
 
-		public override View GetView(int position, View convertView, ViewGroup parent)
+		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-
-			if (convertView == null)
-			{
-				convertView = inflater.Inflate(Resource.Layout.route_listitem, parent, false);
-			}
-
-			Route currentRoute = this[position];
-
-			TextView lblRouteShortName = convertView.FindViewById<TextView>(Resource.Id.lbl_route_short_name);
-			TextView lblRouteLongName = convertView.FindViewById<TextView>(Resource.Id.lbl_route_long_name);
-
-			lblRouteShortName.Text = currentRoute.route_short_name;
-			lblRouteLongName.Text = currentRoute.route_long_name;
-
-            if (!string.IsNullOrWhiteSpace(currentRoute.route_color))
-            {
-				lblRouteShortName.SetBackgroundColor(Color.ParseColor(ColorHelper.FormatColor(currentRoute.route_color)));
-				lblRouteShortName.SetTextColor(ColorHelper.ContrastColor(currentRoute.route_color));
-            }
-
-            return convertView;
+			View view = Inflater.Inflate(Resource.Layout.route_listitem, parent, false);
+			return new RouteAdapter.RouteViewHolder(view, OnClick);
 		}
 
 		protected override List<Route> ApplyFilter()
 		{
 			if (string.IsNullOrWhiteSpace(Filter))
-				return new List<Route>(allItems);
+				return new List<Route>(AllItems);
 			else
-				return allItems.Where(r => r.route_short_name.ContainsInsensitive(Filter) 
+				return AllItems.Where(r => r.route_short_name.ContainsInsensitive(Filter) 
 			                      || r.route_long_name.ContainsInsensitive(Filter))
 					           .ToList();
 		}
 
+		public class RouteViewHolder : BaseViewHolder
+		{
+			public RouteViewHolder(View itemView, Action<int> listener) : base(itemView, listener)
+			{
+			}
+
+			public override void BindData(Route item)
+			{
+				TextView lblRouteShortName = view.FindViewById<TextView>(Resource.Id.lbl_route_short_name);
+				TextView lblRouteLongName = view.FindViewById<TextView>(Resource.Id.lbl_route_long_name);
+
+				lblRouteShortName.Text = item.route_short_name;
+				lblRouteLongName.Text = item.route_long_name;
+
+				if (!string.IsNullOrWhiteSpace(item.route_color))
+				{
+					lblRouteShortName.SetBackgroundColor(Color.ParseColor(ColorHelper.FormatColor(item.route_color)));
+					lblRouteShortName.SetTextColor(ColorHelper.ContrastColor(item.route_color));
+				}
+			}
+		}
 	}
 }

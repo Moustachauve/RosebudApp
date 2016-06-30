@@ -19,7 +19,6 @@ using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using MyTransit.Core.Model;
 using MyTransit.Core.DataAccessor;
 using MyTransit.Android.Adapters;
-using Com.Sothree.Slidinguppanel;
 using Android.Gms.Maps.Model;
 using Android.Gms.Maps;
 using Android.Graphics;
@@ -30,6 +29,7 @@ using Android.Support.Design.Widget;
 using Java.Lang;
 using Android.Graphics.Drawables;
 using Android.Support.V4.Content;
+using Com.Sothree.Slidinguppanel;
 
 namespace MyTransit.Android
 {

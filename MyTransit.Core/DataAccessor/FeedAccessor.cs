@@ -15,7 +15,8 @@ namespace MyTransit.Core.DataAccessor
 			using (var client = HttpHelper.GetHttpClient(API_ENDPOINT))
 			{
 				var test = await client.GetAsync("");
-				return JsonConvert.DeserializeObject<List<Feed>>(await test.Content.ReadAsStringAsync());
+				var jsonString = await test.Content.ReadAsStringAsync();
+				return JsonConvert.DeserializeObject<List<Feed>>(jsonString);
 			}
 		}
 	}

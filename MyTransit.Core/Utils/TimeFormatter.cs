@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 namespace MyTransit.Core
 {
 	public static class TimeFormatter
@@ -17,11 +18,13 @@ namespace MyTransit.Core
 		/// <summary>
 		/// Formats a time in receive as "HH:MM:SS" to "HH:MM" where hours can be over 24h.
 		/// </summary>
-		public static string FormatHoursMinutes(string time) {
+		public static string FormatHoursMinutes(string time)
+		{
 			return FormatHoursMinutes(StringToTimeSpan(time));
 		}
 
-		public static string FormatHoursMinutes(double seconds) {
+		public static string FormatHoursMinutes(double seconds)
+		{
 			TimeSpan time = TimeSpan.FromSeconds(seconds);
 			return FormatHoursMinutes(time);
 		}
@@ -29,6 +32,21 @@ namespace MyTransit.Core
 		public static string FormatHoursMinutes(TimeSpan time)
 		{
 			return time.ToString(@"hh\:mm");
+		}
+
+		public static string ToShortDateApi(DateTime date)
+		{
+			return date.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
+		}
+
+		public static string ToAbrevShortDate(DateTime date)
+		{
+			return date.ToString("ddd d MMM", CultureInfo.InvariantCulture);
+		}
+
+		public static string ToFullShortDate(DateTime date)
+		{
+			return date.ToString("dddd dd MMMM", CultureInfo.InvariantCulture);
 		}
 	}
 }

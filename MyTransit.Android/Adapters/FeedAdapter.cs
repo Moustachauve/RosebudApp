@@ -9,43 +9,45 @@ using MyTransit.Android;
 using Android.App;
 using MyTransit.Core.Model;
 using MyTransit.Core.Utils;
+using Android.Support.V7.Widget;
 
 namespace MyTransit.Android.Adapters
 {
-	public class FeedAdapter : GenericAdapter<Feed>
+	public class FeedAdapter : BaseRecyclerAdapter<Feed>
 	{
-
         public FeedAdapter(Context context, List<Feed> feeds) : base(context, feeds)
 		{
 		}
 
-		public override long GetItemId(int position) { return this[position].feed_id; }
-
-		public override View GetView(int position, View convertView, ViewGroup parent)
+		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-
-			if (convertView == null)
-			{
-				convertView = inflater.Inflate(Resource.Layout.feed_listitem, parent, false);
-			}
-
-			Feed currentFeed = this[position];
-
-			TextView lblAgencyName = convertView.FindViewById<TextView>(Resource.Id.lbl_agency_name);
-
-			lblAgencyName.Text = currentFeed.agency_name;
-
-			return convertView;
+			View view = Inflater.Inflate(Resource.Layout.feed_listitem, parent, false);
+			return new FeedAdapter.FeedViewHolder(view, OnClick);
 		}
 
-        protected override List<Feed> ApplyFilter()
+		protected override List<Feed> ApplyFilter()
         {
 			if (string.IsNullOrWhiteSpace(Filter))
-				return new List<Feed>(allItems);
+				return new List<Feed>(AllItems);
             else
-				return allItems.Where(feed => feed.agency_name.ContainsInsensitive(Filter)
+				return AllItems.Where(feed => feed.agency_name.ContainsInsensitive(Filter)
 				                      || feed.keywords.ContainsInsensitive(Filter))
 					           .ToList();
         }
-    }
+
+		public class FeedViewHolder : BaseViewHolder
+		{
+			public FeedViewHolder(View itemView, Action<int> listener) : base(itemView, listener)
+			{
+			}
+
+			public override void BindData(Feed item)
+			{
+				TextView lblAgencyName = view.FindViewById<TextView>(Resource.Id.lbl_agency_name);
+
+				lblAgencyName.Text = item.agency_name;
+			}
+		}
+
+	}
 }

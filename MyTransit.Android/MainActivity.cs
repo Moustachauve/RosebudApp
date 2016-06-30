@@ -25,7 +25,7 @@ namespace MyTransit.Android
 	public class MainActivity : AppCompatActivity
 	{
 		private FeedAdapter feedAdapter;
-		private ListView feedListView;
+		private RecyclerView feedRecyclerView;
 		private SwipeRefreshLayout feedPullToRefresh;
 		private IMenuItem searchMenu;
 
@@ -37,24 +37,13 @@ namespace MyTransit.Android
 			var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
 			SetSupportActionBar(toolbar);
 
-			feedListView = FindViewById<ListView>(Resource.Id.feed_listview);
+			feedRecyclerView = FindViewById<RecyclerView>(Resource.Id.feed_recyclerview);
 			feedPullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh);
-
-			feedListView.TextFilterEnabled = true;
 
 			feedPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
 			feedPullToRefresh.Post(async () => {
 				await LoadFeeds();
 			});
-
-			feedListView.ItemClick += delegate (object sender, AdapterView.ItemClickEventArgs args)
-			{
-				Feed clickedFeed = feedAdapter[args.Position];
-				Intent detailsIntent = new Intent(this, typeof(FeedDetailsActivity));
-				detailsIntent.PutExtra("feedInfos", JsonConvert.SerializeObject(clickedFeed));
-
-				StartActivity(detailsIntent);
-			};
 
 			feedPullToRefresh.Refresh += async delegate
 			{
@@ -71,7 +60,6 @@ namespace MyTransit.Android
 
 			var searchViewJava = MenuItemCompat.GetActionView(searchMenu);
 			SearchViewCompat searchView = searchViewJava.JavaCast<SearchViewCompat>();
-			//searchView.QueryTextSubmit
 
 			searchView.QueryTextChange += (sender, args) =>
 			{
@@ -89,13 +77,24 @@ namespace MyTransit.Android
 			if (feedAdapter == null)
 			{
 				feedAdapter = new FeedAdapter(this, feeds);
-				feedListView.Adapter = feedAdapter;
+				feedAdapter.ItemClick += OnItemClick;
+				feedRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
+				feedRecyclerView.SetAdapter(feedAdapter);
 				InvalidateOptionsMenu();
 			}
 			else
 				feedAdapter.ReplaceItems(feeds);
 
 			feedPullToRefresh.Refreshing = false;
+		}
+
+		private void OnItemClick(object sender, int position)
+		{
+			Feed clickedFeed = feedAdapter[position];
+			Intent detailsIntent = new Intent(this, typeof(FeedDetailsActivity));
+			detailsIntent.PutExtra("feedInfos", JsonConvert.SerializeObject(clickedFeed));
+
+			StartActivity(detailsIntent);
 		}
 	}
 }
