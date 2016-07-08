@@ -11,6 +11,7 @@ namespace MyTransit.Core.DataAccessor
 	{
 		const string API_ENDPOINT = "feeds/{0}/routes/{1}/";
 
+		[Obsolete("TripAccessor.GetTripsForRoute is obsolete, please use RouteAccessor.GetRouteDetails instead")]
 		public static async Task<RouteDetails> GetTripsForRoute(int feedId, string routeId, DateTime date)
 		{
 			string dateFormatted = TimeFormatter.ToShortDateApi(date);

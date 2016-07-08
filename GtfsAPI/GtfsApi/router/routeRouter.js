@@ -10,4 +10,12 @@ router.get('/', function (req, res, next) {
 	})
 })
 
+router.get('/:routeId/', function (req, res, next) {
+	routeAccessor.getRouteDetails(req.params.feedId, req.params.routeId, req.query.date, function (err, data) {
+		if (err) return next(err)
+		
+		res.json(data)
+	})
+})
+
 module.exports = router

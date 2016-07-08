@@ -87,7 +87,9 @@ namespace MyTransit.Android
 				await SwitchDate(e.Year, e.Month + 1, e.DayOfMonth);
 			};
 
-			SwitchDate(DateTime.Today);
+			viewPager.Post(async () => {
+				await SwitchDate(DateTime.Today);
+			});
 		}
 
 		private async Task SwitchDate(int year, int month, int day)
@@ -104,7 +106,7 @@ namespace MyTransit.Android
 
 		private async Task LoadDetails()
 		{
-			currentRouteDetails = await TripAccessor.GetTripsForRoute(routeInfo.feed_id, routeInfo.route_id, currentDate);
+			currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, currentDate);
 
 			SetDirectionTabs();
 
