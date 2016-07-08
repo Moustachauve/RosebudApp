@@ -1,37 +1,28 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Android;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Gms.Maps;
+using Android.Gms.Maps.Model;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Runtime;
-using Android.Support.V4.Widget;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using Com.Sothree.Slidinguppanel;
+using MyTransit.Android.Adapters;
 using MyTransit.Core;
+using MyTransit.Core.DataAccessor;
+using MyTransit.Core.Model;
 using Newtonsoft.Json;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
-using SearchViewCompat = Android.Support.V7.Widget.SearchView;
-using MyTransit.Core.Model;
-using MyTransit.Core.DataAccessor;
-using MyTransit.Android.Adapters;
-using Android.Gms.Maps.Model;
-using Android.Gms.Maps;
-using Android.Graphics;
-using System.Runtime.InteropServices;
-using Android;
-using Android.Content.PM;
-using Android.Support.Design.Widget;
-using Java.Lang;
-using Android.Graphics.Drawables;
-using Android.Support.V4.Content;
-using Com.Sothree.Slidinguppanel;
 
-namespace MyTransit.Android
+namespace MyTransit.Android.Activities
 {
 	[Activity(Label = "TripDetailsActivity")]
 	public class TripDetailsActivity : AppCompatActivity, IOnMapReadyCallback
@@ -47,7 +38,6 @@ namespace MyTransit.Android
 		private Trip tripInfo;
 		private StopAdapter stopAdapter;
 		private ListView stopListView;
-		private LinearLayout dragView;
 		LinearLayout slidingContainer;
 		SlidingUpPanelLayout slidingLayout;
 
@@ -79,7 +69,6 @@ namespace MyTransit.Android
 			MapFragment mapFragment = (MapFragment)FragmentManager.FindFragmentById(Resource.Id.trip_map);
 			slidingContainer = FindViewById<LinearLayout>(Resource.Id.sliding_container);
 			slidingLayout = FindViewById<SlidingUpPanelLayout>(Resource.Id.sliding_layout);
-			dragView = FindViewById<LinearLayout>(Resource.Id.drag_view);
 			stopListView = FindViewById<ListView>(Resource.Id.stop_listview);
 			lblRouteShortName = FindViewById<TextView>(Resource.Id.lbl_route_short_name);
 			lblRouteLongName = FindViewById<TextView>(Resource.Id.lbl_route_long_name);

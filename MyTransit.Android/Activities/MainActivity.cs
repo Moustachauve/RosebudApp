@@ -1,25 +1,21 @@
-﻿using Android.App;
-using Android.OS;
-using MyTransit.Core;
-using Android.Views;
+﻿using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
-using Newtonsoft.Json;
-using Android.Support.V7.App;
-using Android.Widget;
-using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
-using SearchViewCompat = Android.Support.V7.Widget.SearchView;
-using System;
-using Android.Support.V4.View;
+using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.View.Menu;
-using Android.Support.V7.Widget;
+using Android.Support.V4.View;
 using Android.Support.V4.Widget;
-using System.Threading.Tasks;
+using Android.Support.V7.App;
+using Android.Support.V7.Widget;
+using Android.Views;
 using MyTransit.Android.Adapters;
 using MyTransit.Core.DataAccessor;
 using MyTransit.Core.Model;
+using Newtonsoft.Json;
+using SearchViewCompat = Android.Support.V7.Widget.SearchView;
+using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 
-namespace MyTransit.Android
+namespace MyTransit.Android.Activities
 {
 	[Activity(Label = "MyTransit", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : AppCompatActivity

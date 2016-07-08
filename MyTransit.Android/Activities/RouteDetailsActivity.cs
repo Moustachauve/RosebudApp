@@ -1,33 +1,23 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Support.V7.App;
-using MyTransit.Core.Model;
-using MyTransit.Android.Adapters;
-using Android.Support.V4.Widget;
-using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
-using SearchViewCompat = Android.Support.V7.Widget.SearchView;
-using Newtonsoft.Json;
-using Android.Support.V4.View;
-using System.Threading.Tasks;
-using MyTransit.Core;
-using Android.Support.V4.App;
-using MyTransit.Core.DataAccessor;
-using Android.Support.V7.Widget;
 using Android.Support.Design.Widget;
+using Android.Support.V4.View;
+using Android.Support.V7.App;
+using Android.Views;
 using Android.Views.Animations;
+using Android.Widget;
 using MyTransit.Android.Fragments;
+using MyTransit.Core;
+using MyTransit.Core.DataAccessor;
+using MyTransit.Core.Model;
+using Newtonsoft.Json;
+using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 
-namespace MyTransit.Android
+namespace MyTransit.Android.Activities
 {
 	[Activity(Label = "RouteDetailsActivity")]
 	public class RouteDetailsActivity : AppCompatActivity

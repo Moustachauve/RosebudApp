@@ -88,16 +88,15 @@
     <Compile Include="Adapters\GenericAdapter.cs" />
     <Compile Include="Adapters\TripAdapter.cs" />
     <Compile Include="Adapters\StopAdapter.cs" />
-    <Compile Include="FeedDetailsActivity.cs" />
-    <Compile Include="MainActivity.cs" />
-    <Compile Include="RouteDetailsActivity.cs" />
-    <Compile Include="TripDetailsActivity.cs" />
-    <Compile Include="PermissionManager.cs" />
     <Compile Include="Adapters\BaseRecyclerAdapter.cs" />
     <Compile Include="Animations\ArrowRotateAnimation.cs" />
     <Compile Include="Utils\PreferenceManager.cs" />
     <Compile Include="Fragments\TripListFragment.cs" />
     <Compile Include="Adapters\TripDirectionPagerAdapter.cs" />
+    <Compile Include="Activities\FeedDetailsActivity.cs" />
+    <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Activities\RouteDetailsActivity.cs" />
+    <Compile Include="Activities\TripDetailsActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml">
@@ -139,6 +138,7 @@
     <Folder Include="Animations\" />
     <Folder Include="Utils\" />
     <Folder Include="Fragments\" />
+    <Folder Include="Activities\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\style.xml" />
