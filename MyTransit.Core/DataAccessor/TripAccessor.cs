@@ -11,14 +11,14 @@ namespace MyTransit.Core.DataAccessor
 	{
 		const string API_ENDPOINT = "feeds/{0}/routes/{1}/";
 
-		public static async Task<List<Trip>> GetTripsForRoute(int feedId, string routeId, DateTime date)
+		public static async Task<RouteDetails> GetTripsForRoute(int feedId, string routeId, DateTime date)
 		{
 			string dateFormatted = TimeFormatter.ToShortDateApi(date);
 			using (var client = HttpHelper.GetHttpClient(API_ENDPOINT, feedId, routeId))
 			{
-				var test = await client.GetAsync("trips?date=" + dateFormatted);
-				string debug = await test.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<List<Trip>>(debug);
+				var request = await client.GetAsync("trips?date=" + dateFormatted);
+				string jsonData = await request.Content.ReadAsStringAsync();
+				return JsonConvert.DeserializeObject<RouteDetails>(jsonData);
 			}
 		}
 	}

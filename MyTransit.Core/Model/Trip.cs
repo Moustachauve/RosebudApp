@@ -8,7 +8,7 @@ namespace MyTransit.Core.Model
 		public string trip_id { get; set; }
 		public string trip_headsign { get; set; }
 		public string trip_short_name { get; set; }
-		public string direction_id { get; set; }
+		public TripDirection direction_id { get; set; }
 		public string block_id { get; set; }
 		public string shape_id { get; set; }
 		public int? headway_secs { get; set; }
@@ -33,6 +33,12 @@ namespace MyTransit.Core.Model
 		Unknown = 0,
 		Accessible = 1,
 		NotAccessible = 2
+	}
+
+	public enum TripDirection {
+		AnyDirection = -1,
+		MainDirection = 0,
+		OppositeDirection = 1
 	}
 }
 

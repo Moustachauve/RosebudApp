@@ -25,6 +25,7 @@ using MyTransit.Core.DataAccessor;
 using Android.Support.V7.Widget;
 using Android.Support.Design.Widget;
 using Android.Views.Animations;
+using MyTransit.Android.Fragments;
 
 namespace MyTransit.Android
 {
@@ -32,20 +33,20 @@ namespace MyTransit.Android
 	public class RouteDetailsActivity : AppCompatActivity
 	{
 		private Route routeInfo;
-		private TripAdapter tripAdapter;
+		private TripDirectionPagerAdapter tripDirectionPagerAdapter;
 
 		private AppBarLayout appBarLayout;
 		private TextView lblToolbarDate;
-
-		private RecyclerView tripRecyclerView;
-		private SwipeRefreshLayout tripPullToRefresh;
-		private IMenuItem searchMenu;
+		private TabLayout tabLayout;
 
 		private ImageView icoDropdownDatePicker;
 		private DateTime currentDate;
 		private bool isCalendarExpanded;
 		private float currentCalendarArrowRotation = 360f;
 
+		private ViewPager viewPager;
+
+		private RouteDetails currentRouteDetails;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -56,30 +57,19 @@ namespace MyTransit.Android
 			var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
 			var lblToolbarTitle = FindViewById<TextView>(Resource.Id.lbl_toolbar_title);
 			lblToolbarDate = FindViewById<TextView>(Resource.Id.lbl_toolbar_date);
-			SetSupportActionBar(toolbar);
-			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+
+			tabLayout = FindViewById<TabLayout>(Resource.Id.tab_layout);
+			viewPager = FindViewById<ViewPager>(Resource.Id.view_pager);
 
 			var btnDatePicker = FindViewById<RelativeLayout>(Resource.Id.btn_date_picker);
 			icoDropdownDatePicker = FindViewById<ImageView>(Resource.Id.ico_dropdown_calendar);
 			var calendarView = FindViewById<CalendarView>(Resource.Id.calendar_view);
 
-			tripRecyclerView = FindViewById<RecyclerView>(Resource.Id.trip_recyclerview);
-			tripRecyclerView.NestedScrollingEnabled = false;
-			tripPullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.trip_pull_to_refresh);
+			SetSupportActionBar(toolbar);
+			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
 			routeInfo = JsonConvert.DeserializeObject<Route>(Intent.GetStringExtra("routeInfos"));
 			lblToolbarTitle.Text = routeInfo.route_short_name + " " + routeInfo.route_long_name;
-
-			tripPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-			tripPullToRefresh.Post(async () =>
-			{
-				await SwitchDate(DateTime.Today);
-			});
-
-			tripPullToRefresh.Refresh += async delegate
-			{
-				await LoadTrips();
-			};
 
 			toolbar.NavigationClick += delegate
 			{
@@ -97,24 +87,7 @@ namespace MyTransit.Android
 				await SwitchDate(e.Year, e.Month + 1, e.DayOfMonth);
 			};
 
-		}
-
-		public override bool OnCreateOptionsMenu(IMenu menu)
-		{
-			MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-
-			searchMenu = menu.FindItem(Resource.Id.action_search);
-			searchMenu.SetVisible(tripAdapter != null);
-
-			var searchViewJava = MenuItemCompat.GetActionView(searchMenu);
-			SearchViewCompat searchView = searchViewJava.JavaCast<SearchViewCompat>();
-
-			searchView.QueryTextChange += (sender, args) =>
-			{
-				tripAdapter.Filter = args.NewText;
-			};
-
-			return true;
+			SwitchDate(DateTime.Today);
 		}
 
 		private async Task SwitchDate(int year, int month, int day)
@@ -126,45 +99,25 @@ namespace MyTransit.Android
 		{
 			currentDate = date;
 			lblToolbarDate.Text = TimeFormatter.ToFullShortDate(date);
-			if (tripAdapter != null)
-				tripAdapter.ClearItems();
-			await LoadTrips();
+			await LoadDetails();
 		}
 
-		private async Task LoadTrips()
+		private async Task LoadDetails()
 		{
-			tripPullToRefresh.Refreshing = true;
-			var trips = await TripAccessor.GetTripsForRoute(routeInfo.feed_id, routeInfo.route_id, currentDate);
+			currentRouteDetails = await TripAccessor.GetTripsForRoute(routeInfo.feed_id, routeInfo.route_id, currentDate);
 
-			if (tripAdapter == null)
-			{
-				tripAdapter = new TripAdapter(this, trips);
-				tripAdapter.ItemClick += OnItemClick;
-				tripRecyclerView.SetAdapter(tripAdapter);
-				tripRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
+			SetDirectionTabs();
+
+			RunOnUiThread(() => {
+				tripDirectionPagerAdapter = new TripDirectionPagerAdapter(SupportFragmentManager, currentRouteDetails);
+				tripDirectionPagerAdapter.ItemClicked += OnItemClicked;
+				viewPager.Adapter = tripDirectionPagerAdapter;
+				tabLayout.SetupWithViewPager(viewPager);
+
 				InvalidateOptionsMenu();
-			}
-			else {
-				tripAdapter.ReplaceItems(trips);
-			}
-
-			tripRecyclerView.Post(() =>
-			{
-				//TODO
-				//tripRecyclerView.SmoothScrollToPositionFromTop(tripAdapter.GetPositionOfNextTrip(), 50);
 			});
-
-			tripPullToRefresh.Refreshing = false;
 		}
 
-		private void OnItemClick(object sender, int position) {
-			Trip clickedTrip = tripAdapter[position];
-			Intent detailsIntent = new Intent(this, typeof(TripDetailsActivity));
-			detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(routeInfo));
-			detailsIntent.PutExtra("tripInfos", JsonConvert.SerializeObject(clickedTrip));
-
-			StartActivity(detailsIntent);
-		}
 
 		private void ToggleDatePicker()
 		{
@@ -175,6 +128,33 @@ namespace MyTransit.Android
 
 			appBarLayout.SetExpanded(!isCalendarExpanded, true);
 			isCalendarExpanded = !isCalendarExpanded;
+		}
+
+		private void SetDirectionTabs()
+		{
+			tabLayout.RemoveAllTabs();
+
+			if (currentRouteDetails.HasMultipleDirection())
+			{
+				tabLayout.Visibility = ViewStates.Visible;
+			}
+			else {
+				if (string.IsNullOrWhiteSpace(currentRouteDetails.GetDirectionName(TripDirection.AnyDirection)))
+					tabLayout.Visibility = ViewStates.Gone;
+
+				else {
+					tabLayout.Visibility = ViewStates.Visible;
+				}
+			}
+		}
+
+		private void OnItemClicked(object sender, TripClickedEventArgs e)
+		{
+			Intent detailsIntent = new Intent(this, typeof(TripDetailsActivity));
+			detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(routeInfo));
+			detailsIntent.PutExtra("tripInfos", JsonConvert.SerializeObject(e.Trip));
+
+			StartActivity(detailsIntent);
 		}
 	}
 }

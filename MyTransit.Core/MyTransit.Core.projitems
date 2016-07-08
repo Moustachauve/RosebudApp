@@ -29,5 +29,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Stop.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\TripDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ColorHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\RouteDetails.cs" />
   </ItemGroup>
 </Project>

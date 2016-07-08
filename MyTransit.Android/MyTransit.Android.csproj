@@ -96,6 +96,8 @@
     <Compile Include="Adapters\BaseRecyclerAdapter.cs" />
     <Compile Include="Animations\ArrowRotateAnimation.cs" />
     <Compile Include="Utils\PreferenceManager.cs" />
+    <Compile Include="Fragments\TripListFragment.cs" />
+    <Compile Include="Adapters\TripDirectionPagerAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml">
@@ -128,6 +130,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_arrow_drop_down_white_24dp.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_arrow_drop_down_white_24dp.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_arrow_drop_down_white_24dp.png" />
+    <AndroidResource Include="Resources\layout\trip_list.axml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
@@ -135,6 +138,7 @@
     <Folder Include="Resources\xml\" />
     <Folder Include="Animations\" />
     <Folder Include="Utils\" />
+    <Folder Include="Fragments\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\style.xml" />
