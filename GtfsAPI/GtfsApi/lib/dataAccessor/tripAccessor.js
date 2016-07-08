@@ -3,7 +3,7 @@ var log = require('../log/log.js')
 
 var exports = module.exports = {}
 
-//Unused since V3
+//Unused since V4
 exports.getTripsForRoute = function (feedId, routeId, date, callback) {
 	sqlHelper.acquire(function (err, client) {
 		if (err) return callback(err)
