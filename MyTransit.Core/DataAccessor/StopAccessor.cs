@@ -13,12 +13,8 @@ namespace MyTransit.Core.DataAccessor
 
 		public static async Task<TripDetails> GetTripsForRoute(int feedId, string routeId, string tripId)
 		{
-			using (var client = HttpHelper.GetHttpClient(API_ENDPOINT, feedId, routeId, tripId))
-			{
-				var test = await client.GetAsync("stops");
-				string debug = await test.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<TripDetails>(debug);
-			}
+			string apiUrl = string.Format(API_ENDPOINT, feedId, routeId, tripId) + "stops";
+			return await HttpHelper.GetDataFromHttp<TripDetails>(apiUrl);
 		}
 	}
 }

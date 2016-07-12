@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MyTransit.Core.DataAccessor;
 using MyTransit.Core.Model;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace MyTransit.Core.DataAccessor
 {
@@ -15,13 +16,8 @@ namespace MyTransit.Core.DataAccessor
 		public static async Task<RouteDetails> GetTripsForRoute(int feedId, string routeId, DateTime date)
 		{
 			string dateFormatted = TimeFormatter.ToShortDateApi(date);
-			using (var client = HttpHelper.GetHttpClient(API_ENDPOINT, feedId, routeId))
-			{
-				var request = await client.GetAsync("trips?date=" + dateFormatted);
-				string jsonData = await request.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<RouteDetails>(jsonData);
-			}
+			string apiUrl = string.Format(API_ENDPOINT, feedId, routeId) + "trips?date={0}";
+			return await HttpHelper.GetDataFromHttp<RouteDetails>(apiUrl, dateFormatted);
 		}
 	}
 }
-

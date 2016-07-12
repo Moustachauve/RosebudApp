@@ -12,12 +12,7 @@ namespace MyTransit.Core.DataAccessor
 
 		public static async Task<List<Feed>> GetAllFeeds()
 		{
-			using (var client = HttpHelper.GetHttpClient(API_ENDPOINT))
-			{
-				var test = await client.GetAsync("");
-				var jsonString = await test.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<List<Feed>>(jsonString);
-			}
+			return await HttpHelper.GetDataFromHttp<List<Feed>>(API_ENDPOINT);
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace MyTransit.Android
 				CreateFragment(routeDetails.GetTripsForDirection(TripDirection.MainDirection));
 				CreateFragment(routeDetails.GetTripsForDirection(TripDirection.OppositeDirection));
 			}
-			else 
+			else
 			{
 				CreateFragment(routeDetails.GetTripsForDirection(TripDirection.AnyDirection));
 			}
@@ -40,10 +40,15 @@ namespace MyTransit.Android
 
 		public override Java.Lang.ICharSequence GetPageTitleFormatted(int position)
 		{
+			if (Count <= 1)
+			{
+				return new Java.Lang.String(routeDetails.GetDirectionName(TripDirection.AnyDirection));
+			}
+
 			return new Java.Lang.String(routeDetails.GetDirectionName((TripDirection)position));
 		}
 
-		private void CreateFragment(List<Trip> trips) 
+		private void CreateFragment(List<Trip> trips)
 		{
 			TripListFragment fragment = new TripListFragment();
 			fragment.SetTrips(trips);
@@ -51,7 +56,8 @@ namespace MyTransit.Android
 			fragments.Add(fragment);
 		}
 
-		private void OnItemClicked(object sender, TripClickedEventArgs e) {
+		private void OnItemClicked(object sender, TripClickedEventArgs e)
+		{
 			if (ItemClicked != null)
 				ItemClicked(sender, e);
 		}

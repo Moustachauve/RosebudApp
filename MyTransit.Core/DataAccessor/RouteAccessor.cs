@@ -12,23 +12,14 @@ namespace MyTransit.Core.DataAccessor
 
 		public static async Task<List<Route>> GetAllRoutes(int feedId)
 		{
-			using (var client = HttpHelper.GetHttpClient(API_ENDPOINT, feedId))
-			{
-				var test = await client.GetAsync("");
-				string debug = await test.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<List<Route>>(debug);
-			}
+			return await HttpHelper.GetDataFromHttp<List<Route>>(API_ENDPOINT, feedId);
 		}
 
 		public static async Task<RouteDetails> GetRouteDetails(int feedId, string routeId, DateTime date)
 		{
 			string dateFormatted = TimeFormatter.ToShortDateApi(date);
-			using (var client = HttpHelper.GetHttpClient(API_ENDPOINT, feedId))
-			{
-				var request = await client.GetAsync(routeId + "/?date=" + dateFormatted);
-				string jsonData = await request.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<RouteDetails>(jsonData);
-			}
+			string apiUrl = string.Format(API_ENDPOINT, feedId) + "{0}/?date={1}";
+			return await HttpHelper.GetDataFromHttp<RouteDetails>(apiUrl, routeId, dateFormatted);
 		}
 	}
 }
