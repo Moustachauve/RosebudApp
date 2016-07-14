@@ -173,7 +173,7 @@ namespace MyTransit.Android.Activities
 
 		private async void LoadStops()
 		{
-			var details = await StopAccessor.GetTripsForRoute(routeInfo.feed_id, routeInfo.route_id, tripInfo.trip_id);
+			var details = await StopAccessor.GetStopsForTrip(routeInfo.feed_id, routeInfo.route_id, tripInfo.trip_id);
 
 			if (stopAdapter == null)
 			{

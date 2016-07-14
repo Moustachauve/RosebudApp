@@ -97,6 +97,11 @@
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\RouteDetailsActivity.cs" />
     <Compile Include="Activities\TripDetailsActivity.cs" />
+    <Compile Include="Cache\FeedCacheManager.cs" />
+    <Compile Include="Cache\CacheRepository.cs" />
+    <Compile Include="Cache\CacheFileManager.cs" />
+    <Compile Include="Cache\RouteCacheManager.cs" />
+    <Compile Include="Cache\StopCacheManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml">
@@ -139,6 +144,7 @@
     <Folder Include="Utils\" />
     <Folder Include="Fragments\" />
     <Folder Include="Activities\" />
+    <Folder Include="Cache\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\style.xml" />

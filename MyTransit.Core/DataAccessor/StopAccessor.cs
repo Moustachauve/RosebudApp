@@ -11,10 +11,17 @@ namespace MyTransit.Core.DataAccessor
 	{
 		const string API_ENDPOINT = "feeds/{0}/routes/{1}/trips/{2}/";
 
-		public static async Task<TripDetails> GetTripsForRoute(int feedId, string routeId, string tripId)
+		public static async Task<TripDetails> GetStopsForTrip(int feedId, string routeId, string tripId)
 		{
+			TripDetails tripDetails = await HttpHelper.CacheRepository.StopCacheManager.GetStopsForTrip(feedId, routeId, tripId);
+			if (tripDetails != null)
+				return tripDetails;
+			
 			string apiUrl = string.Format(API_ENDPOINT, feedId, routeId, tripId) + "stops";
-			return await HttpHelper.GetDataFromHttp<TripDetails>(apiUrl);
+			tripDetails = await HttpHelper.GetDataFromHttp<TripDetails>(apiUrl);
+			await HttpHelper.CacheRepository.StopCacheManager.SaveStopsForTrip(feedId, routeId, tripId, tripDetails);
+
+			return tripDetails;
 		}
 	}
 }

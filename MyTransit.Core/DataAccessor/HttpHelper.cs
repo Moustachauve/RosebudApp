@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Android.Util;
+using MyTransit.Core.Cache;
 
 namespace MyTransit.Core.DataAccessor
 {
@@ -11,8 +12,10 @@ namespace MyTransit.Core.DataAccessor
 	{
 		private const string LOG_TAG = "MyTransit.HttpHelper";
 
-		public const string API_URL = "http://10.0.2.2:1337/";       //Emulator
-																	 //public const string API_URL = "http://cgagnier.ca:1337/";		//Production
+		public const string API_URL = "http://10.0.2.2:1337/";
+		//public const string API_URL = "http://cgagnier.ca:1337/";
+
+		public static AbstractCacheRepository CacheRepository { get; set; }
 
 		public static HttpClient GetHttpClient()
 		{

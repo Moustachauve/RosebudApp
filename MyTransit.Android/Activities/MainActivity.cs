@@ -14,6 +14,7 @@ using MyTransit.Core.Model;
 using Newtonsoft.Json;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
+using System;
 
 namespace MyTransit.Android.Activities
 {
@@ -27,6 +28,8 @@ namespace MyTransit.Android.Activities
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
+			HttpHelper.CacheRepository = new CacheRepository(ApplicationContext);
+
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.Main);
 

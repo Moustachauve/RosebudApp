@@ -12,7 +12,16 @@ namespace MyTransit.Core.DataAccessor
 
 		public static async Task<List<Feed>> GetAllFeeds()
 		{
-			return await HttpHelper.GetDataFromHttp<List<Feed>>(API_ENDPOINT);
+			List<Feed> feeds = await HttpHelper.CacheRepository.FeedCacheManager.GetAllFeeds();
+			if (feeds != null)
+			{
+				return feeds;
+			}
+
+			feeds = await HttpHelper.GetDataFromHttp<List<Feed>>(API_ENDPOINT);
+			await HttpHelper.CacheRepository.FeedCacheManager.SaveAllFeeds(feeds);
+
+			return feeds;
 		}
 	}
 }

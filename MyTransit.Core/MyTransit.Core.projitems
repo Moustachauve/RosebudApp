@@ -12,6 +12,7 @@
     <Folder Include="$(MSBuildThisFileDirectory)DataAccessor\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\" />
     <Folder Include="$(MSBuildThisFileDirectory)Utils\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Cache\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\HttpHelper.cs" />
@@ -30,5 +31,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\TripDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ColorHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\RouteDetails.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cache\AbstractCacheRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cache\IFeedCacheManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cache\CacheItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cache\IRouteCacheManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cache\IStopCacheManager.cs" />
   </ItemGroup>
 </Project>
