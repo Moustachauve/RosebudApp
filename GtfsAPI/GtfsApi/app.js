@@ -4,6 +4,7 @@ var morgan = require('morgan')
 var log = require('./lib/log/log.js')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
+var compression = require('compression');
 
 var homeRouter = require('./router/homeRouter')
 var feedRouter = require('./router/feedRouter')
@@ -13,6 +14,7 @@ var stopRouter = require('./router/stopRouter')
 
 var app = express()
 
+app.use(compression());
 app.use(morgan("combined", { "stream": log.stream }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))

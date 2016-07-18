@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Android.Util;
 using MyTransit.Core.Cache;
+using System.Net;
 
 namespace MyTransit.Core.DataAccessor
 {
@@ -27,10 +28,14 @@ namespace MyTransit.Core.DataAccessor
 			if (string.IsNullOrEmpty(apiEndpoint))
 				apiEndpoint = "";
 
-			var client = new HttpClient();
+			HttpClientHandler handler = new HttpClientHandler();
+			handler.AutomaticDecompression = DecompressionMethods.GZip;
+
+			var client = new HttpClient(handler);
 			client.BaseAddress = new Uri(API_URL + apiEndpoint);
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
 
 			return client;
 		}

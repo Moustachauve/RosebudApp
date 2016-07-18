@@ -14,7 +14,8 @@ namespace MyTransit.Android
 		private const string TAG_LOG = "MyTransit.Cache";
 		private static TimeSpan CacheExpirationTime = new TimeSpan(10, 0, 0);
 
-		public static async Task<T> GetFromFile<T>(string filePath) {
+		public static async Task<T> GetFromFile<T>(string filePath)
+		{
 			if (!File.Exists(filePath))
 				return default(T);
 
@@ -42,7 +43,9 @@ namespace MyTransit.Android
 				return default(T);
 			}
 
-			if(cacheItem.CacheExpirationDate < DateTime.Now) {
+			if (cacheItem == null ||
+			   cacheItem.CacheExpirationDate < DateTime.Now)
+			{
 				File.Delete(filePath);
 				return default(T);
 			}
@@ -50,11 +53,12 @@ namespace MyTransit.Android
 			return cacheItem.Item;
 		}
 
-		public static async Task SaveToFile(string filePath, object item) {
+		public static async Task SaveToFile(string filePath, object item)
+		{
 			DateTime expirationDate = DateTime.Now.Add(CacheExpirationTime);
 			var cacheItem = new CacheItem<object>(item, expirationDate);
 			string json = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(cacheItem));
-			using(var writer = new StreamWriter(filePath))
+			using (var writer = File.CreateText(filePath))
 			{
 				await writer.WriteAsync(json);
 			}

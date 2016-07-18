@@ -13,7 +13,7 @@ namespace MyTransit.Core.Cache
 		public CacheItem(T item, DateTime expiration)
 		{
 			Item = item;
-			CacheExpirationDate = DateTime.Now;
+			CacheExpirationDate = expiration;
 		}
 	}
 }
