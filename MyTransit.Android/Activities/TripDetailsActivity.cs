@@ -171,9 +171,9 @@ namespace MyTransit.Android.Activities
 			return;
 		}
 
-		private async void LoadStops()
+		private async void LoadStops(bool overrideCache = false)
 		{
-			var details = await StopAccessor.GetStopsForTrip(routeInfo.feed_id, routeInfo.route_id, tripInfo.trip_id);
+			var details = await StopAccessor.GetStopsForTrip(routeInfo.feed_id, routeInfo.route_id, tripInfo.trip_id, overrideCache);
 
 			if (stopAdapter == null)
 			{

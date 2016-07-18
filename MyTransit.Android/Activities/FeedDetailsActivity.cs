@@ -36,7 +36,7 @@ namespace MyTransit.Android.Activities
 		private IMenuItem searchMenu;
 
 		private ImageView icoDropdownDatePicker;
-		private DateTime currentDate;
+		//private DateTime currentDate;
 		private bool isCalendarExpanded;
 		private float currentCalendarArrowRotation = 360f;
 
@@ -71,7 +71,7 @@ namespace MyTransit.Android.Activities
 
 			routePullToRefresh.Refresh += async delegate
 			{
-				await LoadRoutes();
+				await LoadRoutes(true);
 			};
 
 			btnDatePicker.Click += delegate
@@ -111,17 +111,17 @@ namespace MyTransit.Android.Activities
 
 		private async Task SwitchDate(DateTime date)
 		{
-			currentDate = date;
+			//currentDate = date;
 			lblToolbarDate.Text = TimeFormatter.ToFullShortDate(date);
 			if (routeAdapter != null)
 				routeAdapter.ClearItems();
 			await LoadRoutes();
 		}
 
-		private async Task LoadRoutes()
+		private async Task LoadRoutes(bool overrideCache = false)
 		{
 			routePullToRefresh.Refreshing = true;
-			var routes = await RouteAccessor.GetAllRoutes(feedInfo.feed_id);
+			var routes = await RouteAccessor.GetAllRoutes(feedInfo.feed_id, overrideCache);
 
 			if (routeAdapter == null)
 			{

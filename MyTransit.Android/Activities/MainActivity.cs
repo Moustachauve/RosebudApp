@@ -14,7 +14,6 @@ using MyTransit.Core.Model;
 using Newtonsoft.Json;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
-using System;
 
 namespace MyTransit.Android.Activities
 {
@@ -46,7 +45,7 @@ namespace MyTransit.Android.Activities
 
 			feedPullToRefresh.Refresh += async delegate
 			{
-				await LoadFeeds();
+				await LoadFeeds(true);
 			};
 		}
 
@@ -68,10 +67,10 @@ namespace MyTransit.Android.Activities
 			return true;
 		}
 
-		private async Task LoadFeeds()
+		private async Task LoadFeeds(bool overrideCache = false)
 		{
 			feedPullToRefresh.Refreshing = true;
-			var feeds = await FeedAccessor.GetAllFeeds();
+			var feeds = await FeedAccessor.GetAllFeeds(overrideCache);
 
 			if (feedAdapter == null)
 			{

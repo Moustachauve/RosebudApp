@@ -94,9 +94,9 @@ namespace MyTransit.Android.Activities
 			await LoadDetails();
 		}
 
-		private async Task LoadDetails()
+		private async Task LoadDetails(bool overrideCache = false)
 		{
-			currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, currentDate);
+			currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, currentDate, overrideCache);
 
 			SetDirectionTabs();
 

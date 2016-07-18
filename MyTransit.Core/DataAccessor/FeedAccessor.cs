@@ -10,12 +10,16 @@ namespace MyTransit.Core.DataAccessor
 	{
 		const string API_ENDPOINT = "feeds/";
 
-		public static async Task<List<Feed>> GetAllFeeds()
+		public static async Task<List<Feed>> GetAllFeeds(bool overrideCache)
 		{
-			List<Feed> feeds = await HttpHelper.CacheRepository.FeedCacheManager.GetAllFeeds();
-			if (feeds != null)
+			List<Feed> feeds;
+			if (!overrideCache)
 			{
-				return feeds;
+				feeds = await HttpHelper.CacheRepository.FeedCacheManager.GetAllFeeds();
+				if (feeds != null)
+				{
+					return feeds;
+				}
 			}
 
 			feeds = await HttpHelper.GetDataFromHttp<List<Feed>>(API_ENDPOINT);

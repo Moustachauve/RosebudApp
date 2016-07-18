@@ -22,7 +22,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Route.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Trip.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\TripAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\StopTime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\StopAccessor.cs" />

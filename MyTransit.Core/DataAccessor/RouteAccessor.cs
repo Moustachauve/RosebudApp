@@ -10,23 +10,33 @@ namespace MyTransit.Core.DataAccessor
 	{
 		const string API_ENDPOINT = "feeds/{0}/routes/";
 
-		public static async Task<List<Route>> GetAllRoutes(int feedId)
+		public static async Task<List<Route>> GetAllRoutes(int feedId, bool overrideCache)
 		{
-			List<Route> routes = await HttpHelper.CacheRepository.RouteCacheManager.GetAllRoutes(feedId);
-			if (routes != null)
-				return routes;
-			
+			List<Route> routes = null;
+
+			if (!overrideCache)
+			{
+				routes = await HttpHelper.CacheRepository.RouteCacheManager.GetAllRoutes(feedId);
+				if (routes != null)
+					return routes;
+			}
+
 			routes = await HttpHelper.GetDataFromHttp<List<Route>>(API_ENDPOINT, feedId);
 			await HttpHelper.CacheRepository.RouteCacheManager.SaveAllRoutes(feedId, routes);
 
 			return routes;
 		}
 
-		public static async Task<RouteDetails> GetRouteDetails(int feedId, string routeId, DateTime date)
+		public static async Task<RouteDetails> GetRouteDetails(int feedId, string routeId, DateTime date, bool overrideCache)
 		{
-			RouteDetails routeDetails = await HttpHelper.CacheRepository.RouteCacheManager.GetRouteDetails(feedId, routeId, date);
-			if (routeDetails != null)
-				return routeDetails;
+			RouteDetails routeDetails = null;
+
+			if (!overrideCache)
+			{
+				routeDetails = await HttpHelper.CacheRepository.RouteCacheManager.GetRouteDetails(feedId, routeId, date);
+				if (routeDetails != null)
+					return routeDetails;
+			}
 
 			string dateFormatted = TimeFormatter.ToShortDateApi(date);
 			string apiUrl = string.Format(API_ENDPOINT, feedId) + "{0}/?date={1}";
