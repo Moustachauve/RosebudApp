@@ -26,6 +26,8 @@ namespace MyTransit.Android.Activities
 	[Activity(Label = "FeedDetailsActivity", ParentActivity = typeof(MainActivity))]
 	public class FeedDetailsActivity : AppCompatActivity
 	{
+		private const string STATE_RECYCLER_VIEW = "state-recycler-view";
+
 		private Feed feedInfo;
 
 		private AppBarLayout appBarLayout;
@@ -39,6 +41,8 @@ namespace MyTransit.Android.Activities
 		//private DateTime currentDate;
 		private bool isCalendarExpanded;
 		private float currentCalendarArrowRotation = 360f;
+
+		private IParcelable recyclerViewLayoutState;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -105,6 +109,18 @@ namespace MyTransit.Android.Activities
 			return true;
 		}
 
+		protected override void OnSaveInstanceState(Bundle outState)
+		{
+			outState.PutParcelable(STATE_RECYCLER_VIEW, routeRecyclerView.GetLayoutManager().OnSaveInstanceState());
+			base.OnSaveInstanceState(outState);
+		}
+
+		protected override void OnRestoreInstanceState(Bundle savedInstanceState)
+		{
+			recyclerViewLayoutState = (IParcelable)savedInstanceState.GetParcelable(STATE_RECYCLER_VIEW);
+			base.OnRestoreInstanceState(savedInstanceState);
+		}
+
 		private async Task SwitchDate(int year, int month, int day) {
 			await SwitchDate(new DateTime(year, month, day));
 		}
@@ -130,6 +146,10 @@ namespace MyTransit.Android.Activities
 				routeRecyclerView.SetAdapter(routeAdapter);
 				routeRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
 				InvalidateOptionsMenu();
+
+				if(recyclerViewLayoutState != null) {
+					routeRecyclerView.GetLayoutManager().OnRestoreInstanceState(recyclerViewLayoutState);
+				}
 			}
 			else {
 				routeAdapter.ReplaceItems(routes);
