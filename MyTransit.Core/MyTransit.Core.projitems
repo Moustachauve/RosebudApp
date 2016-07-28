@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -11,7 +11,6 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)DataAccessor\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Utils\" />
     <Folder Include="$(MSBuildThisFileDirectory)Cache\" />
   </ItemGroup>
   <ItemGroup>
@@ -20,6 +19,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Feed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\RouteAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Route.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Dependency.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\INetworkStatusMonitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Trip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\StopTime.cs" />

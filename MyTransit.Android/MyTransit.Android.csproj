@@ -29,7 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AndroidLinkMode>None</AndroidLinkMode>
-<AndroidSupportedAbis>arm64-v8a;armeabi;x86;x86_64;armeabi-v7a</AndroidSupportedAbis>
+    <AndroidSupportedAbis>arm64-v8a;armeabi;x86;x86_64;armeabi-v7a</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -81,6 +81,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\AbstractHttpActivity.cs" />
+    <Compile Include="Fragments\NetworkStatusFragment.cs" />
+    <Compile Include="MyTransitApplication.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Adapters\FeedAdapter.cs" />
@@ -90,6 +93,7 @@
     <Compile Include="Adapters\StopAdapter.cs" />
     <Compile Include="Adapters\BaseRecyclerAdapter.cs" />
     <Compile Include="Animations\ArrowRotateAnimation.cs" />
+    <Compile Include="Utils\NetworkStatusMonitor.cs" />
     <Compile Include="Utils\PreferenceManager.cs" />
     <Compile Include="Fragments\TripListFragment.cs" />
     <Compile Include="Adapters\TripDirectionPagerAdapter.cs" />
@@ -108,6 +112,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <AndroidResource Include="Resources\layout\network_status.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -120,10 +127,16 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
     <AndroidResource Include="Resources\layout\feed_listitem.axml" />
-    <AndroidResource Include="Resources\layout\feed_details.axml" />
+    <AndroidResource Include="Resources\layout\feed_details.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\route_listitem.axml" />
-    <AndroidResource Include="Resources\layout\trip_details.axml" />
-    <AndroidResource Include="Resources\layout\route_details.axml" />
+    <AndroidResource Include="Resources\layout\trip_details.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\route_details.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\trip_listitem.axml" />
     <AndroidResource Include="Resources\layout\stop_listitem.axml" />
     <AndroidResource Include="Resources\layout\map_marker.axml" />
@@ -138,13 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Resources\drawable\" />
     <Folder Include="Resources\xml\" />
-    <Folder Include="Animations\" />
-    <Folder Include="Utils\" />
-    <Folder Include="Fragments\" />
-    <Folder Include="Activities\" />
-    <Folder Include="Cache\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\style.xml" />
@@ -169,6 +176,30 @@
       <Project>{796A0082-9D78-41E4-820C-0A6479EB21BF}</Project>
       <Name>MyTransit.AndroidSlidingUpPanelBinding</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\anim\slide_down.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\anim\slide_up.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_warning_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_warning_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_warning_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_warning_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_warning_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values-fr\Strings.xml" />
   </ItemGroup>
   <Import Project="..\MyTransit.Core\MyTransit.Core.projitems" Label="Shared" Condition="Exists('..\MyTransit.Core\MyTransit.Core.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

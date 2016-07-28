@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyTransit.Core.Model;
 using Newtonsoft.Json;
+using MyTransit.Core.Utils;
 
 namespace MyTransit.Core.DataAccessor
 {
@@ -16,15 +17,23 @@ namespace MyTransit.Core.DataAccessor
 
 			if (!overrideCache)
 			{
-				routes = await HttpHelper.CacheRepository.RouteCacheManager.GetAllRoutes(feedId);
+				routes = await Dependency.CacheRepository.RouteCacheManager.GetAllRoutes(feedId);
 				if (routes != null)
 					return routes;
 			}
 
 			routes = await HttpHelper.GetDataFromHttp<List<Route>>(API_ENDPOINT, feedId);
-			await HttpHelper.CacheRepository.RouteCacheManager.SaveAllRoutes(feedId, routes);
 
-			return routes;
+            if (routes == null && overrideCache && Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            {
+                routes = await Dependency.CacheRepository.RouteCacheManager.GetAllRoutes(feedId);
+            }
+            else
+            {
+                await Dependency.CacheRepository.RouteCacheManager.SaveAllRoutes(feedId, routes);
+            }
+
+            return routes;
 		}
 
 		public static async Task<RouteDetails> GetRouteDetails(int feedId, string routeId, DateTime date, bool overrideCache)
@@ -33,7 +42,7 @@ namespace MyTransit.Core.DataAccessor
 
 			if (!overrideCache)
 			{
-				routeDetails = await HttpHelper.CacheRepository.RouteCacheManager.GetRouteDetails(feedId, routeId, date);
+				routeDetails = await Dependency.CacheRepository.RouteCacheManager.GetRouteDetails(feedId, routeId, date);
 				if (routeDetails != null)
 					return routeDetails;
 			}
@@ -41,9 +50,17 @@ namespace MyTransit.Core.DataAccessor
 			string dateFormatted = TimeFormatter.ToShortDateApi(date);
 			string apiUrl = string.Format(API_ENDPOINT, feedId) + "{0}/?date={1}";
 			routeDetails =  await HttpHelper.GetDataFromHttp<RouteDetails>(apiUrl, routeId, dateFormatted);
-			await HttpHelper.CacheRepository.RouteCacheManager.SaveRouteDetails(feedId, routeId, date, routeDetails);
 
-			return routeDetails;
+            if (routeDetails == null && overrideCache && Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            {
+                routeDetails = await Dependency.CacheRepository.RouteCacheManager.GetRouteDetails(feedId, routeId, date);
+            }
+            else
+            {
+                await Dependency.CacheRepository.RouteCacheManager.SaveRouteDetails(feedId, routeId, date, routeDetails);
+            }
+
+            return routeDetails;
 		}
 	}
 }

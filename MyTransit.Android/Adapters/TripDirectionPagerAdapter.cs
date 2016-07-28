@@ -10,57 +10,61 @@ using Android.Runtime;
 
 namespace MyTransit.Android
 {
-	public class TripDirectionPagerAdapter : FragmentStatePagerAdapter
-	{
-		protected List<TripListFragment> fragments = new List<TripListFragment>();
-		private RouteDetails routeDetails;
+    public class TripDirectionPagerAdapter : FragmentStatePagerAdapter
+    {
+        protected List<TripListFragment> fragments = new List<TripListFragment>();
+        private RouteDetails routeDetails;
 
-		public event EventHandler<TripClickedEventArgs> ItemClicked;
+        public event EventHandler<TripClickedEventArgs> ItemClicked;
 
-		public TripDirectionPagerAdapter(FragmentManager fragmentManager, RouteDetails routeDetails) : base(fragmentManager)
-		{
-			this.routeDetails = routeDetails;
-			if (routeDetails.HasMultipleDirection())
-			{
-				CreateFragment(routeDetails.GetTripsForDirection(TripDirection.MainDirection));
-				CreateFragment(routeDetails.GetTripsForDirection(TripDirection.OppositeDirection));
-			}
-			else
-			{
-				CreateFragment(routeDetails.GetTripsForDirection(TripDirection.AnyDirection));
-			}
-		}
+        public TripDirectionPagerAdapter(FragmentManager fragmentManager, RouteDetails routeDetails) : base(fragmentManager)
+        {
+            this.routeDetails = routeDetails;
 
-		public override int Count { get { return fragments.Count; } }
+            if (routeDetails != null)
+            {
+                if (routeDetails.HasMultipleDirection())
+                {
+                    CreateFragment(routeDetails.GetTripsForDirection(TripDirection.MainDirection));
+                    CreateFragment(routeDetails.GetTripsForDirection(TripDirection.OppositeDirection));
+                }
+                else
+                {
+                    CreateFragment(routeDetails.GetTripsForDirection(TripDirection.AnyDirection));
+                }
+            }
+        }
 
-		public override Fragment GetItem(int position)
-		{
-			return fragments[position];
-		}
+        public override int Count { get { return fragments.Count; } }
 
-		public override Java.Lang.ICharSequence GetPageTitleFormatted(int position)
-		{
-			if (Count <= 1)
-			{
-				return new Java.Lang.String(routeDetails.GetDirectionName(TripDirection.AnyDirection));
-			}
+        public override Fragment GetItem(int position)
+        {
+            return fragments[position];
+        }
 
-			return new Java.Lang.String(routeDetails.GetDirectionName((TripDirection)position));
-		}
+        public override Java.Lang.ICharSequence GetPageTitleFormatted(int position)
+        {
+            if (Count <= 1)
+            {
+                return new Java.Lang.String(routeDetails.GetDirectionName(TripDirection.AnyDirection));
+            }
 
-		private void CreateFragment(List<Trip> trips)
-		{
-			TripListFragment fragment = new TripListFragment();
-			fragment.SetTrips(trips);
-			fragment.ItemClicked += OnItemClicked;
-			fragments.Add(fragment);
-		}
+            return new Java.Lang.String(routeDetails.GetDirectionName((TripDirection)position));
+        }
 
-		private void OnItemClicked(object sender, TripClickedEventArgs e)
-		{
-			if (ItemClicked != null)
-				ItemClicked(sender, e);
-		}
-	}
+        private void CreateFragment(List<Trip> trips)
+        {
+            TripListFragment fragment = new TripListFragment();
+            fragment.SetTrips(trips);
+            fragment.ItemClicked += OnItemClicked;
+            fragments.Add(fragment);
+        }
+
+        private void OnItemClicked(object sender, TripClickedEventArgs e)
+        {
+            if (ItemClicked != null)
+                ItemClicked(sender, e);
+        }
+    }
 }
 

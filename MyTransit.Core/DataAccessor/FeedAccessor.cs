@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyTransit.Core.Model;
 using Newtonsoft.Json;
+using MyTransit.Core.Utils;
 
 namespace MyTransit.Core.DataAccessor
 {
@@ -15,7 +16,7 @@ namespace MyTransit.Core.DataAccessor
 			List<Feed> feeds;
 			if (!overrideCache)
 			{
-				feeds = await HttpHelper.CacheRepository.FeedCacheManager.GetAllFeeds();
+				feeds = await Dependency.CacheRepository.FeedCacheManager.GetAllFeeds();
 				if (feeds != null)
 				{
 					return feeds;
@@ -23,9 +24,17 @@ namespace MyTransit.Core.DataAccessor
 			}
 
 			feeds = await HttpHelper.GetDataFromHttp<List<Feed>>(API_ENDPOINT);
-			await HttpHelper.CacheRepository.FeedCacheManager.SaveAllFeeds(feeds);
 
-			return feeds;
+            if(feeds == null && overrideCache && Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            {
+                feeds = await Dependency.CacheRepository.FeedCacheManager.GetAllFeeds();
+            }
+            else
+            {
+                await Dependency.CacheRepository.FeedCacheManager.SaveAllFeeds(feeds);
+            }
+
+            return feeds;
 		}
 	}
 }

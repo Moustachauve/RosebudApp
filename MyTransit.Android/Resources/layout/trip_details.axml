@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="bottom"
     android:fitsSystemWindows="false"
-    sothree:umanoPanelHeight="80dp"
+    sothree:umanoPanelHeight="76dp"
     sothree:umanoShadowHeight="4dp"
     sothree:umanoParallaxOffset="220dp"
     sothree:umanoDragView="@+id/drag_view"
@@ -28,7 +28,7 @@
             android:id="@+id/my_awesome_toolbar"
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/background_toolbar_translucent"
-            tools:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:layout_width="match_parent" />
     </FrameLayout>
     <LinearLayout
@@ -43,47 +43,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="15dp"
             android:id="@+id/drag_view">
-            <TextView
-                android:id="@+id/lbl_route_short_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:padding="7dp"
-                style="?android:attr/textAppearanceLarge"
-                tools:text="ROUTE"
-                android:elevation="6dp"
-                android:background="@color/default_item_color"
-                android:textColor="#FFFFFF"
-                android:layout_marginRight="10dp"
-                android:minWidth="65dp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:padding="15dp">
                 <TextView
-                    android:id="@+id/lbl_route_long_name"
+                    android:id="@+id/lbl_route_short_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:padding="7dp"
+                    style="?android:attr/textAppearanceLarge"
+                    tools:text="ROUTE"
+                    android:elevation="6dp"
+                    android:background="@color/default_item_color"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginRight="10dp"
+                    android:minWidth="65dp" />
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    style="@android:style/TextAppearance.Medium"
-                    tools:text="Route name" />
-                <TextView
-                    android:id="@+id/lbl_trip_headsign"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    tools:text="Direction"
-                    style="@android:style/@android:style/TextAppearance.Small" />
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/lbl_route_long_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        style="@android:style/TextAppearance.Medium"
+                        tools:text="Route name" />
+                    <TextView
+                        android:id="@+id/lbl_trip_headsign"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        tools:text="Direction"
+                        style="@android:style/@android:style/TextAppearance.Small" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+        <fragment
+                android:id="@+id/network_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar_container"
+                class="mytransit.android.fragments.NetworkStatusFragment" />
+
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/feed_list_empty" />
+
         <ListView
-            android:background="@android:color/background_light"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

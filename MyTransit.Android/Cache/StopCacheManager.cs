@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using Android.Util;
 using System.Threading.Tasks;
 
-namespace MyTransit.Android
+namespace MyTransit.Android.Cache
 {
 	public class StopCacheManager : IStopCacheManager
 	{

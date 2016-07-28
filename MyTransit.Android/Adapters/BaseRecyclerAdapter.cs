@@ -45,8 +45,17 @@ namespace MyTransit.Android
 		public BaseRecyclerAdapter(Context context, List<TItem> items) {
 			Context = context;
 			Inflater = LayoutInflater.From(context);
-			AllItems = new List<TItem>(items);
-			DisplayedItems = new List<TItem>(items);
+
+            if(items == null)
+            {
+                AllItems = new List<TItem>();
+            }
+            else
+            {
+                AllItems = new List<TItem>(items);
+            }
+			
+			DisplayedItems = new List<TItem>(AllItems);
 		}
 
 		protected void OnClick(int position)
@@ -79,8 +88,15 @@ namespace MyTransit.Android
 
 		public void ReplaceItems(List<TItem> items)
 		{
-			AllItems = new List<TItem>(items);
-			AnimateTo(ApplyFilter());
+            if(items == null)
+            {
+                AllItems = new List<TItem>();
+            }
+            else
+            {
+                AllItems = new List<TItem>(items);
+            }
+            AnimateTo(ApplyFilter());
 		}
 
 		protected TItem RemoveItem(int position)

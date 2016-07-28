@@ -4,8 +4,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Android.Util;
-using MyTransit.Core.Cache;
 using System.Net;
+using MyTransit.Core.Utils;
 
 namespace MyTransit.Core.DataAccessor
 {
@@ -13,12 +13,11 @@ namespace MyTransit.Core.DataAccessor
 	{
 		private const string LOG_TAG = "MyTransit.HttpHelper";
 
-		public const string API_URL = "http://10.0.2.2:1337/";
-		//public const string API_URL = "http://cgagnier.ca:1337/";
+        //public const string API_URL = "http://10.0.2.2:1337/";
+        public const string API_URL = "http://192.168.0.116:1337/";
+        //public const string API_URL = "http://cgagnier.ca:1337/";
 
-		public static AbstractCacheRepository CacheRepository { get; set; }
-
-		public static HttpClient GetHttpClient()
+        public static HttpClient GetHttpClient()
 		{
 			return GetHttpClient(null);
 		}
@@ -47,6 +46,11 @@ namespace MyTransit.Core.DataAccessor
 
 		public static async Task<T> ExecuteHttpRequest<T>(HttpClient httpClient, string url)
 		{
+            if(Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            {
+                return default(T);
+            }
+
 			HttpResponseMessage request = await httpClient.GetAsync(url);
 			string jsonData = await request.Content.ReadAsStringAsync();
 			Log.Info(LOG_TAG, "Request {0} done: {1} octets", request.RequestMessage.RequestUri, request.Content.Headers.ContentLength);

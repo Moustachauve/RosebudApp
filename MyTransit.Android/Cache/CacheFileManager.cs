@@ -7,7 +7,7 @@ using MyTransit.Core.Cache;
 using Newtonsoft.Json;
 using System.Security.Principal;
 
-namespace MyTransit.Android
+namespace MyTransit.Android.Cache
 {
 	public static class CacheFileManager
 	{

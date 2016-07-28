@@ -86,7 +86,7 @@ namespace MyTransit.Android.Fragments
 
 			tripRecyclerView.Post(() =>
 			{
-				//TODO
+				//TODO: scroll to last element
 				//tripRecyclerView.SmoothScrollToPositionFromTop(tripAdapter.GetPositionOfNextTrip(), 50);
 			});
 		}

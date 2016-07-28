@@ -14,21 +14,23 @@ using MyTransit.Core.Model;
 using Newtonsoft.Json;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
+using MyTransit.Core.Utils;
+using MyTransit.Android.Utils;
+using MyTransit.Android.Cache;
 
 namespace MyTransit.Android.Activities
 {
 	[Activity(Label = "MyTransit", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : AppCompatActivity
-	{
+    {
 		private FeedAdapter feedAdapter;
 		private RecyclerView feedRecyclerView;
 		private SwipeRefreshLayout feedPullToRefresh;
-		private IMenuItem searchMenu;
+        private SwipeRefreshLayout feedPullToRefreshEmpty;
+        private IMenuItem searchMenu;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
-			HttpHelper.CacheRepository = new CacheRepository(ApplicationContext);
-
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.Main);
 
@@ -37,19 +39,25 @@ namespace MyTransit.Android.Activities
 
 			feedRecyclerView = FindViewById<RecyclerView>(Resource.Id.feed_recyclerview);
 			feedPullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh);
+            feedPullToRefreshEmpty = FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh_empty);
 
-			feedPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-			feedPullToRefresh.Post(async () => {
+            feedPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+            feedPullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+            feedPullToRefresh.Post(async () => {
 				await LoadFeeds();
 			});
 
-			feedPullToRefresh.Refresh += async delegate
-			{
-				await LoadFeeds(true);
-			};
-		}
+            feedPullToRefresh.Refresh += async delegate
+            {
+                await LoadFeeds(true);
+            };
+            feedPullToRefreshEmpty.Refresh += async delegate
+            {
+                await LoadFeeds(true);
+            };
+        }
 
-		public override bool OnCreateOptionsMenu(IMenu menu)
+        public override bool OnCreateOptionsMenu(IMenu menu)
 		{
 			MenuInflater.Inflate(Resource.Menu.menu_main, menu);
 
@@ -69,10 +77,15 @@ namespace MyTransit.Android.Activities
 
 		private async Task LoadFeeds(bool overrideCache = false)
 		{
-			feedPullToRefresh.Refreshing = true;
-			var feeds = await FeedAccessor.GetAllFeeds(overrideCache);
+            feedPullToRefresh.Refreshing = true;
+            feedPullToRefreshEmpty.Refreshing = true;
 
-			if (feedAdapter == null)
+            var feeds = await FeedAccessor.GetAllFeeds(overrideCache);
+
+            feedPullToRefresh.Visibility = feeds == null ? ViewStates.Gone : ViewStates.Visible;
+            feedPullToRefreshEmpty.Visibility = feeds == null ? ViewStates.Visible : ViewStates.Gone;
+
+            if (feedAdapter == null)
 			{
 				feedAdapter = new FeedAdapter(this, feeds);
 				feedAdapter.ItemClick += OnItemClick;
@@ -83,10 +96,11 @@ namespace MyTransit.Android.Activities
 			else
 				feedAdapter.ReplaceItems(feeds);
 
-			feedPullToRefresh.Refreshing = false;
-		}
+            feedPullToRefresh.Refreshing = false;
+            feedPullToRefreshEmpty.Refreshing = false;
+        }
 
-		private void OnItemClick(object sender, int position)
+        private void OnItemClick(object sender, int position)
 		{
 			Feed clickedFeed = feedAdapter[position];
 			Intent detailsIntent = new Intent(this, typeof(FeedDetailsActivity));

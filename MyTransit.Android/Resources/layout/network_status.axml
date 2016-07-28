@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/status_container"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    tools:visibility="visible"
+    android:padding="10dp"
+    android:background="@color/background_status_warning"
+    android:elevation="2dp"
+    android:gravity="center_vertical">
+    <ImageView
+        android:src="@drawable/ic_warning_black_18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_logo" />
+    <TextView
+        android:id="@+id/lbl_status"
+        tools:text="Status here..."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:singleLine="false" />
+</LinearLayout>

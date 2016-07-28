@@ -5,7 +5,7 @@ using MyTransit.Core;
 using MyTransit.Core.Cache;
 using MyTransit.Core.Model;
 
-namespace MyTransit.Android
+namespace MyTransit.Android.Cache
 {
 	public class CacheRepository : AbstractCacheRepository
 	{

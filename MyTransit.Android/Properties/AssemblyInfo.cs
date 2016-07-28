@@ -27,8 +27,4 @@ using Android.App;
 //[assembly: AssemblyKeyFile("")]
 
 
-#if DEBUG
-[assembly: Application(Debuggable = true)]
-#else
-[assembly: Application(Debuggable = false)]
-#endif
+

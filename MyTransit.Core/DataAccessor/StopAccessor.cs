@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MyTransit.Core.DataAccessor;
 using MyTransit.Core.Model;
 using Newtonsoft.Json;
+using MyTransit.Core.Utils;
 
 namespace MyTransit.Core.DataAccessor
 {
@@ -16,16 +17,24 @@ namespace MyTransit.Core.DataAccessor
 			TripDetails tripDetails = null;
 			if (!overrideCache)
 			{
-				tripDetails = await HttpHelper.CacheRepository.StopCacheManager.GetStopsForTrip(feedId, routeId, tripId);
+				tripDetails = await Dependency.CacheRepository.StopCacheManager.GetStopsForTrip(feedId, routeId, tripId);
 				if (tripDetails != null)
 					return tripDetails;
 			}
 
 			string apiUrl = string.Format(API_ENDPOINT, feedId, routeId, tripId) + "stops";
 			tripDetails = await HttpHelper.GetDataFromHttp<TripDetails>(apiUrl);
-			await HttpHelper.CacheRepository.StopCacheManager.SaveStopsForTrip(feedId, routeId, tripId, tripDetails);
 
-			return tripDetails;
+            if (tripDetails == null && overrideCache && Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            {
+                tripDetails = await Dependency.CacheRepository.StopCacheManager.GetStopsForTrip(feedId, routeId, tripId);
+            }
+            else
+            {
+                await Dependency.CacheRepository.StopCacheManager.SaveStopsForTrip(feedId, routeId, tripId, tripDetails);
+            }
+
+            return tripDetails;
 		}
 	}
 }
