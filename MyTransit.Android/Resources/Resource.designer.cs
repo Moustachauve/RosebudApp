@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("MyTransit.Android.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("MyTransitAndroid.Resource", IsApplication=true)]
 
-namespace MyTransit.Android
+namespace MyTransitAndroid
 {
 	
 	
@@ -3171,20 +3171,26 @@ namespace MyTransit.Android
 			// aapt resource value: 0x7f06001e
 			public const int common_signin_button_text_long = 2131099678;
 			
-			// aapt resource value: 0x7f060038
-			public const int feed_list_empty = 2131099704;
+			// aapt resource value: 0x7f06003a
+			public const int feed_list_empty = 2131099706;
 			
 			// aapt resource value: 0x7f060037
 			public const int network_no_connection = 2131099703;
 			
 			// aapt resource value: 0x7f060039
-			public const int route_list_empty = 2131099705;
+			public const int network_retry = 2131099705;
+			
+			// aapt resource value: 0x7f060038
+			public const int network_server_error = 2131099704;
+			
+			// aapt resource value: 0x7f06003b
+			public const int route_list_empty = 2131099707;
 			
 			// aapt resource value: 0x7f060032
 			public const int status_bar_notification_info_overflow = 2131099698;
 			
-			// aapt resource value: 0x7f06003a
-			public const int trip_list_empty = 2131099706;
+			// aapt resource value: 0x7f06003c
+			public const int trip_list_empty = 2131099708;
 			
 			static String()
 			{

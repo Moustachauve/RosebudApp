@@ -1,7 +1,7 @@
 ﻿using System;
 using Android.Graphics;
 
-namespace MyTransit.Core
+namespace MyTransitCore
 {
 	public static class ColorHelper
 	{

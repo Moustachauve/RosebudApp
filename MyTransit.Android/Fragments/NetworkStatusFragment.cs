@@ -11,11 +11,13 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using FragmentSupport = Android.Support.V4.App.Fragment;
-using MyTransit.Core.Utils;
+using MyTransitCore.Utils;
 using Android.Views.Animations;
 using System.Threading.Tasks;
+using MyTransitCore.DataAccessor;
+using Android.Support.Design.Widget;
 
-namespace MyTransit.Android.Fragments
+namespace MyTransitAndroid.Fragments
 {
     public class NetworkStatusFragment : FragmentSupport
     {
@@ -25,6 +27,8 @@ namespace MyTransit.Android.Fragments
         private Animation slideDownAnimation;
 
         private NetworkState currentState;
+
+        public EventHandler RetryLastRequest;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -36,7 +40,6 @@ namespace MyTransit.Android.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            //return base.OnCreateView(inflater, container, savedInstanceState);
             View v = inflater.Inflate(Resource.Layout.network_status, container, false);
 
             statusContainer = v.FindViewById<LinearLayout>(Resource.Id.status_container);
@@ -49,6 +52,7 @@ namespace MyTransit.Android.Fragments
         {
             NetworkState newState = Dependency.NetworkStatusMonitor.State;
             Dependency.NetworkStatusMonitor.StateChanged += OnStateChanged;
+            HttpHelper.ServerErrorOccured += OnServerErrorOccured;
            
             base.OnResume();
             await SetState(newState);
@@ -57,6 +61,8 @@ namespace MyTransit.Android.Fragments
         public override void OnPause()
         {
             Dependency.NetworkStatusMonitor.StateChanged -= OnStateChanged;
+            HttpHelper.ServerErrorOccured -= OnServerErrorOccured;
+
             base.OnPause();
         }
 
@@ -117,5 +123,24 @@ namespace MyTransit.Android.Fragments
                 while (statusContainer.Animation != null && !statusContainer.Animation.HasEnded);
             });
         }
+
+        private void OnServerErrorOccured()
+        {
+            ViewGroup parentView = (ViewGroup)((ViewGroup)Activity.FindViewById(Android.Resource.Id.Content)).GetChildAt(0);
+
+            var snack = Snackbar.Make(parentView, Resource.String.network_server_error, Snackbar.LengthIndefinite);
+
+            if (RetryLastRequest != null)
+            {
+                snack.SetAction(Resource.String.network_retry, (View v) =>
+                {
+                    snack.Dismiss();
+                    RetryLastRequest?.Invoke(this, EventArgs.Empty);
+                });
+            }
+
+            snack.Show();
+        }
+
     }
 }

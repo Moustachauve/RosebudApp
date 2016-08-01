@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using Android.Content;
 using Android.Views;
 using Android.Widget;
-using MyTransit.Core;
+using MyTransitCore;
 using Android.Graphics;
 using System.Linq;
-using MyTransit.Core.Model;
-using MyTransit.Core.Utils;
+using MyTransitCore.Model;
+using MyTransitCore.Utils;
 using Android.Support.V4.Graphics;
 using Android.Support.V7.Widget;
 
-namespace MyTransit.Android.Adapters
+namespace MyTransitAndroid.Adapters
 {
 	public class RouteAdapter : BaseRecyclerAdapter<Route>
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-namespace MyTransit.Core
+namespace MyTransitCore
 {
 	public static class TimeFormatter
 	{

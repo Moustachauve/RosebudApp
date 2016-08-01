@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyTransit.Core.Model
+namespace MyTransitCore.Model
 {
 	public class Trip
 	{

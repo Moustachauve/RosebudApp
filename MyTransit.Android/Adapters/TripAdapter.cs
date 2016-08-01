@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using Android.Content;
 using Android.Views;
 using Android.Widget;
-using MyTransit.Core;
+using MyTransitCore;
 using Android.Graphics;
 using System.Linq;
-using MyTransit.Core.Model;
-using MyTransit.Core.Utils;
+using MyTransitCore.Model;
+using MyTransitCore.Utils;
 using Java.Security;
 using Android.Support.V7.Widget;
 
-namespace MyTransit.Android.Adapters
+namespace MyTransitAndroid.Adapters
 {
 	public class TripAdapter : BaseRecyclerAdapter<Trip>
 	{
@@ -21,9 +21,8 @@ namespace MyTransit.Android.Adapters
 
 		public int GetPositionOfNextTrip()
 		{
-
 			TimeSpan currentTime = DateTime.Now.TimeOfDay;
-			int closestTimePosition = -1;
+			int closestTimePosition = 0;
 
 			long min = long.MaxValue;
 

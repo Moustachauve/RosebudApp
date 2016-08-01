@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MyTransit.Core.DataAccessor;
-using MyTransit.Core.Model;
+using MyTransitCore.DataAccessor;
+using MyTransitCore.Model;
 using Newtonsoft.Json;
-using MyTransit.Core.Utils;
+using MyTransitCore.Utils;
 
-namespace MyTransit.Core.DataAccessor
+namespace MyTransitCore.DataAccessor
 {
 	public static class StopAccessor
 	{

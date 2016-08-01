@@ -1,45 +1,36 @@
 ﻿using System;
 using Android.Support.V4.App;
 using Android.Hardware.Camera2;
-using MyTransit.Core;
+using MyTransitCore;
 using System.Collections.Generic;
-using MyTransit.Android.Fragments;
-using MyTransit.Core.Model;
+using MyTransitAndroid.Fragments;
+using MyTransitCore.Model;
 using Android.Views.Animations;
 using Android.Runtime;
+using Android.Views;
+using Java.Lang;
 
-namespace MyTransit.Android
+namespace MyTransitAndroid
 {
-    public class TripDirectionPagerAdapter : FragmentStatePagerAdapter
+    public class TripDirectionPagerAdapter : FragmentPagerAdapter
     {
         protected List<TripListFragment> fragments = new List<TripListFragment>();
+        protected List<List<Trip>> itemTrips = new List<List<Trip>>();
         private RouteDetails routeDetails;
 
         public event EventHandler<TripClickedEventArgs> ItemClicked;
 
-        public TripDirectionPagerAdapter(FragmentManager fragmentManager, RouteDetails routeDetails) : base(fragmentManager)
+        public TripDirectionPagerAdapter(FragmentManager fragmentManager) : base(fragmentManager)
         {
-            this.routeDetails = routeDetails;
-
-            if (routeDetails != null)
-            {
-                if (routeDetails.HasMultipleDirection())
-                {
-                    CreateFragment(routeDetails.GetTripsForDirection(TripDirection.MainDirection));
-                    CreateFragment(routeDetails.GetTripsForDirection(TripDirection.OppositeDirection));
-                }
-                else
-                {
-                    CreateFragment(routeDetails.GetTripsForDirection(TripDirection.AnyDirection));
-                }
-            }
         }
 
-        public override int Count { get { return fragments.Count; } }
+        public override int Count { get { return itemTrips.Count; } }
 
         public override Fragment GetItem(int position)
         {
-            return fragments[position];
+            TripListFragment fragment = new TripListFragment();
+
+            return fragment;
         }
 
         public override Java.Lang.ICharSequence GetPageTitleFormatted(int position)
@@ -52,12 +43,42 @@ namespace MyTransit.Android
             return new Java.Lang.String(routeDetails.GetDirectionName((TripDirection)position));
         }
 
-        private void CreateFragment(List<Trip> trips)
+        public void UpdateTrips(RouteDetails routeDetails)
         {
-            TripListFragment fragment = new TripListFragment();
-            fragment.SetTrips(trips);
+            this.routeDetails = routeDetails;
+            itemTrips.Clear();
+
+            if (routeDetails != null)
+            {
+                if (routeDetails.HasMultipleDirection())
+                {
+                    itemTrips.Add(new List<Trip>(routeDetails.GetTripsForDirection(TripDirection.MainDirection)));
+                    itemTrips.Add(new List<Trip>(routeDetails.GetTripsForDirection(TripDirection.OppositeDirection)));
+                }
+                else
+                {
+                    itemTrips.Add(new List<Trip>(routeDetails.GetTripsForDirection(TripDirection.AnyDirection)));
+                }
+            }
+
+            NotifyDataSetChanged();
+        }
+
+        public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
+        {
+            TripListFragment fragment = (TripListFragment)base.InstantiateItem(container, position);
+
+            fragment.Trips = itemTrips[0];
             fragment.ItemClicked += OnItemClicked;
-            fragments.Add(fragment);
+            fragments.Insert(position, fragment);
+
+            return fragment;
+        }
+
+        public override void DestroyItem(ViewGroup container, int position, Java.Lang.Object objectValue)
+        {
+            fragments.RemoveAt(position);
+            base.DestroyItem(container, position, objectValue);
         }
 
         private void OnItemClicked(object sender, TripClickedEventArgs e)

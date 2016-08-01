@@ -3,15 +3,16 @@ using System.IO;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Util;
-using MyTransit.Core.Cache;
+using MyTransitCore.Cache;
 using Newtonsoft.Json;
 using System.Security.Principal;
+using MyTransitCore.Utils;
 
-namespace MyTransit.Android.Cache
+namespace MyTransitAndroid.Cache
 {
 	public static class CacheFileManager
 	{
-		private const string TAG_LOG = "MyTransit.Cache";
+		private const string LOG_TAG = "MyTransit.Cache";
 		private static TimeSpan CacheExpirationTime = new TimeSpan(10, 0, 0);
 
 		public static async Task<T> GetFromFile<T>(string filePath)
@@ -32,19 +33,21 @@ namespace MyTransit.Android.Cache
 			}
 			catch (JsonSerializationException ex)
 			{
-				Log.Warn(TAG_LOG, "Could not deserialize file " + filePath);
-				Log.Warn(TAG_LOG, ex.ToString());
+				Log.Warn(LOG_TAG, "Could not deserialize file {0}", filePath);
+				Log.Warn(LOG_TAG, ex.ToString());
 
 				//Logging the json if it is not too long to facilitate debugging
 				if (json != null && json.Length < 4000)
-					Log.Warn(TAG_LOG, json);
+					Log.Warn(LOG_TAG, json);
 
 				File.Delete(filePath);
 				return default(T);
 			}
 
+            //We delete cache only if it is expired and we are connected to the internet - Better show expired data than nothing!
 			if (cacheItem == null ||
-			   cacheItem.CacheExpirationDate < DateTime.Now)
+			   cacheItem.CacheExpirationDate < DateTime.Now &&
+               Dependency.NetworkStatusMonitor.State != NetworkState.Disconnected)
 			{
 				File.Delete(filePath);
 				return default(T);

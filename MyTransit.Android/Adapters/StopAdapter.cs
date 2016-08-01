@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using Android.Content;
 using Android.Views;
 using Android.Widget;
-using MyTransit.Core;
+using MyTransitCore;
 using Android.Graphics;
 using System.Linq;
-using MyTransit.Core.Model;
-using MyTransit.Core.Utils;
+using MyTransitCore.Model;
+using MyTransitCore.Utils;
 using Java.Security;
 
-namespace MyTransit.Android.Adapters
+namespace MyTransitAndroid.Adapters
 {
 	public class StopAdapter : GenericAdapter<Stop>
 	{

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MyTransit.Core.Model;
+using MyTransitCore.Model;
 
-namespace MyTransit.Core.Cache
+namespace MyTransitCore.Cache
 {
 	public interface IStopCacheManager
 	{

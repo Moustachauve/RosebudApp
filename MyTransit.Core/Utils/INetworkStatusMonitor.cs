@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyTransit.Core.Utils
+namespace MyTransitCore.Utils
 {
     public interface INetworkStatusMonitor
     {

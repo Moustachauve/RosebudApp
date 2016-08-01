@@ -11,10 +11,10 @@ using Android.Views;
 using Android.Widget;
 using Android.Support.V7.App;
 using Android.Net;
-using MyTransit.Core.Utils;
-using MyTransit.Android.Fragments;
+using MyTransitCore.Utils;
+using MyTransitAndroid.Fragments;
 
-namespace MyTransit.Android.Activities
+namespace MyTransitAndroid.Activities
 {
     public abstract class AbstractHttpActivity : AppCompatActivity
     {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Android.Content;
-using MyTransit.Core;
-using MyTransit.Core.Cache;
-using MyTransit.Core.Model;
+using MyTransitCore;
+using MyTransitCore.Cache;
+using MyTransitCore.Model;
 
-namespace MyTransit.Android.Cache
+namespace MyTransitAndroid.Cache
 {
 	public class RouteCacheManager : IRouteCacheManager
 	{

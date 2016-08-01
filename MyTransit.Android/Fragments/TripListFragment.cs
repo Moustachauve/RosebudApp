@@ -11,103 +11,111 @@ using Android.Runtime;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
-using MyTransit.Android.Adapters;
-using MyTransit.Core.Model;
+using MyTransitAndroid.Adapters;
+using MyTransitCore.Model;
 using Newtonsoft.Json;
 using FragmentSupport = Android.Support.V4.App.Fragment;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace MyTransit.Android.Fragments
+namespace MyTransitAndroid.Fragments
 {
-	public class TripListFragment : FragmentSupport
-	{
-		private TripAdapter tripAdapter;
-		private List<Trip> trips;
-		private Context context;
+    public class TripListFragment : FragmentSupport
+    {
+        private const string BUNDLE_KEY_TRIPS = "bundle_trips_frag";
 
-		private bool isViewLoaded = false;
+        private TripAdapter tripAdapter;
+        private List<Trip> trips;
 
-		private RecyclerView tripRecyclerView;
+        private bool isViewLoaded = false;
 
-		public event EventHandler<TripClickedEventArgs> ItemClicked;
+        private RecyclerView tripRecyclerView;
 
-		public override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
-		}
+        public event EventHandler<TripClickedEventArgs> ItemClicked;
 
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
-			View view = inflater.Inflate(Resource.Layout.trip_list, container, false);
+        public List<Trip> Trips
+        {
+            get { return new List<Trip>(trips); }
+            set
+            {
+                trips = new List<Trip>(value);
+                UpdateTrips();
+            }
+        }
 
-			tripRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.trip_recyclerview);
-			tripRecyclerView.NestedScrollingEnabled = false;
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            View view = inflater.Inflate(Resource.Layout.trip_list, container, false);
 
-			isViewLoaded = true;
+            if (savedInstanceState != null)
+            {
+                string jsonTrips = savedInstanceState.GetString(BUNDLE_KEY_TRIPS);
+                if (!string.IsNullOrEmpty(jsonTrips))
+                {
+                    trips = JsonConvert.DeserializeObject<List<Trip>>(jsonTrips);
+                }
+            }
 
-			return view;
-		}
+            tripRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.trip_recyclerview);
+            tripRecyclerView.NestedScrollingEnabled = false;
 
-		public override void OnAttach(Context context)
-		{
-			this.context = context;
-			if (trips != null)
-				SetTrips(trips);
+            isViewLoaded = true;
+            UpdateTrips();
 
-			base.OnAttach(context);
-		}
+            return view;
+        }
 
-		private void OnItemClick(object sender, int position)
-		{
-			if (ItemClicked == null)
-				return;
+        public override void OnSaveInstanceState(Bundle outState)
+        {
+            string jsonTrips = JsonConvert.SerializeObject(trips);
+            outState.PutString(BUNDLE_KEY_TRIPS, jsonTrips);
+            base.OnSaveInstanceState(outState);
+        }
 
-			Trip clickedTrip = tripAdapter[position];
-			ItemClicked(this, new TripClickedEventArgs(clickedTrip));
-		}
+        private void OnItemClick(object sender, int position)
+        {
+            if (ItemClicked == null)
+                return;
 
-		public async void SetTrips(List<Trip> trips)
-		{
-			this.trips = trips;
+            Trip clickedTrip = tripAdapter[position];
+            ItemClicked(this, new TripClickedEventArgs(clickedTrip));
+        }
 
-			await WaitForViewAndContext();
+        private void UpdateTrips()
+        {
+            if (trips == null)
+                return;
+            if (!isViewLoaded)
+                return;
 
-			if (tripAdapter == null)
-			{
-				tripAdapter = new TripAdapter(Activity, trips);
-				tripAdapter.ItemClick += OnItemClick;
-				tripRecyclerView.SetAdapter(tripAdapter);
-				tripRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
-			}
-			else {
-				tripAdapter.ReplaceItems(trips);
-			}
+            if (tripAdapter == null)
+            {
+                tripAdapter = new TripAdapter(Activity, trips);
+                tripAdapter.ItemClick += OnItemClick;
+                tripRecyclerView.SetAdapter(tripAdapter);
+                tripRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
+            }
+            else
+            {
+                tripAdapter.ReplaceItems(trips);
+            }
 
-			tripRecyclerView.Post(() =>
-			{
-				//TODO: scroll to last element
-				//tripRecyclerView.SmoothScrollToPositionFromTop(tripAdapter.GetPositionOfNextTrip(), 50);
-			});
-		}
+            tripRecyclerView.Post(() =>
+            {
+                tripRecyclerView.ScrollToPosition(tripAdapter.GetPositionOfNextTrip());
+            });
+        }
 
-		private async Task WaitForViewAndContext()
-		{
-			while (isViewLoaded == false || context == null)
-			{
-				await Task.Delay(200);
-			}
-		}
-	}
-	public class TripClickedEventArgs : EventArgs
-	{
-		public Trip Trip { get; set; }
+    }
+    public class TripClickedEventArgs : EventArgs
+    {
+        public Trip Trip { get; set; }
 
-		public TripClickedEventArgs(Trip trip)
-		{
-			Trip = trip;
-		}
-	}
+        public TripClickedEventArgs(Trip trip)
+        {
+            Trip = trip;
+        }
+    }
 
 }
 

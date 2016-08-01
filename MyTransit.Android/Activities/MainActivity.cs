@@ -8,17 +8,16 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
-using MyTransit.Android.Adapters;
-using MyTransit.Core.DataAccessor;
-using MyTransit.Core.Model;
+using MyTransitAndroid.Adapters;
+using MyTransitCore.DataAccessor;
+using MyTransitCore.Model;
 using Newtonsoft.Json;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
-using MyTransit.Core.Utils;
-using MyTransit.Android.Utils;
-using MyTransit.Android.Cache;
+using MyTransitAndroid.Fragments;
+using System;
 
-namespace MyTransit.Android.Activities
+namespace MyTransitAndroid.Activities
 {
 	[Activity(Label = "MyTransit", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : AppCompatActivity
@@ -40,6 +39,7 @@ namespace MyTransit.Android.Activities
 			feedRecyclerView = FindViewById<RecyclerView>(Resource.Id.feed_recyclerview);
 			feedPullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh);
             feedPullToRefreshEmpty = FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh_empty);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             feedPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
             feedPullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
@@ -52,6 +52,11 @@ namespace MyTransit.Android.Activities
                 await LoadFeeds(true);
             };
             feedPullToRefreshEmpty.Refresh += async delegate
+            {
+                await LoadFeeds(true);
+            };
+
+            networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
                 await LoadFeeds(true);
             };

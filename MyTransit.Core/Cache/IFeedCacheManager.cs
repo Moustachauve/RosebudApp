@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MyTransit.Core.Model;
-namespace MyTransit.Core.Cache
+using MyTransitCore.Model;
+namespace MyTransitCore.Cache
 {
 	public interface IFeedCacheManager
 	{

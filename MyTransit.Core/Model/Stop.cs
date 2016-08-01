@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyTransit.Core.Model
+namespace MyTransitCore.Model
 {
 	public class Stop : StopTime
 	{

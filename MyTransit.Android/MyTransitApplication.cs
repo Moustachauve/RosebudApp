@@ -9,11 +9,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using MyTransit.Core.Utils;
-using MyTransit.Android.Utils;
-using MyTransit.Android.Cache;
+using MyTransitCore.Utils;
+using MyTransitAndroid.Utils;
+using MyTransitAndroid.Cache;
 
-namespace MyTransit.Android
+namespace MyTransitAndroid
 {
 #if DEBUG
     [Application(Debuggable = true)]

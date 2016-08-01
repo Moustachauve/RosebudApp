@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyTransit.Core.Cache
+namespace MyTransitCore.Cache
 {
 	public class CacheItem<T>
 	{

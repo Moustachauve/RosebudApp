@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MyTransit.Core.Model;
+using MyTransitCore.Model;
 using System.Linq;
-namespace MyTransit.Core
+namespace MyTransitCore
 {
 	public class RouteDetails
 	{

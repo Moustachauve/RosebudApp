@@ -1,15 +1,15 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using MyTransit.Core.Cache;
-using MyTransit.Core.Model;
+using MyTransitCore.Cache;
+using MyTransitCore.Model;
 using Android.Content;
 using System.IO;
 using Newtonsoft.Json;
 using Android.Util;
 using System.Threading.Tasks;
 
-namespace MyTransit.Android.Cache
+namespace MyTransitAndroid.Cache
 {
 	public class StopCacheManager : IStopCacheManager
 	{

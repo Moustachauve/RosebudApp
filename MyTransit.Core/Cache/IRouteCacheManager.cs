@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using MyTransit.Core.Model;
+using MyTransitCore.Model;
 using System.Threading.Tasks;
 
-namespace MyTransit.Core.Cache
+namespace MyTransitCore.Cache
 {
 	public interface IRouteCacheManager
 	{

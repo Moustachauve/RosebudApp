@@ -1,9 +1,9 @@
-﻿using MyTransit.Core.Cache;
+﻿using MyTransitCore.Cache;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyTransit.Core.Utils
+namespace MyTransitCore.Utils
 {
     public static class Dependency
     {

@@ -15,16 +15,17 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using Com.Sothree.Slidinguppanel;
-using MyTransit.Android.Adapters;
-using MyTransit.Core;
-using MyTransit.Core.DataAccessor;
-using MyTransit.Core.Model;
+using MyTransitAndroid.Adapters;
+using MyTransitCore;
+using MyTransitCore.DataAccessor;
+using MyTransitCore.Model;
 using Newtonsoft.Json;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
+using MyTransitAndroid.Fragments;
+using System;
 
-namespace MyTransit.Android.Activities
+namespace MyTransitAndroid.Activities
 {
-    //TODO: Show empty message
     [Activity(Label = "TripDetailsActivity")]
     public class TripDetailsActivity : AppCompatActivity, IOnMapReadyCallback
     {
@@ -42,6 +43,7 @@ namespace MyTransit.Android.Activities
         private TextView emptyView;
         LinearLayout slidingContainer;
         SlidingUpPanelLayout slidingLayout;
+        
 
         private TextView lblRouteShortName;
         private TextView lblRouteLongName;
@@ -56,6 +58,7 @@ namespace MyTransit.Android.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.trip_details);
 
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
             var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
             SetSupportActionBar(toolbar);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
@@ -111,6 +114,11 @@ namespace MyTransit.Android.Activities
                 {
                     Window.AddFlags(WindowManagerFlags.TranslucentStatus);
                 }
+            };
+
+            networkFragment.RetryLastRequest += (object sender, EventArgs args) =>
+            {
+                LoadStops();
             };
         }
 

@@ -10,18 +10,20 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
-using MyTransit.Android.Fragments;
-using MyTransit.Core;
-using MyTransit.Core.DataAccessor;
-using MyTransit.Core.Model;
+using MyTransitAndroid.Fragments;
+using MyTransitCore;
+using MyTransitCore.DataAccessor;
+using MyTransitCore.Model;
 using Newtonsoft.Json;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 
-namespace MyTransit.Android.Activities
+namespace MyTransitAndroid.Activities
 {
-    [Activity(Label = "RouteDetailsActivity")]
+    [Activity(Label = "RouteDetailsActivity"/*, ConfigurationChanges = Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize*/)]
     public class RouteDetailsActivity : AppCompatActivity
     {
+        const string BUNDLE_KEY_DATE = "bundle_route_details_date";
+
         private Route routeInfo;
         private TripDirectionPagerAdapter tripDirectionPagerAdapter;
 
@@ -37,8 +39,6 @@ namespace MyTransit.Android.Activities
         private ViewPager viewPager;
         private TextView emptyView;
 
-        private RouteDetails currentRouteDetails;
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -48,6 +48,7 @@ namespace MyTransit.Android.Activities
             var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
             var lblToolbarTitle = FindViewById<TextView>(Resource.Id.lbl_toolbar_title);
             lblToolbarDate = FindViewById<TextView>(Resource.Id.lbl_toolbar_date);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             tabLayout = FindViewById<TabLayout>(Resource.Id.tab_layout);
             viewPager = FindViewById<ViewPager>(Resource.Id.view_pager);
@@ -62,6 +63,17 @@ namespace MyTransit.Android.Activities
 
             routeInfo = JsonConvert.DeserializeObject<Route>(Intent.GetStringExtra("routeInfos"));
             lblToolbarTitle.Text = routeInfo.route_short_name + " " + routeInfo.route_long_name;
+
+
+            currentDate = DateTime.Today;
+            if (savedInstanceState != null)
+            {
+                string jsonCurrentDate = savedInstanceState.GetString(BUNDLE_KEY_DATE);
+                if (!string.IsNullOrEmpty(jsonCurrentDate))
+                {
+                    currentDate = JsonConvert.DeserializeObject<DateTime>(jsonCurrentDate);
+                }
+            }
 
             toolbar.NavigationClick += delegate
             {
@@ -79,10 +91,33 @@ namespace MyTransit.Android.Activities
                 await SwitchDate(e.Year, e.Month + 1, e.DayOfMonth);
             };
 
-            viewPager.Post(async () =>
+            calendarView.Post(async () =>
             {
-                await SwitchDate(DateTime.Today);
+                calendarView.SetDate((long)(currentDate - new DateTime(1970, 1, 1)).TotalMilliseconds, false, true);
+                await SwitchDate(currentDate);
             });
+
+            networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
+            {
+                await LoadDetails();
+            };
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            string jsonCurrentDate = JsonConvert.SerializeObject(currentDate);
+            outState.PutString(BUNDLE_KEY_DATE, jsonCurrentDate);
+            base.OnSaveInstanceState(outState);
+        }
+
+        protected override void OnDestroy()
+        {
+            if (tripDirectionPagerAdapter != null)
+            {
+                tripDirectionPagerAdapter.ItemClicked -= OnItemClicked;
+            }
+
+            base.OnDestroy();
         }
 
         private async Task SwitchDate(int year, int month, int day)
@@ -99,22 +134,25 @@ namespace MyTransit.Android.Activities
 
         private async Task LoadDetails(bool overrideCache = false)
         {
-            currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, currentDate, overrideCache);
+            RouteDetails currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, currentDate, overrideCache);
 
-            viewPager.Visibility = currentRouteDetails == null ? ViewStates.Gone : ViewStates.Visible;
-            emptyView.Visibility = currentRouteDetails == null ? ViewStates.Visible : ViewStates.Gone;
+            viewPager.Visibility = currentRouteDetails == null || currentRouteDetails.trips.Count == 0 ? ViewStates.Gone : ViewStates.Visible;
+            emptyView.Visibility = currentRouteDetails == null || currentRouteDetails.trips.Count == 0 ? ViewStates.Visible : ViewStates.Gone;
 
-            SetDirectionTabs();
+            SetDirectionTabs(currentRouteDetails);
 
-            tripDirectionPagerAdapter = new TripDirectionPagerAdapter(SupportFragmentManager, currentRouteDetails);
-            tripDirectionPagerAdapter.ItemClicked += OnItemClicked;
-            viewPager.Adapter = tripDirectionPagerAdapter;
-            tabLayout.SetupWithViewPager(viewPager);
+            if (tripDirectionPagerAdapter == null)
+            {
+                tripDirectionPagerAdapter = new TripDirectionPagerAdapter(SupportFragmentManager);
+                tripDirectionPagerAdapter.ItemClicked += OnItemClicked;
+                viewPager.Adapter = tripDirectionPagerAdapter;
+                tabLayout.SetupWithViewPager(viewPager);
+            }
+
+            tripDirectionPagerAdapter.UpdateTrips(currentRouteDetails);
 
             InvalidateOptionsMenu();
-
         }
-
 
         private void ToggleDatePicker()
         {
@@ -127,19 +165,19 @@ namespace MyTransit.Android.Activities
             isCalendarExpanded = !isCalendarExpanded;
         }
 
-        private void SetDirectionTabs()
+        private void SetDirectionTabs(RouteDetails routeDetails)
         {
             tabLayout.RemoveAllTabs();
 
-            if (currentRouteDetails != null)
+            if (routeDetails != null)
             {
-                if (currentRouteDetails.HasMultipleDirection())
+                if (routeDetails.HasMultipleDirection())
                 {
                     tabLayout.Visibility = ViewStates.Visible;
                 }
                 else
                 {
-                    if (string.IsNullOrWhiteSpace(currentRouteDetails.GetDirectionName(TripDirection.AnyDirection)))
+                    if (string.IsNullOrWhiteSpace(routeDetails.GetDirectionName(TripDirection.AnyDirection)))
                         tabLayout.Visibility = ViewStates.Gone;
 
                     else

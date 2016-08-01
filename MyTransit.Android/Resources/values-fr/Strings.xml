@@ -3,6 +3,8 @@
     <string name="app_name">MyTransit</string>
 
     <string name="network_no_connection">Aucune connexion internet. Affichage des données en cache seulement.</string>
+    <string name="network_server_error">Impossible de contacter le serveur. Veuillez réessayer plus tard.</string>
+    <string name="network_retry">Réessayer</string>
 
     <string name="feed_list_empty">Aucune agence de transport n\'est disponible pour le moment.</string>
     <string name="route_list_empty">Aucune route n\'est disponible pour le moment.</string>

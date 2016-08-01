@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.Content;
-using MyTransit.Core;
-using MyTransit.Core.Cache;
-using MyTransit.Core.Model;
+using MyTransitCore;
+using MyTransitCore.Cache;
+using MyTransitCore.Model;
 
-namespace MyTransit.Android.Cache
+namespace MyTransitAndroid.Cache
 {
 	public class CacheRepository : AbstractCacheRepository
 	{

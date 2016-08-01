@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyTransit.Android
+namespace MyTransitAndroid
 {
 	public class PreferenceManager
 	{

@@ -3,6 +3,8 @@
     <string name="app_name">MyTransit</string>
 
     <string name="network_no_connection">No internet connexion, showing cached data only.</string>
+    <string name="network_server_error">Cannot connect to server. Please try again later.</string>
+    <string name="network_retry">Retry</string>
 
     <string name="feed_list_empty">No transport agency available at the moment.</string>
     <string name="route_list_empty">No route available at the moment.</string>

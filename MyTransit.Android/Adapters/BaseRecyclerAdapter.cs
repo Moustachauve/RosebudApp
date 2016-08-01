@@ -13,7 +13,7 @@ using Android.Views;
 using Android.Widget;
 using System.Runtime.CompilerServices;
 
-namespace MyTransit.Android
+namespace MyTransitAndroid
 {
 	public abstract class BaseRecyclerAdapter<TItem> : RecyclerView.Adapter
 	{

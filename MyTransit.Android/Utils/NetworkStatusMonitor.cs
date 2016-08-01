@@ -2,11 +2,11 @@
 using Android.App;
 using Android.Content;
 using Android.Net;
-using MyTransit.Android.Utils;
-using MyTransit.Core.Utils;
+using MyTransitAndroid.Utils;
+using MyTransitCore.Utils;
 using System;
 
-namespace MyTransit.Android.Utils
+namespace MyTransitAndroid.Utils
 {
     public class NetworkStatusMonitor : INetworkStatusMonitor
     {

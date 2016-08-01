@@ -32,11 +32,16 @@
   <ItemGroup>
     <Compile Include="app.js" />
     <Compile Include="lib\dataAccessor\feedAccessor.js" />
+    <Compile Include="lib\dataAccessor\routeAccessor.js" />
+    <Compile Include="lib\dataAccessor\stopAccessor.js" />
+    <Compile Include="lib\dataAccessor\tripAccessor.js" />
     <Compile Include="lib\log\log.js" />
     <Compile Include="lib\sqlHelper\sqlHelper.js" />
-    <Compile Include="routes\feed.js" />
-    <Compile Include="routes\index.js" />
-    <Compile Include="routes\users.js" />
+    <Compile Include="router\feedRouter.js" />
+    <Compile Include="router\homeRouter.js" />
+    <Compile Include="router\routeRouter.js" />
+    <Compile Include="router\stopRouter.js" />
+    <Compile Include="router\tripRouter.js" />
     <Compile Include="bin\www" />
     <Content Include="lib\sqlHelper\sqlConfig.json" />
     <Content Include="package.json" />
@@ -48,7 +53,7 @@
     <Folder Include="lib\dataAccessor\" />
     <Folder Include="lib\sqlHelper\" />
     <Folder Include="public\" />
-    <Folder Include="routes\" />
+    <Folder Include="router\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

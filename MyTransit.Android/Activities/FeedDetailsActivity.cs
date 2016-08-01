@@ -13,15 +13,16 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
-using MyTransit.Android.Adapters;
-using MyTransit.Core;
-using MyTransit.Core.DataAccessor;
-using MyTransit.Core.Model;
+using MyTransitAndroid.Adapters;
+using MyTransitCore;
+using MyTransitCore.DataAccessor;
+using MyTransitCore.Model;
 using Newtonsoft.Json;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
+using MyTransitAndroid.Fragments;
 
-namespace MyTransit.Android.Activities
+namespace MyTransitAndroid.Activities
 {
     [Activity(Label = "FeedDetailsActivity", ParentActivity = typeof(MainActivity))]
     public class FeedDetailsActivity : AppCompatActivity
@@ -56,6 +57,8 @@ namespace MyTransit.Android.Activities
             lblToolbarDate = FindViewById<TextView>(Resource.Id.lbl_toolbar_date);
             SetSupportActionBar(toolbar);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             routeRecyclerView = FindViewById<RecyclerView>(Resource.Id.route_recyclerview);
             routeRecyclerView.NestedScrollingEnabled = false;
@@ -95,6 +98,11 @@ namespace MyTransit.Android.Activities
             {
                 ToggleDatePicker();
                 await SwitchDate(e.Year, e.Month + 1, e.DayOfMonth);
+            };
+
+            networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
+            {
+                await LoadRoutes();
             };
         }
 
