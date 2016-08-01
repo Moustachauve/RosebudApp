@@ -9,12 +9,13 @@ using Android.Views.Animations;
 using Android.Runtime;
 using Android.Views;
 using Java.Lang;
+using System.Linq;
 
 namespace MyTransitAndroid
 {
     public class TripDirectionPagerAdapter : FragmentPagerAdapter
     {
-        protected List<TripListFragment> fragments = new List<TripListFragment>();
+        protected Dictionary<int, TripListFragment> fragments = new Dictionary<int, TripListFragment>();
         protected List<List<Trip>> itemTrips = new List<List<Trip>>();
         private RouteDetails routeDetails;
 
@@ -68,23 +69,31 @@ namespace MyTransitAndroid
         {
             TripListFragment fragment = (TripListFragment)base.InstantiateItem(container, position);
 
-            fragment.Trips = itemTrips[0];
+            fragment.Trips = itemTrips[position];
             fragment.ItemClicked += OnItemClicked;
-            fragments.Insert(position, fragment);
+            fragments.Add(position, fragment);
 
             return fragment;
         }
 
+        public override int GetItemPosition(Java.Lang.Object objectValue)
+        {
+            TripListFragment fragment = (TripListFragment)objectValue;
+            int position = fragments.FirstOrDefault(f => f.Value == fragment).Key;
+            fragment.Trips = itemTrips[position];
+
+            return base.GetItemPosition(objectValue);
+        }
+
         public override void DestroyItem(ViewGroup container, int position, Java.Lang.Object objectValue)
         {
-            fragments.RemoveAt(position);
+            fragments.Remove(position);
             base.DestroyItem(container, position, objectValue);
         }
 
         private void OnItemClicked(object sender, TripClickedEventArgs e)
         {
-            if (ItemClicked != null)
-                ItemClicked(sender, e);
+            ItemClicked?.Invoke(sender, e);
         }
     }
 }
