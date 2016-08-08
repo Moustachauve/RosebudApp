@@ -21,6 +21,8 @@ using Newtonsoft.Json;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using RosebudAppAndroid.Fragments;
+using RosebudAppAndroid.Utils;
+using RosebudAppCore.Utils;
 
 namespace RosebudAppAndroid.Activities
 {
@@ -40,7 +42,6 @@ namespace RosebudAppAndroid.Activities
         private IMenuItem searchMenu;
 
         private ImageView icoDropdownDatePicker;
-        //private DateTime currentDate;
         private bool isCalendarExpanded;
         private float currentCalendarArrowRotation = 360f;
 
@@ -74,10 +75,6 @@ namespace RosebudAppAndroid.Activities
 
             routePullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
             routePullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-            routePullToRefresh.Post(async () =>
-            {
-                await SwitchDate(DateTime.Today);
-            });
 
             routePullToRefresh.Refresh += async delegate
             {
@@ -94,12 +91,18 @@ namespace RosebudAppAndroid.Activities
                 ToggleDatePicker();
             };
 
+            calendarView.Post(async () =>
+            {
+                calendarView.SetDate((long)(Dependency.PreferenceManager.SelectedDatetime - new DateTime(1970, 1, 1)).TotalMilliseconds, false, true);
+                await SwitchDate(Dependency.PreferenceManager.SelectedDatetime);
+            });
+
             calendarView.DateChange += async (object sender, CalendarView.DateChangeEventArgs e) =>
             {
                 ToggleDatePicker();
                 await SwitchDate(e.Year, e.Month + 1, e.DayOfMonth);
             };
-
+        
             networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
                 await LoadRoutes();
@@ -144,7 +147,7 @@ namespace RosebudAppAndroid.Activities
 
         private async Task SwitchDate(DateTime date)
         {
-            //currentDate = date;
+            Dependency.PreferenceManager.SelectedDatetime = date;
             lblToolbarDate.Text = TimeFormatter.ToFullShortDate(date);
             if (routeAdapter != null)
                 routeAdapter.ClearItems();
