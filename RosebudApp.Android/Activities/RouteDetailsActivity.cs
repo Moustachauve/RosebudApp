@@ -16,6 +16,8 @@ using RosebudAppCore.DataAccessor;
 using RosebudAppCore.Model;
 using Newtonsoft.Json;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
+using RosebudAppAndroid.Utils;
+using RosebudAppCore.Utils;
 
 namespace RosebudAppAndroid.Activities
 {
@@ -32,7 +34,6 @@ namespace RosebudAppAndroid.Activities
         private TabLayout tabLayout;
 
         private ImageView icoDropdownDatePicker;
-        private DateTime currentDate;
         private bool isCalendarExpanded;
         private float currentCalendarArrowRotation = 360f;
 
@@ -64,17 +65,6 @@ namespace RosebudAppAndroid.Activities
             routeInfo = JsonConvert.DeserializeObject<Route>(Intent.GetStringExtra("routeInfos"));
             lblToolbarTitle.Text = routeInfo.route_short_name + " " + routeInfo.route_long_name;
 
-
-            currentDate = DateTime.Today;
-            if (savedInstanceState != null)
-            {
-                string jsonCurrentDate = savedInstanceState.GetString(BUNDLE_KEY_DATE);
-                if (!string.IsNullOrEmpty(jsonCurrentDate))
-                {
-                    currentDate = JsonConvert.DeserializeObject<DateTime>(jsonCurrentDate);
-                }
-            }
-
             toolbar.NavigationClick += delegate
             {
                 OnBackPressed();
@@ -93,21 +83,14 @@ namespace RosebudAppAndroid.Activities
 
             calendarView.Post(async () =>
             {
-                calendarView.SetDate((long)(currentDate - new DateTime(1970, 1, 1)).TotalMilliseconds, false, true);
-                await SwitchDate(currentDate);
+                calendarView.SetDate((long)(Dependency.PreferenceManager.SelectedDatetime - new DateTime(1970, 1, 1)).TotalMilliseconds, false, true);
+                await SwitchDate(Dependency.PreferenceManager.SelectedDatetime);
             });
 
             networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
                 await LoadDetails();
             };
-        }
-
-        protected override void OnSaveInstanceState(Bundle outState)
-        {
-            string jsonCurrentDate = JsonConvert.SerializeObject(currentDate);
-            outState.PutString(BUNDLE_KEY_DATE, jsonCurrentDate);
-            base.OnSaveInstanceState(outState);
         }
 
         protected override void OnDestroy()
@@ -127,14 +110,14 @@ namespace RosebudAppAndroid.Activities
 
         private async Task SwitchDate(DateTime date)
         {
-            currentDate = date;
+            Dependency.PreferenceManager.SelectedDatetime = date;
             lblToolbarDate.Text = TimeFormatter.ToFullShortDate(date);
             await LoadDetails();
         }
 
         private async Task LoadDetails(bool overrideCache = false)
         {
-            RouteDetails currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, currentDate, overrideCache);
+            RouteDetails currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, Dependency.PreferenceManager.SelectedDatetime, overrideCache);
 
             viewPager.Visibility = currentRouteDetails == null || currentRouteDetails.trips.Count == 0 ? ViewStates.Gone : ViewStates.Visible;
             emptyView.Visibility = currentRouteDetails == null || currentRouteDetails.trips.Count == 0 ? ViewStates.Visible : ViewStates.Gone;

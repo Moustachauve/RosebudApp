@@ -31,6 +31,7 @@ namespace RosebudAppAndroid
             base.OnCreate();
             Dependency.CacheRepository = new CacheRepository(ApplicationContext);
             Dependency.NetworkStatusMonitor = new NetworkStatusMonitor();
+            Dependency.PreferenceManager = new PreferenceManager();
         }
     }
 }

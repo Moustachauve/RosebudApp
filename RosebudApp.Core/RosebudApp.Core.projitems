@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Route.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Dependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\INetworkStatusMonitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\IPreferenceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Trip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\StopTime.cs" />

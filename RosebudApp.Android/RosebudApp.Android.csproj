@@ -94,7 +94,6 @@
     <Compile Include="Animations\ArrowRotateAnimation.cs" />
     <Compile Include="RosebudApp.cs" />
     <Compile Include="Utils\NetworkStatusMonitor.cs" />
-    <Compile Include="Utils\PreferenceManager.cs" />
     <Compile Include="Fragments\TripListFragment.cs" />
     <Compile Include="Adapters\TripDirectionPagerAdapter.cs" />
     <Compile Include="Activities\FeedDetailsActivity.cs" />
@@ -106,6 +105,7 @@
     <Compile Include="Cache\CacheFileManager.cs" />
     <Compile Include="Cache\RouteCacheManager.cs" />
     <Compile Include="Cache\StopCacheManager.cs" />
+    <Compile Include="Utils\PreferenceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml">
