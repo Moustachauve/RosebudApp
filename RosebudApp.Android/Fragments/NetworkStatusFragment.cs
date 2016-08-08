@@ -27,6 +27,15 @@ namespace RosebudAppAndroid.Fragments
         private Animation slideDownAnimation;
 
         private NetworkState currentState;
+        private NetworkState CurrentState
+        {
+            get { return currentState; }
+            set
+            {
+                currentState = value;
+                UpdateStatusText();
+            }
+        }
 
         public EventHandler RetryLastRequest;
 
@@ -48,14 +57,15 @@ namespace RosebudAppAndroid.Fragments
             return v;
         }
 
-        public override async void OnResume()
+        public override void OnResume()
         {
-            NetworkState newState = Dependency.NetworkStatusMonitor.State;
+            CurrentState = Dependency.NetworkStatusMonitor.State;
+            statusContainer.Visibility = ContainerShouldBeVisible(CurrentState) ? ViewStates.Visible : ViewStates.Gone;
+
             Dependency.NetworkStatusMonitor.StateChanged += OnStateChanged;
             HttpHelper.ServerErrorOccured += OnServerErrorOccured;
            
             base.OnResume();
-            await SetState(newState);
         }
 
         public override void OnPause()
@@ -78,24 +88,32 @@ namespace RosebudAppAndroid.Fragments
 
         private async Task SetState(NetworkState newState)
         {
-            if(newState == currentState)
+            if(newState == CurrentState)
             {
                 return;
             }
 
-            if(currentState != NetworkState.ConnectedData && currentState != NetworkState.ConnectedWifi)
+            if(statusContainer.Visibility == ViewStates.Visible)
             {
                 await SlideUp();
             }
-            if (newState == NetworkState.ConnectedData || newState == NetworkState.ConnectedWifi)
+
+            CurrentState = newState;
+
+            if (ContainerShouldBeVisible(newState))
             {
-                return;
+                await SlideDown();
             }
+        }
 
+        private void UpdateStatusText()
+        {
             lblStatus.Text = Resources.GetText(Resource.String.network_no_connection);
+        }
 
-            currentState = newState;
-            await SlideDown();
+        private bool ContainerShouldBeVisible(NetworkState state)
+        {
+            return state != NetworkState.ConnectedData && state != NetworkState.ConnectedWifi;
         }
 
         private async Task SlideUp()
