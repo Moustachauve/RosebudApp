@@ -8,7 +8,13 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/network_fragment">
+        android:layout_below="@+id/toolbar_container">
+        <fragment
+            android:id="@+id/network_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar_container"
+            class="rosebudappandroid.fragments.NetworkStatusFragment" />
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/feed_pull_to_refresh_empty"
             android:layout_width="match_parent"
@@ -36,12 +42,6 @@
                 android:id="@+id/feed_recyclerview" />
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
-    <fragment
-        android:id="@+id/network_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_container"
-        class="rosebudappandroid.fragments.NetworkStatusFragment" />
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
