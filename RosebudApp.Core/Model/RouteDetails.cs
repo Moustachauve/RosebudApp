@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using RosebudAppCore.Model;
 using System.Linq;
-namespace RosebudAppCore
+
+namespace RosebudAppCore.Model
 {
 	public class RouteDetails
 	{

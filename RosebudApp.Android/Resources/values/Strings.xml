@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MyTransit</string>
+    <string name="app_name">Rosebud App</string>
 
     <string name="network_no_connection">No internet connexion, showing cached data only.</string>
     <string name="network_server_error">Cannot connect to server. Please try again later.</string>

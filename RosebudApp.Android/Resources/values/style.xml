@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="Theme.MyTransit" parent="Theme.MyTransit.Base">
+  <style name="Theme.RosebudApp" parent="Theme.RosebudApp.Base">
   </style>
-  <style name="Theme.MyTransit.Base" parent="Theme.AppCompat.Light.NoActionBar">
+  <style name="Theme.RosebudApp.Base" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="colorPrimary">@color/primary</item>
     <item name="colorPrimaryDark">@color/primary_dark</item>
     <item name="colorAccent">@color/accent</item>
