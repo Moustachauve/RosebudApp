@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_container"
-            class="mytransitandroid.fragments.NetworkStatusFragment" />
+            class="rosebudappandroid.fragments.NetworkStatusFragment" />
         <TextView
             android:id="@+id/empty_view"
             android:layout_width="match_parent"

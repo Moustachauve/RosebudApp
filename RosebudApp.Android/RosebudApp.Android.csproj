@@ -174,7 +174,7 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyTransit.AndroidSlidingUpPanelBinding\RosebudApp.AndroidSlidingUpPanelBinding.csproj">
+    <ProjectReference Include="..\RosebudApp.AndroidSlidingUpPanelBinding\RosebudApp.AndroidSlidingUpPanelBinding.csproj">
       <Project>{796A0082-9D78-41E4-820C-0A6479EB21BF}</Project>
       <Name>RosebudApp.AndroidSlidingUpPanelBinding</Name>
     </ProjectReference>
@@ -206,6 +206,7 @@
     </AndroidResource>
   </ItemGroup>
   <Import Project="..\MyTransit.Core\MyTransit.Core.projitems" Label="Shared" Condition="Exists('..\MyTransit.Core\MyTransit.Core.projitems')" />
+  <Import Project="..\RosebudApp.Core\RosebudApp.Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets')" />
 </Project>

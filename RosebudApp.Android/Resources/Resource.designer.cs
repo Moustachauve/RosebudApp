@@ -3649,9 +3649,6 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0c0140
 			public const int Base_Widget_Design_TabLayout = 2131493184;
 			
-			// aapt resource value: 0x7f0c0159
-			public const int MyTransitTheme = 2131493209;
-			
 			// aapt resource value: 0x7f0c0017
 			public const int Platform_AppCompat = 2131492887;
 			
@@ -3681,6 +3678,9 @@ namespace RosebudAppAndroid
 			
 			// aapt resource value: 0x7f0c001b
 			public const int Platform_Widget_AppCompat_Spinner = 2131492891;
+			
+			// aapt resource value: 0x7f0c0159
+			public const int RosebudAppTheme = 2131493209;
 			
 			// aapt resource value: 0x7f0c0028
 			public const int RtlOverlay_DialogWindowTitle_AppCompat = 2131492904;
@@ -3983,10 +3983,10 @@ namespace RosebudAppAndroid
 			public const int Theme_Design_NoActionBar = 2131493197;
 			
 			// aapt resource value: 0x7f0c0157
-			public const int Theme_MyTransit = 2131493207;
+			public const int Theme_RosebudApp = 2131493207;
 			
 			// aapt resource value: 0x7f0c0158
-			public const int Theme_MyTransit_Base = 2131493208;
+			public const int Theme_RosebudApp_Base = 2131493208;
 			
 			// aapt resource value: 0x7f0c00f3
 			public const int ThemeOverlay_AppCompat = 2131493107;

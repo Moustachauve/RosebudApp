@@ -12,7 +12,7 @@ namespace RosebudAppAndroid.Cache
 {
 	public static class CacheFileManager
 	{
-		private const string LOG_TAG = "MyTransit.Cache";
+		private const string LOG_TAG = "RosebudAppCore.Cache";
 		private static TimeSpan CacheExpirationTime = new TimeSpan(10, 0, 0);
 
 		public static async Task<T> GetFromFile<T>(string filePath)
