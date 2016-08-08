@@ -11,13 +11,13 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using FragmentSupport = Android.Support.V4.App.Fragment;
-using MyTransitCore.Utils;
+using RosebudAppCore.Utils;
 using Android.Views.Animations;
 using System.Threading.Tasks;
-using MyTransitCore.DataAccessor;
+using RosebudAppCore.DataAccessor;
 using Android.Support.Design.Widget;
 
-namespace MyTransitAndroid.Fragments
+namespace RosebudAppAndroid.Fragments
 {
     public class NetworkStatusFragment : FragmentSupport
     {

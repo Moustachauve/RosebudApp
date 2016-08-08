@@ -10,14 +10,14 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
-using MyTransitAndroid.Fragments;
-using MyTransitCore;
-using MyTransitCore.DataAccessor;
-using MyTransitCore.Model;
+using RosebudAppAndroid.Fragments;
+using RosebudAppCore;
+using RosebudAppCore.DataAccessor;
+using RosebudAppCore.Model;
 using Newtonsoft.Json;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 
-namespace MyTransitAndroid.Activities
+namespace RosebudAppAndroid.Activities
 {
     [Activity(Label = "RouteDetailsActivity"/*, ConfigurationChanges = Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize*/)]
     public class RouteDetailsActivity : AppCompatActivity

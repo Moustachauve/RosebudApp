@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using Android.Content;
 using Android.Views;
 using Android.Widget;
-using MyTransitCore;
+using RosebudAppCore;
 using Android.Graphics;
 using System.Linq;
-using MyTransitCore.Model;
-using MyTransitCore.Utils;
+using RosebudAppCore.Model;
+using RosebudAppCore.Utils;
 using Android.Support.V4.Graphics;
 using Android.Support.V7.Widget;
 
-namespace MyTransitAndroid.Adapters
+namespace RosebudAppAndroid.Adapters
 {
 	public class RouteAdapter : BaseRecyclerAdapter<Route>
 	{

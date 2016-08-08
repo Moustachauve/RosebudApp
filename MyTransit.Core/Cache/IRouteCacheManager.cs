@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using MyTransitCore.Model;
+using RosebudAppCore.Model;
 using System.Threading.Tasks;
 
-namespace MyTransitCore.Cache
+namespace RosebudAppCore.Cache
 {
 	public interface IRouteCacheManager
 	{

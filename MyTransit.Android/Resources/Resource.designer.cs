@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("MyTransitAndroid.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("RosebudAppAndroid.Resource", IsApplication=true)]
 
-namespace MyTransitAndroid
+namespace RosebudAppAndroid
 {
 	
 	

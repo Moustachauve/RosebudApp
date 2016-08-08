@@ -3,12 +3,12 @@ using System.IO;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Util;
-using MyTransitCore.Cache;
+using RosebudAppCore.Cache;
 using Newtonsoft.Json;
 using System.Security.Principal;
-using MyTransitCore.Utils;
+using RosebudAppCore.Utils;
 
-namespace MyTransitAndroid.Cache
+namespace RosebudAppAndroid.Cache
 {
 	public static class CacheFileManager
 	{

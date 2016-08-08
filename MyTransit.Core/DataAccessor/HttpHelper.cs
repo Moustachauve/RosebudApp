@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Android.Util;
 using System.Net;
-using MyTransitCore.Utils;
+using RosebudAppCore.Utils;
 
-namespace MyTransitCore.DataAccessor
+namespace RosebudAppCore.DataAccessor
 {
     public static class HttpHelper
     {

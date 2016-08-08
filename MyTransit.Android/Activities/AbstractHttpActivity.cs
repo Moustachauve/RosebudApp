@@ -11,10 +11,10 @@ using Android.Views;
 using Android.Widget;
 using Android.Support.V7.App;
 using Android.Net;
-using MyTransitCore.Utils;
-using MyTransitAndroid.Fragments;
+using RosebudAppCore.Utils;
+using RosebudAppAndroid.Fragments;
 
-namespace MyTransitAndroid.Activities
+namespace RosebudAppAndroid.Activities
 {
     public abstract class AbstractHttpActivity : AppCompatActivity
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyTransitCore.Model
+namespace RosebudAppCore.Model
 {
 	public class Feed
 	{

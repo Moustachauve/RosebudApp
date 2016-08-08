@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyTransitCore.Model
+namespace RosebudAppCore.Model
 {
 	public class TripDetails
 	{

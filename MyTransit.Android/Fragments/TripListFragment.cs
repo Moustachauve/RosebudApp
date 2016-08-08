@@ -11,14 +11,14 @@ using Android.Runtime;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
-using MyTransitAndroid.Adapters;
-using MyTransitCore.Model;
+using RosebudAppAndroid.Adapters;
+using RosebudAppCore.Model;
 using Newtonsoft.Json;
 using FragmentSupport = Android.Support.V4.App.Fragment;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace MyTransitAndroid.Fragments
+namespace RosebudAppAndroid.Fragments
 {
     public class TripListFragment : FragmentSupport
     {

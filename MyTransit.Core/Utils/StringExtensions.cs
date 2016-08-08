@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-namespace MyTransitCore.Utils
+namespace RosebudAppCore.Utils
 {
 	public static class StringExtensions
 	{

@@ -1,15 +1,15 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using MyTransitCore.Cache;
-using MyTransitCore.Model;
+using RosebudAppCore.Cache;
+using RosebudAppCore.Model;
 using Android.Content;
 using System.IO;
 using Newtonsoft.Json;
 using Android.Util;
 using System.Threading.Tasks;
 
-namespace MyTransitAndroid.Cache
+namespace RosebudAppAndroid.Cache
 {
 	public class StopCacheManager : IStopCacheManager
 	{

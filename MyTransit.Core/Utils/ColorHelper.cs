@@ -1,7 +1,7 @@
 ﻿using System;
 using Android.Graphics;
 
-namespace MyTransitCore
+namespace RosebudAppCore
 {
 	public static class ColorHelper
 	{

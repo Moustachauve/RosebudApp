@@ -2,11 +2,11 @@
 using Android.App;
 using Android.Content;
 using Android.Net;
-using MyTransitAndroid.Utils;
-using MyTransitCore.Utils;
+using RosebudAppAndroid.Utils;
+using RosebudAppCore.Utils;
 using System;
 
-namespace MyTransitAndroid.Utils
+namespace RosebudAppAndroid.Utils
 {
     public class NetworkStatusMonitor : INetworkStatusMonitor
     {

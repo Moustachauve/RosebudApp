@@ -1,9 +1,9 @@
-﻿using MyTransitCore.Cache;
+﻿using RosebudAppCore.Cache;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyTransitCore.Utils
+namespace RosebudAppCore.Utils
 {
     public static class Dependency
     {

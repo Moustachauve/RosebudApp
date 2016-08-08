@@ -8,16 +8,16 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
-using MyTransitAndroid.Adapters;
-using MyTransitCore.DataAccessor;
-using MyTransitCore.Model;
+using RosebudAppAndroid.Adapters;
+using RosebudAppCore.DataAccessor;
+using RosebudAppCore.Model;
 using Newtonsoft.Json;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
-using MyTransitAndroid.Fragments;
+using RosebudAppAndroid.Fragments;
 using System;
 
-namespace MyTransitAndroid.Activities
+namespace RosebudAppAndroid.Activities
 {
 	[Activity(Label = "MyTransit", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : AppCompatActivity

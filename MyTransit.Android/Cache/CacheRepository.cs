@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.Content;
-using MyTransitCore;
-using MyTransitCore.Cache;
-using MyTransitCore.Model;
+using RosebudAppCore;
+using RosebudAppCore.Cache;
+using RosebudAppCore.Model;
 
-namespace MyTransitAndroid.Cache
+namespace RosebudAppAndroid.Cache
 {
 	public class CacheRepository : AbstractCacheRepository
 	{

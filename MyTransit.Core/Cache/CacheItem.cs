@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyTransitCore.Cache
+namespace RosebudAppCore.Cache
 {
 	public class CacheItem<T>
 	{

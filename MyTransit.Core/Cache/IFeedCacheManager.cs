@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MyTransitCore.Model;
-namespace MyTransitCore.Cache
+using RosebudAppCore.Model;
+namespace RosebudAppCore.Cache
 {
 	public interface IFeedCacheManager
 	{

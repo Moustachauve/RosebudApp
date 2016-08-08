@@ -13,13 +13,13 @@ using Android.Views;
 using Android.Widget;
 using System.Runtime.CompilerServices;
 
-namespace MyTransitAndroid
+namespace RosebudAppAndroid
 {
 	public abstract class BaseRecyclerAdapter<TItem> : RecyclerView.Adapter
 	{
 		protected readonly Context Context;
 		protected readonly LayoutInflater Inflater;
-		protected List<TItem> AllItems { get; set; }
+        protected List<TItem> AllItems { get; set; }
 		protected List<TItem> DisplayedItems { get; set; }
 
 		private string filter;
@@ -60,9 +60,8 @@ namespace MyTransitAndroid
 
 		protected void OnClick(int position)
 		{
-			if (ItemClick != null)
-				ItemClick(this, position);
-		}
+            ItemClick?.Invoke(this, position);
+        }
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{

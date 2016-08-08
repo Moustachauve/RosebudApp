@@ -15,16 +15,16 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using Com.Sothree.Slidinguppanel;
-using MyTransitAndroid.Adapters;
-using MyTransitCore;
-using MyTransitCore.DataAccessor;
-using MyTransitCore.Model;
+using RosebudAppAndroid.Adapters;
+using RosebudAppCore;
+using RosebudAppCore.DataAccessor;
+using RosebudAppCore.Model;
 using Newtonsoft.Json;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
-using MyTransitAndroid.Fragments;
+using RosebudAppAndroid.Fragments;
 using System;
 
-namespace MyTransitAndroid.Activities
+namespace RosebudAppAndroid.Activities
 {
     [Activity(Label = "TripDetailsActivity")]
     public class TripDetailsActivity : AppCompatActivity, IOnMapReadyCallback

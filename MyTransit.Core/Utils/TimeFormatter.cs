@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-namespace MyTransitCore
+namespace RosebudAppCore
 {
 	public static class TimeFormatter
 	{

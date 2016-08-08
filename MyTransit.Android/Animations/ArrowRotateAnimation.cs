@@ -1,6 +1,6 @@
 ﻿using System;
 using Android.Views.Animations;
-namespace MyTransitAndroid
+namespace RosebudAppAndroid
 {
 	public static class ArrowRotateAnimation
 	{

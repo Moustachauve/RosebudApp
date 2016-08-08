@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyTransitAndroid
+namespace RosebudAppAndroid
 {
 	public class PreferenceManager
 	{

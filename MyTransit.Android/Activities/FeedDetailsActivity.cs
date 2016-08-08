@@ -13,16 +13,16 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
-using MyTransitAndroid.Adapters;
-using MyTransitCore;
-using MyTransitCore.DataAccessor;
-using MyTransitCore.Model;
+using RosebudAppAndroid.Adapters;
+using RosebudAppCore;
+using RosebudAppCore.DataAccessor;
+using RosebudAppCore.Model;
 using Newtonsoft.Json;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
-using MyTransitAndroid.Fragments;
+using RosebudAppAndroid.Fragments;
 
-namespace MyTransitAndroid.Activities
+namespace RosebudAppAndroid.Activities
 {
     [Activity(Label = "FeedDetailsActivity", ParentActivity = typeof(MainActivity))]
     public class FeedDetailsActivity : AppCompatActivity

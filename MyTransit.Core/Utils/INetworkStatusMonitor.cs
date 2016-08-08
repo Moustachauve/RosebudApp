@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyTransitCore.Utils
+namespace RosebudAppCore.Utils
 {
     public interface INetworkStatusMonitor
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MyTransitCore.Model;
+using RosebudAppCore.Model;
 using System.Linq;
-namespace MyTransitCore
+namespace RosebudAppCore
 {
 	public class RouteDetails
 	{

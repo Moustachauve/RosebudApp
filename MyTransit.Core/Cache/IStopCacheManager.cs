@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MyTransitCore.Model;
+using RosebudAppCore.Model;
 
-namespace MyTransitCore.Cache
+namespace RosebudAppCore.Cache
 {
 	public interface IStopCacheManager
 	{

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MyTransitCore.Model;
+using RosebudAppCore.Model;
 using Newtonsoft.Json;
-using MyTransitCore.Utils;
+using RosebudAppCore.Utils;
 
-namespace MyTransitCore.DataAccessor
+namespace RosebudAppCore.DataAccessor
 {
 	public static class FeedAccessor
 	{

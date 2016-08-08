@@ -1,17 +1,17 @@
 ﻿using System;
 using Android.Support.V4.App;
 using Android.Hardware.Camera2;
-using MyTransitCore;
+using RosebudAppCore;
 using System.Collections.Generic;
-using MyTransitAndroid.Fragments;
-using MyTransitCore.Model;
+using RosebudAppAndroid.Fragments;
+using RosebudAppCore.Model;
 using Android.Views.Animations;
 using Android.Runtime;
 using Android.Views;
 using Java.Lang;
 using System.Linq;
 
-namespace MyTransitAndroid
+namespace RosebudAppAndroid
 {
     public class TripDirectionPagerAdapter : FragmentPagerAdapter
     {
