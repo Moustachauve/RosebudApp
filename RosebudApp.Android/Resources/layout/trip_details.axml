@@ -9,7 +9,6 @@
     android:fitsSystemWindows="false"
     sothree:umanoPanelHeight="76dp"
     sothree:umanoShadowHeight="4dp"
-    sothree:umanoParallaxOffset="220dp"
     sothree:umanoDragView="@+id/drag_view"
     sothree:umanoOverlay="false"
     sothree:umanoScrollableView="@+id/stop_listview">
@@ -36,7 +35,6 @@
         android:layout_height="match_parent"
         android:background="@android:color/background_light"
         android:orientation="vertical"
-        android:layout_marginTop="225dp"
         android:id="@+id/sliding_container">
         <LinearLayout
             android:background="#ffffff"
@@ -87,14 +85,12 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
         <fragment
-                android:id="@+id/network_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar_container"
-                class="rosebudappandroid.fragments.NetworkStatusFragment" />
-
+            android:id="@+id/network_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar_container"
+            class="rosebudappandroid.fragments.NetworkStatusFragment" />
         <TextView
             android:id="@+id/empty_view"
             android:layout_width="match_parent"
@@ -103,7 +99,6 @@
             android:gravity="center"
             android:visibility="gone"
             android:text="@string/feed_list_empty" />
-
         <ListView
             android:layout_width="match_parent"
             android:layout_height="0dp"
