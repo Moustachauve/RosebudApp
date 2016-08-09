@@ -38,7 +38,7 @@ namespace RosebudAppAndroid.Activities
         private float currentCalendarArrowRotation = 360f;
 
         private ViewPager viewPager;
-        private TextView emptyView;
+        private LinearLayout emptyView;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -53,7 +53,7 @@ namespace RosebudAppAndroid.Activities
 
             tabLayout = FindViewById<TabLayout>(Resource.Id.tab_layout);
             viewPager = FindViewById<ViewPager>(Resource.Id.view_pager);
-            emptyView = FindViewById<TextView>(Resource.Id.empty_view);
+            emptyView = FindViewById<LinearLayout>(Resource.Id.empty_view);
 
             var btnDatePicker = FindViewById<RelativeLayout>(Resource.Id.btn_date_picker);
             icoDropdownDatePicker = FindViewById<ImageView>(Resource.Id.ico_dropdown_calendar);
@@ -83,7 +83,8 @@ namespace RosebudAppAndroid.Activities
 
             calendarView.Post(async () =>
             {
-                calendarView.SetDate((long)(Dependency.PreferenceManager.SelectedDatetime - new DateTime(1970, 1, 1)).TotalMilliseconds, false, true);
+                long epochTime = (long)(Dependency.PreferenceManager.SelectedDatetime.AddDays(1) - new DateTime(1970, 1, 1)).TotalMilliseconds;
+                calendarView.SetDate(epochTime, false, true);
                 await SwitchDate(Dependency.PreferenceManager.SelectedDatetime);
             });
 

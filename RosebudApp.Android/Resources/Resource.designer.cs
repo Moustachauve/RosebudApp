@@ -3192,6 +3192,9 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f06003c
 			public const int trip_list_empty = 2131099708;
 			
+			// aapt resource value: 0x7f06003d
+			public const int trip_list_empty_details = 2131099709;
+			
 			static String()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

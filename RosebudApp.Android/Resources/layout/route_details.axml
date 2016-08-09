@@ -92,13 +92,28 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_container"
             class="rosebudappandroid.fragments.NetworkStatusFragment" />
-        <TextView
+        <LinearLayout
             android:id="@+id/empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:gravity="center"
-            android:visibility="gone"
-            android:text="@string/trip_list_empty" />
+            android:padding="10dp"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/trip_list_empty"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/trip_list_empty_details"
+                android:layout_marginTop="8dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+        </LinearLayout>
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"

@@ -80,7 +80,11 @@ namespace RosebudAppAndroid
         {
             TripListFragment fragment = (TripListFragment)objectValue;
             int position = fragments.FirstOrDefault(f => f.Value == fragment).Key;
-            fragment.Trips = itemTrips[position];
+
+            if (itemTrips.Count < position)
+            {
+                fragment.Trips = itemTrips[position];
+            }
 
             return base.GetItemPosition(objectValue);
         }

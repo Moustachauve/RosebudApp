@@ -93,7 +93,8 @@ namespace RosebudAppAndroid.Activities
 
             calendarView.Post(async () =>
             {
-                calendarView.SetDate((long)(Dependency.PreferenceManager.SelectedDatetime - new DateTime(1970, 1, 1)).TotalMilliseconds, false, true);
+                long epochTime = (long)(Dependency.PreferenceManager.SelectedDatetime.AddDays(1) - new DateTime(1970, 1, 1)).TotalMilliseconds;
+                calendarView.SetDate(epochTime, false, true);
                 await SwitchDate(Dependency.PreferenceManager.SelectedDatetime);
             });
 
