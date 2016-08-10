@@ -46,7 +46,7 @@ namespace RosebudAppAndroid.Adapters
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			View view = Inflater.Inflate(Resource.Layout.trip_listitem, parent, false);
-			return new TripAdapter.TripViewHolder(view, OnClick);
+			return new TripAdapter.TripViewHolder(view, OnClick, Context);
 		}
 
 		protected override List<Trip> ApplyFilter()
@@ -56,9 +56,12 @@ namespace RosebudAppAndroid.Adapters
 
 		public class TripViewHolder : BaseViewHolder
 		{
-			public TripViewHolder(View itemView, Action<int> listener) : base(itemView, listener)
+            Context Context;
+
+			public TripViewHolder(View itemView, Action<int> listener, Context context) : base(itemView, listener)
 			{
-			}
+                Context = context;
+            }
 
 			public override void BindData(Trip item)
 			{
@@ -73,7 +76,7 @@ namespace RosebudAppAndroid.Adapters
 
 				if (item.headway_secs.HasValue)
 				{
-					lblFrequency.Text = string.Format("À toutes les {0} min.", formatFrequencyTime(item.headway_secs.Value));
+					lblFrequency.Text = string.Format(Context.Resources.GetString(Resource.String.trip_frequency), formatFrequencyTime(item.headway_secs.Value));
 				}
 				else {
 					lblFrequency.Visibility = ViewStates.Gone;

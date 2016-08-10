@@ -3195,6 +3195,9 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f06003e
 			public const int trip_details_no_map = 2131099710;
 			
+			// aapt resource value: 0x7f06003f
+			public const int trip_frequency = 2131099711;
+			
 			// aapt resource value: 0x7f06003c
 			public const int trip_list_empty = 2131099708;
 			

@@ -51,7 +51,7 @@
             android:id="@+id/lbl_frequency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="À toutes les 00 min."
+            tools:text="Every 00 min."
             style="@android:style/@android:style/TextAppearance.Small" />
     </LinearLayout>
 </LinearLayout>

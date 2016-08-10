@@ -12,4 +12,6 @@
     <string name="trip_list_empty_details">Vous pouvez sélectionner une autre date en tappant sur la flèche dans la barre ci-dessus.</string>
 
     <string name="trip_details_no_map">Aucune carte disponible pour ce trajet.</string>
+
+    <string name="trip_frequency">À toutes les {0} min.</string>
 </resources>
