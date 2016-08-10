@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="Theme.RosebudApp" parent="Theme.RosebudApp.Base">
-  </style>
-  <style name="Theme.RosebudApp.Base" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="colorPrimary">@color/primary</item>
-    <item name="colorPrimaryDark">@color/primary_dark</item>
-    <item name="colorAccent">@color/accent</item>
-    <item name="windowActionModeOverlay">true</item>
-  </style>
+    <style name="Theme.RosebudApp" parent="Theme.RosebudApp.Base">
+    </style>
+    <style name="Theme.RosebudApp.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
 </resources>

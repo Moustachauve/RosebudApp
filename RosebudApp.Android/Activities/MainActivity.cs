@@ -19,7 +19,7 @@ using System;
 
 namespace RosebudAppAndroid.Activities
 {
-	[Activity(Label = "RosebudApp", MainLauncher = true, Icon = "@mipmap/icon")]
+	[Activity(Label = "Rosebud", MainLauncher = true, Icon = "@mipmap/ic_launcher")]
 	public class MainActivity : AppCompatActivity
     {
 		private FeedAdapter feedAdapter;

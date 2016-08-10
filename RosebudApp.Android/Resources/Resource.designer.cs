@@ -2994,7 +2994,7 @@ namespace RosebudAppAndroid
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int Icon = 2130903040;
+			public const int ic_launcher = 2130903040;
 			
 			static Mipmap()
 			{
@@ -3171,29 +3171,32 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f06001e
 			public const int common_signin_button_text_long = 2131099678;
 			
-			// aapt resource value: 0x7f06003a
-			public const int feed_list_empty = 2131099706;
-			
-			// aapt resource value: 0x7f060037
-			public const int network_no_connection = 2131099703;
-			
-			// aapt resource value: 0x7f060039
-			public const int network_retry = 2131099705;
+			// aapt resource value: 0x7f06003b
+			public const int feed_list_empty = 2131099707;
 			
 			// aapt resource value: 0x7f060038
-			public const int network_server_error = 2131099704;
+			public const int network_no_connection = 2131099704;
 			
-			// aapt resource value: 0x7f06003b
-			public const int route_list_empty = 2131099707;
+			// aapt resource value: 0x7f06003a
+			public const int network_retry = 2131099706;
+			
+			// aapt resource value: 0x7f060039
+			public const int network_server_error = 2131099705;
+			
+			// aapt resource value: 0x7f06003c
+			public const int route_list_empty = 2131099708;
 			
 			// aapt resource value: 0x7f060032
 			public const int status_bar_notification_info_overflow = 2131099698;
 			
-			// aapt resource value: 0x7f06003c
-			public const int trip_list_empty = 2131099708;
+			// aapt resource value: 0x7f060037
+			public const int transition_name_feed = 2131099703;
 			
 			// aapt resource value: 0x7f06003d
-			public const int trip_list_empty_details = 2131099709;
+			public const int trip_list_empty = 2131099709;
+			
+			// aapt resource value: 0x7f06003e
+			public const int trip_list_empty_details = 2131099710;
 			
 			static String()
 			{
