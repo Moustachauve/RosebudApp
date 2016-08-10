@@ -10,4 +10,6 @@
     <string name="route_list_empty">No route available at the moment.</string>
     <string name="trip_list_empty">No trips for the selected date.</string>
     <string name="trip_list_empty_details">You can select a different date by taping on the arrow in the top bar.</string>
+
+    <string name="trip_details_no_map">No map available for this trip.</string>
 </resources>

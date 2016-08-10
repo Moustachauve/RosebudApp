@@ -247,6 +247,14 @@ namespace RosebudAppAndroid.Activities
 
         private async void showTripOnMap(TripDetails details)
         {
+            if (details.shape == null || details.shape.Count <= 0)
+            {
+                View viewNoMap = FindViewById(Resource.Id.view_no_map);
+                viewNoMap.Visibility = ViewStates.Visible;
+                UpdateMapPadding();
+                return;
+            }
+
             PolylineOptions tripLine = new PolylineOptions();
             LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
             Color lineColor;
@@ -377,7 +385,7 @@ namespace RosebudAppAndroid.Activities
 
         private void UpdateMapPadding()
         {
-            if (!isMapLoaded || mapBounds == null)
+            if (!isMapLoaded)
             {
                 return;
             }
@@ -385,19 +393,20 @@ namespace RosebudAppAndroid.Activities
             Point size = new Point();
             WindowManager.DefaultDisplay.GetSize(size);
 
-            int paddingTop = toolbar.Height;
+            int paddingTop = toolbar.Height - 25;
             int paddingBottom = size.Y - slidingContainer.Top - 210;
             map.SetPadding(0, paddingTop, 0, paddingBottom);
         }
 
         private void UpdateMapZoom()
         {
+            UpdateMapPadding();
+
             if (!isMapLoaded || mapBounds == null)
             {
                 return;
             }
 
-            UpdateMapPadding();
             CameraUpdate cameraPosition = CameraUpdateFactory.NewLatLngBounds(mapBounds, mapBoundPadding);
             map.AnimateCamera(cameraPosition);
         }

@@ -10,4 +10,6 @@
     <string name="route_list_empty">Aucune route n\'est disponible pour le moment.</string>
     <string name="trip_list_empty">Aucun trajet pour la date sélectionnée.</string>
     <string name="trip_list_empty_details">Vous pouvez sélectionner une autre date en tappant sur la flèche dans la barre ci-dessus.</string>
+
+    <string name="trip_details_no_map">Aucune carte disponible pour ce trajet.</string>
 </resources>
