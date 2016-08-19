@@ -61,7 +61,7 @@ namespace RosebudAppAndroid.Cache
 			DateTime expirationDate = DateTime.Now.Add(CacheExpirationTime);
 			var cacheItem = new CacheItem<object>(item, expirationDate);
 			string json = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(cacheItem));
-			using (var writer = File.CreateText(filePath))
+			using (var writer = new StreamWriter(filePath))
 			{
 				await writer.WriteAsync(json);
 			}
