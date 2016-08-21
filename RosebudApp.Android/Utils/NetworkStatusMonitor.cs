@@ -23,6 +23,21 @@ namespace RosebudAppAndroid.Utils
             }
         }
 
+        public bool CanConnect
+        {
+            get
+            {
+                NetworkState currentState = State;
+
+                if(currentState != NetworkState.Disconnected)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public void UpdateState()
         {
             var state = NetworkState.Unknown;

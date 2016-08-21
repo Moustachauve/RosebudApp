@@ -8,8 +8,10 @@
 
     <string name="feed_list_empty">No transport agency available at the moment.</string>
     <string name="route_list_empty">No route available at the moment.</string>
-    <string name="trip_list_empty">No trips for the selected date.</string>
+    <string name="trip_list_empty">No trip on {0}.</string>
     <string name="trip_list_empty_details">You can select a different date by taping on the arrow in the top bar.</string>
+    <string name="trip_list_empty_no_internet">Cannot load trips for this route.</string>
+    <string name="trip_list_empty_no_internet_details">Make sure you are connected to the internet or select another date by taping on the arrow in the top bar.</string>
 
     <string name="trip_details_no_map">No map available for this trip.</string>
 

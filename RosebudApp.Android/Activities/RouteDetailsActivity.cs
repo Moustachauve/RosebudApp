@@ -39,6 +39,8 @@ namespace RosebudAppAndroid.Activities
 
         private ViewPager viewPager;
         private LinearLayout emptyView;
+        private LinearLayout emptyViewNoInternet;
+        private TextView emptyViewMainText;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -54,6 +56,8 @@ namespace RosebudAppAndroid.Activities
             tabLayout = FindViewById<TabLayout>(Resource.Id.tab_layout);
             viewPager = FindViewById<ViewPager>(Resource.Id.view_pager);
             emptyView = FindViewById<LinearLayout>(Resource.Id.empty_view);
+            emptyViewNoInternet = FindViewById<LinearLayout>(Resource.Id.empty_view_no_internet);
+            emptyViewMainText = FindViewById<TextView>(Resource.Id.empty_view_main_text);
 
             var btnDatePicker = FindViewById<RelativeLayout>(Resource.Id.btn_date_picker);
             icoDropdownDatePicker = FindViewById<ImageView>(Resource.Id.ico_dropdown_calendar);
@@ -113,6 +117,7 @@ namespace RosebudAppAndroid.Activities
         {
             Dependency.PreferenceManager.SelectedDatetime = date;
             lblToolbarDate.Text = TimeFormatter.ToFullShortDate(date);
+            emptyViewMainText.Text = string.Format(Resources.GetText(Resource.String.trip_list_empty), TimeFormatter.ToAbrevShortDate(date));
             await LoadDetails();
         }
 
@@ -120,9 +125,7 @@ namespace RosebudAppAndroid.Activities
         {
             RouteDetails currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, Dependency.PreferenceManager.SelectedDatetime, overrideCache);
 
-            viewPager.Visibility = currentRouteDetails == null || currentRouteDetails.trips.Count == 0 ? ViewStates.Gone : ViewStates.Visible;
-            emptyView.Visibility = currentRouteDetails == null || currentRouteDetails.trips.Count == 0 ? ViewStates.Visible : ViewStates.Gone;
-
+            UpdateEmptyMessage(currentRouteDetails);
             SetDirectionTabs(currentRouteDetails);
 
             if (tripDirectionPagerAdapter == null)
@@ -183,6 +186,31 @@ namespace RosebudAppAndroid.Activities
             detailsIntent.PutExtra("tripInfos", JsonConvert.SerializeObject(e.Trip));
 
             StartActivity(detailsIntent);
+        }
+
+        private void UpdateEmptyMessage(RouteDetails routeDetails)
+        {
+            if (routeDetails == null || routeDetails.trips.Count == 0)
+            {
+                viewPager.Visibility = ViewStates.Gone;
+
+                if (Dependency.NetworkStatusMonitor.CanConnect)
+                {
+                    emptyView.Visibility = ViewStates.Visible;
+                    emptyViewNoInternet.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    emptyView.Visibility = ViewStates.Gone;
+                    emptyViewNoInternet.Visibility = ViewStates.Visible;
+                }
+            }
+            else
+            {
+                viewPager.Visibility = ViewStates.Visible;
+                emptyView.Visibility = ViewStates.Gone;
+                emptyViewNoInternet.Visibility = ViewStates.Gone;
+            }
         }
     }
 }

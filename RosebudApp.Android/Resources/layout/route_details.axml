@@ -101,6 +101,7 @@
             android:padding="10dp"
             android:visibility="gone">
             <TextView
+                android:id="@+id/empty_view_main_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -111,6 +112,29 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/trip_list_empty_details"
+                android:layout_marginTop="8dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/empty_view_no_internet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/empty_view_no_internet_main_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/trip_list_empty_no_internet"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/trip_list_empty_no_internet_details"
                 android:layout_marginTop="8dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
         </LinearLayout>

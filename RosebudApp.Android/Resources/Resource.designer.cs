@@ -2227,8 +2227,8 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0a004b
 			public const int action_mode_close_button = 2131361867;
 			
-			// aapt resource value: 0x7f0a00b8
-			public const int action_search = 2131361976;
+			// aapt resource value: 0x7f0a00bb
+			public const int action_search = 2131361979;
 			
 			// aapt resource value: 0x7f0a004c
 			public const int activity_chooser_view_content = 2131361868;
@@ -2338,14 +2338,23 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0a001a
 			public const int disableHome = 2131361818;
 			
-			// aapt resource value: 0x7f0a00ad
-			public const int drag_view = 2131361965;
+			// aapt resource value: 0x7f0a00b0
+			public const int drag_view = 2131361968;
 			
 			// aapt resource value: 0x7f0a006b
 			public const int edit_query = 2131361899;
 			
 			// aapt resource value: 0x7f0a008d
 			public const int empty_view = 2131361933;
+			
+			// aapt resource value: 0x7f0a00a6
+			public const int empty_view_main_text = 2131361958;
+			
+			// aapt resource value: 0x7f0a00a7
+			public const int empty_view_no_internet = 2131361959;
+			
+			// aapt resource value: 0x7f0a00a8
+			public const int empty_view_no_internet_main_text = 2131361960;
 			
 			// aapt resource value: 0x7f0a0027
 			public const int end = 2131361831;
@@ -2431,35 +2440,35 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0a0091
 			public const int lbl_agency_name = 2131361937;
 			
-			// aapt resource value: 0x7f0a00a9
-			public const int lbl_arrival_time = 2131361961;
+			// aapt resource value: 0x7f0a00ac
+			public const int lbl_arrival_time = 2131361964;
+			
+			// aapt resource value: 0x7f0a00ad
+			public const int lbl_departure_time = 2131361965;
+			
+			// aapt resource value: 0x7f0a00b8
+			public const int lbl_end_time = 2131361976;
+			
+			// aapt resource value: 0x7f0a00ba
+			public const int lbl_frequency = 2131361978;
+			
+			// aapt resource value: 0x7f0a00b9
+			public const int lbl_headsign = 2131361977;
+			
+			// aapt resource value: 0x7f0a00ab
+			public const int lbl_route_long_name = 2131361963;
 			
 			// aapt resource value: 0x7f0a00aa
-			public const int lbl_departure_time = 2131361962;
-			
-			// aapt resource value: 0x7f0a00b5
-			public const int lbl_end_time = 2131361973;
+			public const int lbl_route_short_name = 2131361962;
 			
 			// aapt resource value: 0x7f0a00b7
-			public const int lbl_frequency = 2131361975;
-			
-			// aapt resource value: 0x7f0a00b6
-			public const int lbl_headsign = 2131361974;
-			
-			// aapt resource value: 0x7f0a00a8
-			public const int lbl_route_long_name = 2131361960;
-			
-			// aapt resource value: 0x7f0a00a7
-			public const int lbl_route_short_name = 2131361959;
-			
-			// aapt resource value: 0x7f0a00b4
-			public const int lbl_start_time = 2131361972;
+			public const int lbl_start_time = 2131361975;
 			
 			// aapt resource value: 0x7f0a0097
 			public const int lbl_status = 2131361943;
 			
-			// aapt resource value: 0x7f0a00ab
-			public const int lbl_stop_name = 2131361963;
+			// aapt resource value: 0x7f0a00ae
+			public const int lbl_stop_name = 2131361966;
 			
 			// aapt resource value: 0x7f0a0088
 			public const int lbl_toolbar_date = 2131361928;
@@ -2467,8 +2476,8 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0a0087
 			public const int lbl_toolbar_title = 2131361927;
 			
-			// aapt resource value: 0x7f0a00b2
-			public const int lbl_trip_headsign = 2131361970;
+			// aapt resource value: 0x7f0a00b5
+			public const int lbl_trip_headsign = 2131361973;
 			
 			// aapt resource value: 0x7f0a003a
 			public const int left = 2131361850;
@@ -2617,11 +2626,11 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0a001e
 			public const int showTitle = 2131361822;
 			
-			// aapt resource value: 0x7f0a00b1
-			public const int sliding_container = 2131361969;
+			// aapt resource value: 0x7f0a00b4
+			public const int sliding_container = 2131361972;
 			
-			// aapt resource value: 0x7f0a00ac
-			public const int sliding_layout = 2131361964;
+			// aapt resource value: 0x7f0a00af
+			public const int sliding_layout = 2131361967;
 			
 			// aapt resource value: 0x7f0a007b
 			public const int snackbar_action = 2131361915;
@@ -2659,8 +2668,8 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0a0096
 			public const int status_container = 2131361942;
 			
-			// aapt resource value: 0x7f0a00ae
-			public const int stop_listview = 2131361966;
+			// aapt resource value: 0x7f0a00b1
+			public const int stop_listview = 2131361969;
 			
 			// aapt resource value: 0x7f0a0074
 			public const int submit_area = 2131361908;
@@ -2707,11 +2716,11 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0a0078
 			public const int touch_outside = 2131361912;
 			
-			// aapt resource value: 0x7f0a00af
-			public const int trip_map = 2131361967;
+			// aapt resource value: 0x7f0a00b2
+			public const int trip_map = 2131361970;
 			
-			// aapt resource value: 0x7f0a00b3
-			public const int trip_recyclerview = 2131361971;
+			// aapt resource value: 0x7f0a00b6
+			public const int trip_recyclerview = 2131361974;
 			
 			// aapt resource value: 0x7f0a0009
 			public const int up = 2131361801;
@@ -2719,14 +2728,14 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0a001f
 			public const int useLogo = 2131361823;
 			
-			// aapt resource value: 0x7f0a00b0
-			public const int view_no_map = 2131361968;
+			// aapt resource value: 0x7f0a00b3
+			public const int view_no_map = 2131361971;
 			
 			// aapt resource value: 0x7f0a000a
 			public const int view_offset_helper = 2131361802;
 			
-			// aapt resource value: 0x7f0a00a6
-			public const int view_pager = 2131361958;
+			// aapt resource value: 0x7f0a00a9
+			public const int view_pager = 2131361961;
 			
 			// aapt resource value: 0x7f0a0014
 			public const int wide = 2131361812;
@@ -3192,17 +3201,23 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f060032
 			public const int status_bar_notification_info_overflow = 2131099698;
 			
-			// aapt resource value: 0x7f06003e
-			public const int trip_details_no_map = 2131099710;
+			// aapt resource value: 0x7f060040
+			public const int trip_details_no_map = 2131099712;
 			
-			// aapt resource value: 0x7f06003f
-			public const int trip_frequency = 2131099711;
+			// aapt resource value: 0x7f060041
+			public const int trip_frequency = 2131099713;
 			
 			// aapt resource value: 0x7f06003c
 			public const int trip_list_empty = 2131099708;
 			
 			// aapt resource value: 0x7f06003d
 			public const int trip_list_empty_details = 2131099709;
+			
+			// aapt resource value: 0x7f06003e
+			public const int trip_list_empty_no_internet = 2131099710;
+			
+			// aapt resource value: 0x7f06003f
+			public const int trip_list_empty_no_internet_details = 2131099711;
 			
 			static String()
 			{

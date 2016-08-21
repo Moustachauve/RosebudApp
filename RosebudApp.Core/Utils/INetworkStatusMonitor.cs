@@ -8,6 +8,7 @@ namespace RosebudAppCore.Utils
     {
         event EventHandler<NetworkState> StateChanged;
         NetworkState State { get; }
+        bool CanConnect { get; }
         void UpdateState();
     }
 
