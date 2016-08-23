@@ -24,7 +24,7 @@ namespace RosebudAppCore.DataAccessor
 
 			routes = await HttpHelper.GetDataFromHttp<List<Route>>(API_ENDPOINT, feedId);
 
-            if (routes == null && overrideCache && Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            if (routes == null && overrideCache && !Dependency.NetworkStatusMonitor.CanConnect)
             {
                 routes = await Dependency.CacheRepository.RouteCacheManager.GetAllRoutes(feedId);
             }
@@ -51,7 +51,7 @@ namespace RosebudAppCore.DataAccessor
 			string apiUrl = string.Format(API_ENDPOINT, feedId) + "{0}/?date={1}";
 			routeDetails =  await HttpHelper.GetDataFromHttp<RouteDetails>(apiUrl, routeId, dateFormatted);
 
-            if (routeDetails == null && overrideCache && Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            if (routeDetails == null && overrideCache && !Dependency.NetworkStatusMonitor.CanConnect)
             {
                 routeDetails = await Dependency.CacheRepository.RouteCacheManager.GetRouteDetails(feedId, routeId, date);
             }

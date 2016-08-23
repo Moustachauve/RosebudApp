@@ -48,7 +48,7 @@ namespace RosebudAppCore.DataAccessor
 
         public static async Task<T> ExecuteHttpRequest<T>(HttpClient httpClient, string url)
         {
-            if (Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            if (!Dependency.NetworkStatusMonitor.CanConnect)
             {
                 return default(T);
             }

@@ -51,7 +51,7 @@ namespace RosebudAppAndroid.Activities
             var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
             var lblToolbarTitle = FindViewById<TextView>(Resource.Id.lbl_toolbar_title);
             lblToolbarDate = FindViewById<TextView>(Resource.Id.lbl_toolbar_date);
-            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             tabLayout = FindViewById<TabLayout>(Resource.Id.tab_layout);
             viewPager = FindViewById<ViewPager>(Resource.Id.view_pager);

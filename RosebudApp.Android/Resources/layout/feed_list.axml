@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/toolbar_container">
+    <fragment
+        android:id="@+id/network_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        class="rosebudappandroid.fragments.NetworkStatusFragment" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/feed_pull_to_refresh_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <TextView
+                android:id="@+id/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/feed_list_empty" />
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/feed_pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/feed_recyclerview" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

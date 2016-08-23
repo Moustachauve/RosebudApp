@@ -61,7 +61,7 @@ namespace RosebudAppAndroid.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.trip_details);
 
-            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
             toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
             SetSupportActionBar(toolbar);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);

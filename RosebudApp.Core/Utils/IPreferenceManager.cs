@@ -7,5 +7,6 @@ namespace RosebudAppCore.Utils
     public interface IPreferenceManager
     {
         DateTime SelectedDatetime { get; set; }
+        bool UseCellularData { get; set; }
     }
 }

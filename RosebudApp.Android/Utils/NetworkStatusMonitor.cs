@@ -27,14 +27,7 @@ namespace RosebudAppAndroid.Utils
         {
             get
             {
-                NetworkState currentState = State;
-
-                if(currentState != NetworkState.Disconnected)
-                {
-                    return true;
-                }
-
-                return false;
+                return CouldConnect(State);
             }
         }
 
@@ -58,6 +51,21 @@ namespace RosebudAppAndroid.Utils
                 previousState = state;
                 StateChanged?.Invoke(this, state);
             }
+        }
+
+        public bool CouldConnect(NetworkState state)
+        {
+            if (state == NetworkState.Disconnected)
+            {
+                return false;
+            }
+
+            if (state == NetworkState.ConnectedData && !Dependency.PreferenceManager.UseCellularData)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

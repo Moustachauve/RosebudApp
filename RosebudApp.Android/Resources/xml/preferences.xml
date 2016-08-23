@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        android:key="use_cellular_data"
+        android:summaryOn="The app will use both Wi-Fi and cellular data"
+        android:summaryOff="The app will only download information when connected to Wi-Fi"
+        android:title="Data Usage"
+        android:defaultValue="true"/>
+
+
+</PreferenceScreen>

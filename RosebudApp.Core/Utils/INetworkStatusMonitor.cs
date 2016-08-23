@@ -10,6 +10,7 @@ namespace RosebudAppCore.Utils
         NetworkState State { get; }
         bool CanConnect { get; }
         void UpdateState();
+        bool CouldConnect(NetworkState state);
     }
 
     public enum NetworkState

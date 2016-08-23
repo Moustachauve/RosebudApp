@@ -10,7 +10,6 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using FragmentSupport = Android.Support.V4.App.Fragment;
 using RosebudAppCore.Utils;
 using Android.Views.Animations;
 using System.Threading.Tasks;
@@ -19,7 +18,7 @@ using Android.Support.Design.Widget;
 
 namespace RosebudAppAndroid.Fragments
 {
-    public class NetworkStatusFragment : FragmentSupport
+    public class NetworkStatusFragment : Fragment
     {
         private TextView lblStatus;
         private LinearLayout statusContainer;
@@ -113,7 +112,7 @@ namespace RosebudAppAndroid.Fragments
 
         private bool ContainerShouldBeVisible(NetworkState state)
         {
-            return state != NetworkState.ConnectedData && state != NetworkState.ConnectedWifi;
+            return !Dependency.NetworkStatusMonitor.CouldConnect(state);
         }
 
         private async Task SlideUp()

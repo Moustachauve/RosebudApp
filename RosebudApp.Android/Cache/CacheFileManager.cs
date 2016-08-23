@@ -47,7 +47,7 @@ namespace RosebudAppAndroid.Cache
             //We delete cache only if it is expired and we are connected to the internet - Better show expired data than nothing!
 			if (cacheItem == null ||
 			   cacheItem.CacheExpirationDate < DateTime.Now &&
-               Dependency.NetworkStatusMonitor.State != NetworkState.Disconnected)
+               !Dependency.NetworkStatusMonitor.CanConnect)
 			{
 				File.Delete(filePath);
 				return default(T);

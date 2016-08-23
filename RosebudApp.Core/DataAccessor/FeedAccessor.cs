@@ -25,7 +25,7 @@ namespace RosebudAppCore.DataAccessor
 
 			feeds = await HttpHelper.GetDataFromHttp<List<Feed>>(API_ENDPOINT);
 
-            if(feeds == null && overrideCache && Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            if(feeds == null && overrideCache && !Dependency.NetworkStatusMonitor.CanConnect)
             {
                 feeds = await Dependency.CacheRepository.FeedCacheManager.GetAllFeeds();
             }

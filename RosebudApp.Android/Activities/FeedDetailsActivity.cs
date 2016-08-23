@@ -19,7 +19,6 @@ using RosebudAppCore.DataAccessor;
 using RosebudAppCore.Model;
 using Newtonsoft.Json;
 using SearchViewCompat = Android.Support.V7.Widget.SearchView;
-using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using RosebudAppAndroid.Fragments;
 using RosebudAppAndroid.Utils;
 using RosebudAppCore.Utils;
@@ -53,13 +52,13 @@ namespace RosebudAppAndroid.Activities
             SetContentView(Resource.Layout.feed_details);
 
             appBarLayout = FindViewById<AppBarLayout>(Resource.Id.app_bar_layout);
-            var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
+            var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.my_awesome_toolbar);
             var lblToolbarTitle = FindViewById<TextView>(Resource.Id.lbl_toolbar_title);
             lblToolbarDate = FindViewById<TextView>(Resource.Id.lbl_toolbar_date);
             SetSupportActionBar(toolbar);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
-            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             routeRecyclerView = FindViewById<RecyclerView>(Resource.Id.route_recyclerview);
             routeRecyclerView.NestedScrollingEnabled = false;
@@ -75,6 +74,11 @@ namespace RosebudAppAndroid.Activities
 
             routePullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
             routePullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+
+            toolbar.NavigationClick += delegate
+            {
+                OnBackPressed();
+            };
 
             routePullToRefresh.Refresh += async delegate
             {

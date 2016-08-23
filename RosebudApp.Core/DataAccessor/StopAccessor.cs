@@ -25,7 +25,7 @@ namespace RosebudAppCore.DataAccessor
 			string apiUrl = string.Format(API_ENDPOINT, feedId, routeId, tripId) + "stops";
 			tripDetails = await HttpHelper.GetDataFromHttp<TripDetails>(apiUrl);
 
-            if (tripDetails == null && overrideCache && Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
+            if (tripDetails == null && overrideCache && !Dependency.NetworkStatusMonitor.CanConnect)
             {
                 tripDetails = await Dependency.CacheRepository.StopCacheManager.GetStopsForTrip(feedId, routeId, tripId);
             }
