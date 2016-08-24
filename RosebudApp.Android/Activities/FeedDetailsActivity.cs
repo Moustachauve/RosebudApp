@@ -30,21 +30,21 @@ namespace RosebudAppAndroid.Activities
     {
         private const string STATE_RECYCLER_VIEW = "state-recycler-view";
 
-        private Feed feedInfo;
+        Feed feedInfo;
 
-        private AppBarLayout appBarLayout;
-        private TextView lblToolbarDate;
-        private RouteAdapter routeAdapter;
-        private RecyclerView routeRecyclerView;
-        private SwipeRefreshLayout routePullToRefresh;
-        private SwipeRefreshLayout routePullToRefreshEmpty;
-        private IMenuItem searchMenu;
+        AppBarLayout appBarLayout;
+        TextView lblToolbarDate;
+        RouteAdapter routeAdapter;
+        RecyclerView routeRecyclerView;
+        SwipeRefreshLayout routePullToRefresh;
+        SwipeRefreshLayout routePullToRefreshEmpty;
+        IMenuItem searchMenu;
 
-        private ImageView icoDropdownDatePicker;
-        private bool isCalendarExpanded;
-        private float currentCalendarArrowRotation = 360f;
+        ImageView icoDropdownDatePicker;
+        bool isCalendarExpanded;
+        float currentCalendarArrowRotation = 360f;
 
-        private IParcelable recyclerViewLayoutState;
+        IParcelable recyclerViewLayoutState;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {

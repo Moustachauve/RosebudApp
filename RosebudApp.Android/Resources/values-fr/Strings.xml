@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Rosebud App</string>
-
+	
+    <string name="activity_settings">Paramètres</string>
+	
     <string name="menu_drawer_agency">Agences de transport</string>
-    <string name="menu_drawer_settings">Paramètres</string>
+	<string name="menu_drawer_settings">@string/activity_settings</string>
 
     <string name="network_no_connection">Aucune connexion internet. Affichage des données en cache seulement.</string>
     <string name="network_server_error">Impossible de contacter le serveur. Veuillez réessayer plus tard.</string>
