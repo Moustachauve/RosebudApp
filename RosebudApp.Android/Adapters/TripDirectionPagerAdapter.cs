@@ -17,7 +17,7 @@ namespace RosebudAppAndroid
     {
         protected Dictionary<int, TripListFragment> fragments = new Dictionary<int, TripListFragment>();
         protected List<List<Trip>> itemTrips = new List<List<Trip>>();
-        private RouteDetails routeDetails;
+        RouteDetails routeDetails;
 
         public event EventHandler<TripClickedEventArgs> ItemClicked;
 
@@ -95,7 +95,7 @@ namespace RosebudAppAndroid
             base.DestroyItem(container, position, objectValue);
         }
 
-        private void OnItemClicked(object sender, TripClickedEventArgs e)
+        void OnItemClicked(object sender, TripClickedEventArgs e)
         {
             ItemClicked?.Invoke(sender, e);
         }

@@ -129,7 +129,7 @@ namespace RosebudAppAndroid
             ApplyAndAnimateMovedItems(items);
         }
 
-        private void ApplyAndAnimateRemovals(List<TItem> items)
+        void ApplyAndAnimateRemovals(List<TItem> items)
         {
             for (int i = DisplayedItems.Count - 1; i >= 0; i--)
             {
@@ -141,7 +141,7 @@ namespace RosebudAppAndroid
             }
         }
 
-        private void ApplyAndAnimateAdditions(List<TItem> items)
+        void ApplyAndAnimateAdditions(List<TItem> items)
         {
             for (int i = 0; i < items.Count; i++)
             {
@@ -153,7 +153,7 @@ namespace RosebudAppAndroid
             }
         }
 
-        private void ApplyAndAnimateMovedItems(List<TItem> items)
+        void ApplyAndAnimateMovedItems(List<TItem> items)
         {
             for (int toPosition = items.Count - 1; toPosition >= 0; toPosition--)
             {

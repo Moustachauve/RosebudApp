@@ -22,104 +22,104 @@ using Android.App;
 
 namespace RosebudAppAndroid.Fragments
 {
-	public class FeedListFragment : Fragment
-	{
-		private FeedAdapter feedAdapter;
-		private RecyclerView feedRecyclerView;
-		private SwipeRefreshLayout feedPullToRefresh;
-		private SwipeRefreshLayout feedPullToRefreshEmpty;
+    public class FeedListFragment : Fragment
+    {
+        FeedAdapter feedAdapter;
+        RecyclerView feedRecyclerView;
+        SwipeRefreshLayout feedPullToRefresh;
+        SwipeRefreshLayout feedPullToRefreshEmpty;
 
-		public override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
-			// Create your fragment here
-		}
+        public override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+            // Create your fragment here
+        }
 
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
-			View view = inflater.Inflate(Resource.Layout.feed_list, container, false);
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            View view = inflater.Inflate(Resource.Layout.feed_list, container, false);
 
-			feedRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.feed_recyclerview);
-			feedPullToRefresh = view.FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh);
-			feedPullToRefreshEmpty = view.FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh_empty);
+            feedRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.feed_recyclerview);
+            feedPullToRefresh = view.FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh);
+            feedPullToRefreshEmpty = view.FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh_empty);
 
-			feedPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-			feedPullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-			feedPullToRefresh.Post(async () =>
-			{
-				await LoadFeeds();
-			});
+            feedPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+            feedPullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+            feedPullToRefresh.Post(async () =>
+            {
+                await LoadFeeds();
+            });
 
-			feedPullToRefresh.Refresh += async delegate
-			{
-				await LoadFeeds(true);
-			};
-			feedPullToRefreshEmpty.Refresh += async delegate
-			{
-				await LoadFeeds(true);
-			};
+            feedPullToRefresh.Refresh += async delegate
+            {
+                await LoadFeeds(true);
+            };
+            feedPullToRefreshEmpty.Refresh += async delegate
+            {
+                await LoadFeeds(true);
+            };
 
-			return view;
-		}
+            return view;
+        }
 
-		public override void OnAttach(Context context)
-		{
-			((MainActivity)Activity).SearchTextChanged += OnSearchTextChanged;
-			((MainActivity)Activity).RetryLastRequest += OnRetryLastRequest;
-			base.OnAttach(context);
-		}
+        public override void OnAttach(Context context)
+        {
+            ((MainActivity)Activity).SearchTextChanged += OnSearchTextChanged;
+            ((MainActivity)Activity).RetryLastRequest += OnRetryLastRequest;
+            base.OnAttach(context);
+        }
 
-		public override void OnDetach()
-		{
-			((MainActivity)Activity).SearchTextChanged -= OnSearchTextChanged;
-			((MainActivity)Activity).RetryLastRequest += OnRetryLastRequest;
-			base.OnDetach();
-		}
+        public override void OnDetach()
+        {
+            ((MainActivity)Activity).SearchTextChanged -= OnSearchTextChanged;
+            ((MainActivity)Activity).RetryLastRequest += OnRetryLastRequest;
+            base.OnDetach();
+        }
 
-		private async Task LoadFeeds(bool overrideCache = false)
-		{
-			feedPullToRefresh.Refreshing = true;
-			feedPullToRefreshEmpty.Refreshing = true;
+        async Task LoadFeeds(bool overrideCache = false)
+        {
+            feedPullToRefresh.Refreshing = true;
+            feedPullToRefreshEmpty.Refreshing = true;
 
-			var feeds = await FeedAccessor.GetAllFeeds(overrideCache);
+            var feeds = await FeedAccessor.GetAllFeeds(overrideCache);
 
-			feedPullToRefresh.Visibility = feeds == null ? ViewStates.Gone : ViewStates.Visible;
-			feedPullToRefreshEmpty.Visibility = feeds == null ? ViewStates.Visible : ViewStates.Gone;
+            feedPullToRefresh.Visibility = feeds == null ? ViewStates.Gone : ViewStates.Visible;
+            feedPullToRefreshEmpty.Visibility = feeds == null ? ViewStates.Visible : ViewStates.Gone;
 
-			if (feedAdapter == null)
-			{
-				feedAdapter = new FeedAdapter(Activity, feeds);
-				feedAdapter.ItemClick += OnItemClick;
-				feedRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
-				feedRecyclerView.SetAdapter(feedAdapter);
-			}
-			else
-				feedAdapter.ReplaceItems(feeds);
+            if (feedAdapter == null)
+            {
+                feedAdapter = new FeedAdapter(Activity, feeds);
+                feedAdapter.ItemClick += OnItemClick;
+                feedRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
+                feedRecyclerView.SetAdapter(feedAdapter);
+            }
+            else
+                feedAdapter.ReplaceItems(feeds);
 
-			((MainActivity)Activity).SearchBarVisible = feedPullToRefresh.Visibility == ViewStates.Visible;
+            ((MainActivity)Activity).SearchBarVisible = feedPullToRefresh.Visibility == ViewStates.Visible;
 
 
-			feedPullToRefresh.Refreshing = false;
-			feedPullToRefreshEmpty.Refreshing = false;
-		}
+            feedPullToRefresh.Refreshing = false;
+            feedPullToRefreshEmpty.Refreshing = false;
+        }
 
-		private void OnItemClick(object sender, int position)
-		{
-			Feed clickedFeed = feedAdapter[position];
-			Intent detailsIntent = new Intent(Activity, typeof(FeedDetailsActivity));
-			detailsIntent.PutExtra("feedInfos", JsonConvert.SerializeObject(clickedFeed));
+        void OnItemClick(object sender, int position)
+        {
+            Feed clickedFeed = feedAdapter[position];
+            Intent detailsIntent = new Intent(Activity, typeof(FeedDetailsActivity));
+            detailsIntent.PutExtra("feedInfos", JsonConvert.SerializeObject(clickedFeed));
 
-			StartActivity(detailsIntent);
-		}
+            StartActivity(detailsIntent);
+        }
 
-		private void OnSearchTextChanged(object sender, string e)
-		{
-			feedAdapter.Filter = e;
-		}
+        void OnSearchTextChanged(object sender, string e)
+        {
+            feedAdapter.Filter = e;
+        }
 
-		private async void OnRetryLastRequest(object sender, EventArgs args)
-		{
-			await LoadFeeds(true);
-		}
-	}
+        async void OnRetryLastRequest(object sender, EventArgs args)
+        {
+            await LoadFeeds(true);
+        }
+    }
 }
