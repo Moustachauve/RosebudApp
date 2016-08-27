@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Java.Lang;
 using System.Linq;
+using RosebudAppCore.Model.Enum;
 
 namespace RosebudAppAndroid
 {

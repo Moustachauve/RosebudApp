@@ -12,9 +12,9 @@ using Java.Security;
 
 namespace RosebudAppAndroid.Adapters
 {
-	public class StopAdapter : GenericAdapter<Stop>
+	public class StopAdapter : GenericAdapter<StopDetails>
 	{
-		public StopAdapter(Context context, List<Stop> stops) : base(context, stops)
+		public StopAdapter(Context context, List<StopDetails> stops) : base(context, stops)
 		{
 		}
 
@@ -25,7 +25,7 @@ namespace RosebudAppAndroid.Adapters
 				convertView = inflater.Inflate(Resource.Layout.stop_listitem, parent, false);
 			}
 
-			Stop currentStop = this[position];
+			StopDetails currentStop = this[position];
 
 			TextView lblStopName = convertView.FindViewById<TextView>(Resource.Id.lbl_stop_name);
 			TextView lblArrivalTime = convertView.FindViewById<TextView>(Resource.Id.lbl_arrival_time);
@@ -43,7 +43,7 @@ namespace RosebudAppAndroid.Adapters
 			return convertView;
 		}
 
-		protected override List<Stop> ApplyFilter()
+		protected override List<StopDetails> ApplyFilter()
 		{
 			return allItems;
 		}

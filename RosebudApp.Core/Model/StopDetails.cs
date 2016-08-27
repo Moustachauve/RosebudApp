@@ -1,13 +1,9 @@
-﻿using RosebudAppCore.Model.Enum;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using System;
 namespace RosebudAppCore.Model
 {
-    public class Stop
-    {
-        public string stop_code { get; set; }
+	public class StopDetails : StopTime
+	{
+		public string stop_code { get; set; }
         public string stop_name { get; set; }
         public string stop_desc { get; set; }
         public double stop_lat { get; set; }
@@ -15,6 +11,9 @@ namespace RosebudAppCore.Model
         public string zone_id { get; set; }
         public string stop_url { get; set; }
         public string location_type { get; set; }
-        public WheelchairAccessibility wheelchair_boarding { get; set; }
-    }
+        public string parent_station { get; set; }
+        public string stop_timezone { get; set; }
+        public string wheelchair_boarding { get; set; }
+	}
 }
+

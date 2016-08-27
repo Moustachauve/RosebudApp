@@ -10,5 +10,6 @@ namespace RosebudAppCore.Utils
         public static AbstractCacheRepository CacheRepository { get; set; }
         public static INetworkStatusMonitor NetworkStatusMonitor { get; set; }
         public static IPreferenceManager PreferenceManager { get; set; }
+        public static ILocationService LocationService { get; set; }
     }
 }

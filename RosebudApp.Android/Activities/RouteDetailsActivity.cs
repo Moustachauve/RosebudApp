@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using RosebudAppAndroid.Utils;
 using RosebudAppCore.Utils;
+using RosebudAppCore.Model.Enum;
 
 namespace RosebudAppAndroid.Activities
 {

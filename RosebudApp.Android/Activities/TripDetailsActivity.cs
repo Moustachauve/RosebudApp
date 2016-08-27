@@ -229,7 +229,7 @@ namespace RosebudAppAndroid.Activities
             {
                 if (details == null)
                 {
-                    stopAdapter.ReplaceItems(new List<Stop>());
+                    stopAdapter.ReplaceItems(new List<StopDetails>());
                 }
                 else
                 {

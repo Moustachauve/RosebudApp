@@ -32,6 +32,9 @@ namespace RosebudAppAndroid
             Dependency.CacheRepository = new CacheRepository(ApplicationContext);
             Dependency.NetworkStatusMonitor = new NetworkStatusMonitor();
             Dependency.PreferenceManager = new PreferenceManager(Context);
+            Dependency.LocationService = new LocationService(Context);
+
+            ((LocationService)Dependency.LocationService).ConnectGoogleApi();
         }
     }
 }

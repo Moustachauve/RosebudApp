@@ -86,6 +86,10 @@
     <Reference Include="Xamarin.GooglePlayServices.Base">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Base.29.0.0.2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Location, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Location.29.0.0.2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Location.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Maps">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Maps.29.0.0.2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Maps.dll</HintPath>
     </Reference>
@@ -97,6 +101,7 @@
   <ItemGroup>
     <Compile Include="Activities\AbstractHttpActivity.cs" />
     <Compile Include="Activities\SettingsActivity.cs" />
+    <Compile Include="Activities\StopTimesActivity.cs" />
     <Compile Include="Fragments\FeedListFragment.cs" />
     <Compile Include="Fragments\NetworkStatusFragment.cs" />
     <Compile Include="Fragments\SettingsFragment.cs" />
@@ -110,6 +115,7 @@
     <Compile Include="Adapters\BaseRecyclerAdapter.cs" />
     <Compile Include="Animations\ArrowRotateAnimation.cs" />
     <Compile Include="RosebudApp.cs" />
+    <Compile Include="Utils\LocationService.cs" />
     <Compile Include="Utils\NetworkStatusMonitor.cs" />
     <Compile Include="Fragments\TripListFragment.cs" />
     <Compile Include="Adapters\TripDirectionPagerAdapter.cs" />
