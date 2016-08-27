@@ -11,28 +11,28 @@ using System.Threading.Tasks;
 
 namespace RosebudAppAndroid.Cache
 {
-	public class StopCacheManager : IStopCacheManager
-	{
-		private Context Context;
+    public class StopCacheManager : IStopCacheManager
+    {
+        Context Context;
 
-		public StopCacheManager(Context context)
-		{
-			Context = context;
-		}
+        public StopCacheManager(Context context)
+        {
+            Context = context;
+        }
 
-		public async Task<TripDetails> GetStopsForTrip(int feedId, string routeId, string tripId)
-		{
-			string fileName = string.Format("trips-{0}-{1}-{2}.json", feedId, routeId, tripId);
-			string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
-			return await CacheFileManager.GetFromFile<TripDetails>(path);
-		}
+        public async Task<TripDetails> GetStopsForTrip(int feedId, string routeId, string tripId)
+        {
+            string fileName = string.Format("trips-{0}-{1}-{2}.json", feedId, routeId, tripId);
+            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
+            return await CacheFileManager.GetFromFile<TripDetails>(path);
+        }
 
-		public async Task SaveStopsForTrip(int feedId, string routeId, string tripId, TripDetails tripDetails)
-		{
-			string fileName = string.Format("trips-{0}-{1}-{2}.json", feedId, routeId, tripId);
-			string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
-			await CacheFileManager.SaveToFile(path, tripDetails);
-		}
-	}
+        public async Task SaveStopsForTrip(int feedId, string routeId, string tripId, TripDetails tripDetails)
+        {
+            string fileName = string.Format("trips-{0}-{1}-{2}.json", feedId, routeId, tripId);
+            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
+            await CacheFileManager.SaveToFile(path, tripDetails);
+        }
+    }
 }
 

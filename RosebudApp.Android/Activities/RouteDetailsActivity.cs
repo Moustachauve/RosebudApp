@@ -27,21 +27,21 @@ namespace RosebudAppAndroid.Activities
     {
         const string BUNDLE_KEY_DATE = "bundle_route_details_date";
 
-        private Route routeInfo;
-        private TripDirectionPagerAdapter tripDirectionPagerAdapter;
+        Route routeInfo;
+        TripDirectionPagerAdapter tripDirectionPagerAdapter;
 
-        private AppBarLayout appBarLayout;
-        private TextView lblToolbarDate;
-        private TabLayout tabLayout;
+        AppBarLayout appBarLayout;
+        TextView lblToolbarDate;
+        TabLayout tabLayout;
 
-        private ImageView icoDropdownDatePicker;
-        private bool isCalendarExpanded;
-        private float currentCalendarArrowRotation = 360f;
+        ImageView icoDropdownDatePicker;
+        bool isCalendarExpanded;
+        float currentCalendarArrowRotation = 360f;
 
-        private ViewPager viewPager;
-        private LinearLayout emptyView;
-        private LinearLayout emptyViewNoInternet;
-        private TextView emptyViewMainText;
+        ViewPager viewPager;
+        LinearLayout emptyView;
+        LinearLayout emptyViewNoInternet;
+        TextView emptyViewMainText;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -109,12 +109,12 @@ namespace RosebudAppAndroid.Activities
             base.OnDestroy();
         }
 
-        private async Task SwitchDate(int year, int month, int day)
+        async Task SwitchDate(int year, int month, int day)
         {
             await SwitchDate(new DateTime(year, month, day));
         }
 
-        private async Task SwitchDate(DateTime date)
+        async Task SwitchDate(DateTime date)
         {
             Dependency.PreferenceManager.SelectedDatetime = date;
             lblToolbarDate.Text = TimeFormatter.ToFullShortDate(date);
@@ -122,7 +122,7 @@ namespace RosebudAppAndroid.Activities
             await LoadDetails();
         }
 
-        private async Task LoadDetails(bool overrideCache = false)
+        async Task LoadDetails(bool overrideCache = false)
         {
             RouteDetails currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, Dependency.PreferenceManager.SelectedDatetime, overrideCache);
 
@@ -142,7 +142,7 @@ namespace RosebudAppAndroid.Activities
             InvalidateOptionsMenu();
         }
 
-        private void ToggleDatePicker()
+        void ToggleDatePicker()
         {
             RotateAnimation animation = ArrowRotateAnimation.GetAnimation(currentCalendarArrowRotation, 180);
             icoDropdownDatePicker.StartAnimation(animation);
@@ -153,7 +153,7 @@ namespace RosebudAppAndroid.Activities
             isCalendarExpanded = !isCalendarExpanded;
         }
 
-        private void SetDirectionTabs(RouteDetails routeDetails)
+        void SetDirectionTabs(RouteDetails routeDetails)
         {
             tabLayout.RemoveAllTabs();
 
@@ -180,7 +180,7 @@ namespace RosebudAppAndroid.Activities
             }
         }
 
-        private void OnItemClicked(object sender, TripClickedEventArgs e)
+        void OnItemClicked(object sender, TripClickedEventArgs e)
         {
             Intent detailsIntent = new Intent(this, typeof(TripDetailsActivity));
             detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(routeInfo));
@@ -189,7 +189,7 @@ namespace RosebudAppAndroid.Activities
             StartActivity(detailsIntent);
         }
 
-        private void UpdateEmptyMessage(RouteDetails routeDetails)
+        void UpdateEmptyMessage(RouteDetails routeDetails)
         {
             if (routeDetails == null || routeDetails.trips.Count == 0)
             {

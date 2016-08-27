@@ -28,23 +28,23 @@ namespace RosebudAppAndroid.Activities
     [Activity(Label = "FeedDetailsActivity", ParentActivity = typeof(MainActivity))]
     public class FeedDetailsActivity : AppCompatActivity
     {
-        private const string STATE_RECYCLER_VIEW = "state-recycler-view";
+        const string STATE_RECYCLER_VIEW = "state-recycler-view";
 
-        private Feed feedInfo;
+        Feed feedInfo;
 
-        private AppBarLayout appBarLayout;
-        private TextView lblToolbarDate;
-        private RouteAdapter routeAdapter;
-        private RecyclerView routeRecyclerView;
-        private SwipeRefreshLayout routePullToRefresh;
-        private SwipeRefreshLayout routePullToRefreshEmpty;
-        private IMenuItem searchMenu;
+        AppBarLayout appBarLayout;
+        TextView lblToolbarDate;
+        RouteAdapter routeAdapter;
+        RecyclerView routeRecyclerView;
+        SwipeRefreshLayout routePullToRefresh;
+        SwipeRefreshLayout routePullToRefreshEmpty;
+        IMenuItem searchMenu;
 
-        private ImageView icoDropdownDatePicker;
-        private bool isCalendarExpanded;
-        private float currentCalendarArrowRotation = 360f;
+        ImageView icoDropdownDatePicker;
+        bool isCalendarExpanded;
+        float currentCalendarArrowRotation = 360f;
 
-        private IParcelable recyclerViewLayoutState;
+        IParcelable recyclerViewLayoutState;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -107,7 +107,7 @@ namespace RosebudAppAndroid.Activities
                 ToggleDatePicker();
                 await SwitchDate(e.Year, e.Month + 1, e.DayOfMonth);
             };
-        
+
             networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
                 await LoadRoutes();
@@ -145,12 +145,12 @@ namespace RosebudAppAndroid.Activities
             base.OnRestoreInstanceState(savedInstanceState);
         }
 
-        private async Task SwitchDate(int year, int month, int day)
+        async Task SwitchDate(int year, int month, int day)
         {
             await SwitchDate(new DateTime(year, month, day));
         }
 
-        private async Task SwitchDate(DateTime date)
+        async Task SwitchDate(DateTime date)
         {
             Dependency.PreferenceManager.SelectedDatetime = date;
             lblToolbarDate.Text = TimeFormatter.ToFullShortDate(date);
@@ -159,7 +159,7 @@ namespace RosebudAppAndroid.Activities
             await LoadRoutes();
         }
 
-        private async Task LoadRoutes(bool overrideCache = false)
+        async Task LoadRoutes(bool overrideCache = false)
         {
             routePullToRefresh.Refreshing = true;
             routePullToRefreshEmpty.Refreshing = true;
@@ -168,7 +168,7 @@ namespace RosebudAppAndroid.Activities
 
             routePullToRefresh.Visibility = routes == null ? ViewStates.Gone : ViewStates.Visible;
             routePullToRefreshEmpty.Visibility = routes == null ? ViewStates.Visible : ViewStates.Gone;
-            
+
 
             if (routeAdapter == null)
             {
@@ -211,7 +211,7 @@ namespace RosebudAppAndroid.Activities
             StartActivity(detailsIntent);
         }
 
-        private void ToggleDatePicker()
+        void ToggleDatePicker()
         {
             RotateAnimation animation = ArrowRotateAnimation.GetAnimation(currentCalendarArrowRotation, 180);
             icoDropdownDatePicker.StartAnimation(animation);

@@ -22,14 +22,14 @@ namespace RosebudAppAndroid.Fragments
 {
     public class TripListFragment : FragmentSupport
     {
-        private const string BUNDLE_KEY_TRIPS = "bundle_trips_frag";
+        const string BUNDLE_KEY_TRIPS = "bundle_trips_frag";
 
-        private TripAdapter tripAdapter;
-        private List<Trip> trips;
+        TripAdapter tripAdapter;
+        List<Trip> trips;
 
-        private bool isViewLoaded = false;
+        bool isViewLoaded = false;
 
-        private RecyclerView tripRecyclerView;
+        RecyclerView tripRecyclerView;
 
         public event EventHandler<TripClickedEventArgs> ItemClicked;
 
@@ -72,7 +72,7 @@ namespace RosebudAppAndroid.Fragments
             base.OnSaveInstanceState(outState);
         }
 
-        private void OnItemClick(object sender, int position)
+        void OnItemClick(object sender, int position)
         {
             if (ItemClicked == null)
                 return;
@@ -81,7 +81,7 @@ namespace RosebudAppAndroid.Fragments
             ItemClicked(this, new TripClickedEventArgs(clickedTrip));
         }
 
-        private void UpdateTrips()
+        void UpdateTrips()
         {
             if (trips == null)
                 return;

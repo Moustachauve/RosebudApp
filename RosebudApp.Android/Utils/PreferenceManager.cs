@@ -15,9 +15,9 @@ namespace RosebudAppAndroid.Utils
 {
     public class PreferenceManager : IPreferenceManager
     {
-        private const string PREFERENCE_KEY_CELLULARE_DATA = "use_cellular_data";
+        const string PREFERENCE_KEY_CELLULARE_DATA = "use_cellular_data";
 
-        private Context Context { get; set; }
+        Context Context { get; set; }
 
         public DateTime SelectedDatetime { get; set; } = DateTime.Today;
 

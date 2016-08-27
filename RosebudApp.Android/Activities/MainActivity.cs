@@ -25,13 +25,18 @@ namespace RosebudAppAndroid.Activities
     [Activity(Label = "Rosebud", MainLauncher = true, Icon = "@mipmap/ic_launcher")]
     public class MainActivity : AppCompatActivity
     {
-        //private FeedAdapter feedAdapter;
-        //private RecyclerView feedRecyclerView;
-        //private SwipeRefreshLayout feedPullToRefresh;
-        //private SwipeRefreshLayout feedPullToRefreshEmpty;
-        private IMenuItem searchMenu;
+        IMenuItem searchMenu;
         DrawerLayout drawerLayout;
         NavigationView navigationView;
+
+        public event EventHandler<string> SearchTextChanged;
+        public event EventHandler RetryLastRequest;
+
+        public bool SearchBarVisible
+        {
+            get { return searchMenu.IsVisible; }
+            set { searchMenu.SetVisible(value); }
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -45,6 +50,7 @@ namespace RosebudAppAndroid.Activities
 
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             navigationView = FindViewById<NavigationView>(Resource.Id.drawer_navigation_view);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             navigationView.NavigationItemSelected += (sender, e) =>
             {
@@ -52,6 +58,12 @@ namespace RosebudAppAndroid.Activities
                 drawerLayout.CloseDrawers();
             };
             SelectDrawerItem(navigationView.Menu.GetItem(0));
+
+            networkFragment.RetryLastRequest += (object sender, EventArgs args) =>
+           {
+               if (RetryLastRequest != null)
+                   RetryLastRequest(sender, args);
+           };
         }
 
         private void SelectDrawerItem(IMenuItem menuItem)
@@ -75,7 +87,6 @@ namespace RosebudAppAndroid.Activities
             FragmentManager.BeginTransaction().Replace(Resource.Id.content, fragment).Commit();
             menuItem.SetChecked(true);
             Title = menuItem.TitleFormatted.ToString();
-
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -83,14 +94,17 @@ namespace RosebudAppAndroid.Activities
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);
 
             searchMenu = menu.FindItem(Resource.Id.action_search);
-            //searchMenu.SetVisible(feedAdapter != null);
+            SearchBarVisible = false;
 
             var searchViewJava = MenuItemCompat.GetActionView(searchMenu);
             SearchViewCompat searchView = searchViewJava.JavaCast<SearchViewCompat>();
 
             searchView.QueryTextChange += (sender, args) =>
             {
-                //feedAdapter.Filter = args.NewText;
+                if (SearchTextChanged != null)
+                {
+                    SearchTextChanged(this, args.NewText);
+                }
             };
 
             return true;

@@ -20,13 +20,13 @@ namespace RosebudAppAndroid.Fragments
 {
     public class NetworkStatusFragment : Fragment
     {
-        private TextView lblStatus;
-        private LinearLayout statusContainer;
-        private Animation slideUpAnimation;
-        private Animation slideDownAnimation;
+        TextView lblStatus;
+        LinearLayout statusContainer;
+        Animation slideUpAnimation;
+        Animation slideDownAnimation;
 
-        private NetworkState currentState;
-        private NetworkState CurrentState
+        NetworkState currentState;
+        NetworkState CurrentState
         {
             get { return currentState; }
             set
@@ -63,7 +63,7 @@ namespace RosebudAppAndroid.Fragments
 
             Dependency.NetworkStatusMonitor.StateChanged += OnStateChanged;
             HttpHelper.ServerErrorOccured += OnServerErrorOccured;
-           
+
             base.OnResume();
         }
 
@@ -85,14 +85,14 @@ namespace RosebudAppAndroid.Fragments
             await SetState(newState);
         }
 
-        private async Task SetState(NetworkState newState)
+        async Task SetState(NetworkState newState)
         {
-            if(newState == CurrentState)
+            if (newState == CurrentState)
             {
                 return;
             }
 
-            if(statusContainer.Visibility == ViewStates.Visible)
+            if (statusContainer.Visibility == ViewStates.Visible)
             {
                 await SlideUp();
             }
@@ -105,24 +105,24 @@ namespace RosebudAppAndroid.Fragments
             }
         }
 
-        private void UpdateStatusText()
+        void UpdateStatusText()
         {
             lblStatus.Text = Resources.GetText(Resource.String.network_no_connection);
         }
 
-        private bool ContainerShouldBeVisible(NetworkState state)
+        bool ContainerShouldBeVisible(NetworkState state)
         {
             return !Dependency.NetworkStatusMonitor.CouldConnect(state);
         }
 
-        private async Task SlideUp()
+        async Task SlideUp()
         {
             statusContainer.StartAnimation(slideUpAnimation);
             await WaitForAnimationComplete();
             statusContainer.Visibility = ViewStates.Gone;
         }
 
-        private async Task SlideDown()
+        async Task SlideDown()
         {
             statusContainer.StartAnimation(slideDownAnimation);
             statusContainer.Visibility = ViewStates.Visible;
@@ -141,7 +141,7 @@ namespace RosebudAppAndroid.Fragments
             });
         }
 
-        private void OnServerErrorOccured()
+        void OnServerErrorOccured()
         {
             ViewGroup parentView = (ViewGroup)((ViewGroup)Activity.FindViewById(Android.Resource.Id.Content)).GetChildAt(0);
 

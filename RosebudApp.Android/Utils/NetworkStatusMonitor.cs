@@ -12,7 +12,7 @@ namespace RosebudAppAndroid.Utils
     {
         public event EventHandler<NetworkState> StateChanged;
 
-        private NetworkState previousState = NetworkState.Unknown;
+        NetworkState previousState = NetworkState.Unknown;
 
         public NetworkState State
         {

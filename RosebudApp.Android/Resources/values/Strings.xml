@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Rosebud</string>
-
+	
+    <string name="activity_settings">Settings</string>
+			
     <string name="menu_drawer_agency">All Agencies</string>
-    <string name="menu_drawer_settings">Settings</string>
+    <string name="menu_drawer_settings">@string/activity_settings</string>
 
     <string name="network_no_connection">No internet connexion, showing cached data only.</string>
     <string name="network_server_error">Cannot connect to server. Please try again later.</string>

@@ -30,31 +30,31 @@ namespace RosebudAppAndroid.Activities
     public class TripDetailsActivity : AppCompatActivity, IOnMapReadyCallback
     {
         const int RequestLocationId = 0;
-        private readonly string[] PermissionsLocation =
+        readonly string[] PermissionsLocation =
         {
             Manifest.Permission.AccessCoarseLocation,
             Manifest.Permission.AccessFineLocation
         };
 
-        private Route routeInfo;
-        private Trip tripInfo;
-        private StopAdapter stopAdapter;
-        private ListView stopListView;
-        private TextView emptyView;
+        Route routeInfo;
+        Trip tripInfo;
+        StopAdapter stopAdapter;
+        ListView stopListView;
+        TextView emptyView;
         LinearLayout slidingContainer;
         SlidingUpPanelLayout slidingLayout;
 
         ToolbarCompat toolbar;
 
-        private TextView lblRouteShortName;
-        private TextView lblRouteLongName;
-        private TextView lblTripHeadsign;
+        TextView lblRouteShortName;
+        TextView lblRouteLongName;
+        TextView lblTripHeadsign;
 
-        private GoogleMap map;
-        private bool isMapLoaded = false;
-        private List<Marker> markers = new List<Marker>();
-        private LatLngBounds mapBounds;
-        private int mapBoundPadding;
+        GoogleMap map;
+        bool isMapLoaded = false;
+        List<Marker> markers = new List<Marker>();
+        LatLngBounds mapBounds;
+        int mapBoundPadding;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -125,7 +125,7 @@ namespace RosebudAppAndroid.Activities
             };
         }
 
-        private void SlidingLayout_PanelSlide(object sender, SlidingUpPanelLayout.PanelSlideEventArgs e)
+        void SlidingLayout_PanelSlide(object sender, SlidingUpPanelLayout.PanelSlideEventArgs e)
         {
             if (slidingContainer.Top > 200)
             {
@@ -189,7 +189,7 @@ namespace RosebudAppAndroid.Activities
             }
         }
 
-        private async Task waitForMap()
+        async Task waitForMap()
         {
             while (!isMapLoaded)
             {
@@ -199,7 +199,7 @@ namespace RosebudAppAndroid.Activities
             return;
         }
 
-        private async void LoadStops(bool overrideCache = false)
+        async void LoadStops(bool overrideCache = false)
         {
             var details = await StopAccessor.GetStopsForTrip(routeInfo.feed_id, routeInfo.route_id, tripInfo.trip_id, overrideCache);
 
@@ -245,7 +245,7 @@ namespace RosebudAppAndroid.Activities
             //});
         }
 
-        private async void showTripOnMap(TripDetails details)
+        async void showTripOnMap(TripDetails details)
         {
             if (details.shape == null || details.shape.Count <= 0)
             {
@@ -304,7 +304,7 @@ namespace RosebudAppAndroid.Activities
             UpdateMapZoom();
         }
 
-        private void showRouteInfo()
+        void showRouteInfo()
         {
             lblRouteShortName.Text = routeInfo.route_short_name;
             lblRouteLongName.Text = routeInfo.route_long_name;
@@ -337,13 +337,13 @@ namespace RosebudAppAndroid.Activities
             RequestPermissions(PermissionsLocation, RequestLocationId);
         }
 
-        private void ShowMyPosition()
+        void ShowMyPosition()
         {
             map.UiSettings.MyLocationButtonEnabled = true;
             map.MyLocationEnabled = true;
         }
 
-        private Bitmap getMarkerBitmapFromView(Color color)
+        Bitmap getMarkerBitmapFromView(Color color)
         {
             View customMarkerView = ((LayoutInflater)GetSystemService(Context.LayoutInflaterService)).Inflate(Resource.Layout.map_marker, null);
 
@@ -364,7 +364,7 @@ namespace RosebudAppAndroid.Activities
             return returnedBitmap;
         }
 
-        private void OnCameraChange(object sender, GoogleMap.CameraChangeEventArgs args)
+        void OnCameraChange(object sender, GoogleMap.CameraChangeEventArgs args)
         {
             if (args.Position.Zoom < 12.5)
             {
@@ -376,14 +376,14 @@ namespace RosebudAppAndroid.Activities
             }
         }
 
-        public int GetStatusBarHeight()
+        int GetStatusBarHeight()
         {
             Rect displayRect = new Rect();
             Window.DecorView.GetWindowVisibleDisplayFrame(displayRect);
             return displayRect.Top;
         }
 
-        private void UpdateMapPadding()
+        void UpdateMapPadding()
         {
             if (!isMapLoaded)
             {
@@ -398,7 +398,7 @@ namespace RosebudAppAndroid.Activities
             map.SetPadding(0, paddingTop, 0, paddingBottom);
         }
 
-        private void UpdateMapZoom()
+        void UpdateMapZoom()
         {
             UpdateMapPadding();
 
@@ -411,12 +411,12 @@ namespace RosebudAppAndroid.Activities
             map.AnimateCamera(cameraPosition);
         }
 
-        private void UpdateStatusBar(SlidingUpPanelLayout.PanelState slidingPanelState)
+        void UpdateStatusBar(SlidingUpPanelLayout.PanelState slidingPanelState)
         {
             if (slidingPanelState == SlidingUpPanelLayout.PanelState.Expanded)
             {
                 Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
-                var layoutParams = new SlidingUpPanelLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.MatchParent);
+                var layoutParams = new SlidingUpPanelLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
                 layoutParams.SetMargins(0, 0, 0, 0);
                 slidingContainer.LayoutParameters = layoutParams;
             }
@@ -426,12 +426,11 @@ namespace RosebudAppAndroid.Activities
 
                 if (slidingPanelState != SlidingUpPanelLayout.PanelState.Dragging)
                 {
-                    var layoutParams = new SlidingUpPanelLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.MatchParent);
+                    var layoutParams = new SlidingUpPanelLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
                     layoutParams.SetMargins(0, GetStatusBarHeight(), 0, 0);
                     slidingContainer.LayoutParameters = layoutParams;
                 }
             }
-
         }
     }
 }

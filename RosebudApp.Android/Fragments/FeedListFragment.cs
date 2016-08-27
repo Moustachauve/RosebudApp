@@ -24,10 +24,10 @@ namespace RosebudAppAndroid.Fragments
 {
     public class FeedListFragment : Fragment
     {
-        private FeedAdapter feedAdapter;
-        private RecyclerView feedRecyclerView;
-        private SwipeRefreshLayout feedPullToRefresh;
-        private SwipeRefreshLayout feedPullToRefreshEmpty;
+        FeedAdapter feedAdapter;
+        RecyclerView feedRecyclerView;
+        SwipeRefreshLayout feedPullToRefresh;
+        SwipeRefreshLayout feedPullToRefreshEmpty;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -42,11 +42,11 @@ namespace RosebudAppAndroid.Fragments
             feedRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.feed_recyclerview);
             feedPullToRefresh = view.FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh);
             feedPullToRefreshEmpty = view.FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh_empty);
-            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             feedPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
             feedPullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-            feedPullToRefresh.Post(async () => {
+            feedPullToRefresh.Post(async () =>
+            {
                 await LoadFeeds();
             });
 
@@ -59,15 +59,24 @@ namespace RosebudAppAndroid.Fragments
                 await LoadFeeds(true);
             };
 
-            /*networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
-            {
-                await LoadFeeds(true);
-            };*/
-
             return view;
         }
 
-        private async Task LoadFeeds(bool overrideCache = false)
+        public override void OnAttach(Context context)
+        {
+            ((MainActivity)Activity).SearchTextChanged += OnSearchTextChanged;
+            ((MainActivity)Activity).RetryLastRequest += OnRetryLastRequest;
+            base.OnAttach(context);
+        }
+
+        public override void OnDetach()
+        {
+            ((MainActivity)Activity).SearchTextChanged -= OnSearchTextChanged;
+            ((MainActivity)Activity).RetryLastRequest += OnRetryLastRequest;
+            base.OnDetach();
+        }
+
+        async Task LoadFeeds(bool overrideCache = false)
         {
             feedPullToRefresh.Refreshing = true;
             feedPullToRefreshEmpty.Refreshing = true;
@@ -83,16 +92,18 @@ namespace RosebudAppAndroid.Fragments
                 feedAdapter.ItemClick += OnItemClick;
                 feedRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
                 feedRecyclerView.SetAdapter(feedAdapter);
-                //InvalidateOptionsMenu();
             }
             else
                 feedAdapter.ReplaceItems(feeds);
+
+            ((MainActivity)Activity).SearchBarVisible = feedPullToRefresh.Visibility == ViewStates.Visible;
+
 
             feedPullToRefresh.Refreshing = false;
             feedPullToRefreshEmpty.Refreshing = false;
         }
 
-        private void OnItemClick(object sender, int position)
+        void OnItemClick(object sender, int position)
         {
             Feed clickedFeed = feedAdapter[position];
             Intent detailsIntent = new Intent(Activity, typeof(FeedDetailsActivity));
@@ -101,5 +112,14 @@ namespace RosebudAppAndroid.Fragments
             StartActivity(detailsIntent);
         }
 
+        void OnSearchTextChanged(object sender, string e)
+        {
+            feedAdapter.Filter = e;
+        }
+
+        async void OnRetryLastRequest(object sender, EventArgs args)
+        {
+            await LoadFeeds(true);
+        }
     }
 }
