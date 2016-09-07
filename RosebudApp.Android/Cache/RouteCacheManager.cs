@@ -45,6 +45,20 @@ namespace RosebudAppAndroid.Cache
             string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
             await CacheFileManager.SaveToFile(path, routeDetails);
         }
+
+        public async Task<List<Stop>> GetRouteStops(int feedId, string routeId, DateTime date)
+        {
+            string fileName = string.Format("{0}-{1}-{2}-stops.json", feedId, routeId, TimeFormatter.ToShortDateApi(date));
+            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
+            return await CacheFileManager.GetFromFile<List<Stop>>(path);
+        }
+
+        public async Task SaveRouteStops(int feedId, string routeId, DateTime date, List<Stop> routeStops)
+        {
+            string fileName = string.Format("{0}-{1}-{2}-stops.json", feedId, routeId, TimeFormatter.ToShortDateApi(date));
+            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
+            await CacheFileManager.SaveToFile(path, routeStops);
+        }
     }
 }
 

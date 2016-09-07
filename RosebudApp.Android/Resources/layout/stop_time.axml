@@ -3,8 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include
-        layout="@layout/toolbar_calendar" />
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar_container">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_awesome_toolbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:minHeight="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    </android.support.design.widget.AppBarLayout>
+    
     <LinearLayout
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:orientation="vertical"
@@ -29,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/trip_list_empty"
+                android:text="@string/stop_list_empty"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <TextView
                 android:layout_width="match_parent"
@@ -52,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/trip_list_empty_no_internet"
+                android:text="@string/stop_list_empty_no_internet"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <TextView
                 android:layout_width="match_parent"
@@ -62,9 +75,14 @@
                 android:layout_marginTop="8dp"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/stop_time_pull_to_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/stop_time_recyclerview" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

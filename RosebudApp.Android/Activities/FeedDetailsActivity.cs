@@ -188,14 +188,7 @@ namespace RosebudAppAndroid.Activities
             }
             else
             {
-                if (routes == null)
-                {
-                    routeAdapter.ClearItems();
-                }
-                else
-                {
-                    routeAdapter.ReplaceItems(routes);
-                }
+                routeAdapter.ReplaceItems(routes);
             }
 
             routePullToRefresh.Refreshing = false;
@@ -205,10 +198,22 @@ namespace RosebudAppAndroid.Activities
         public void OnItemClick(object sender, int position)
         {
             Route clickedRoute = routeAdapter[position];
-            Intent detailsIntent = new Intent(this, typeof(RouteDetailsActivity));
-            detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(clickedRoute));
 
-            StartActivity(detailsIntent);
+            if (false)
+            {
+                //TODO: if location permission is given, open time for closest stop automatic
+                Intent detailsIntent = new Intent(this, typeof(RouteDetailsActivity));
+                detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(clickedRoute));
+
+                StartActivity(detailsIntent);
+            }
+            else
+            {
+                Intent stopSelectionIntent = new Intent(this, typeof(StopSelectionActivity));
+                stopSelectionIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(clickedRoute));
+
+                StartActivity(stopSelectionIntent);
+            }
         }
 
         void ToggleDatePicker()

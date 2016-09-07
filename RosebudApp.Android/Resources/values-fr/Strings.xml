@@ -13,10 +13,13 @@
 
     <string name="feed_list_empty">Aucune agence de transport n\'est disponible pour le moment.</string>
     <string name="route_list_empty">Aucune route n\'est disponible pour le moment.</string>
+    <string name="select_calendar">Vous pouvez sélectionner une autre date en tappant sur la flèche dans la barre ci-dessus.</string>
+    <string name="select_calendar_no_internet">Vérifiez votre connexion internet ou essayez une autre date en tappant sur la flèche dans la barre ci-dessus.</string>
     <string name="trip_list_empty">Aucun trajet le {0}.</string>
-    <string name="trip_list_empty_details">Vous pouvez sélectionner une autre date en tappant sur la flèche dans la barre ci-dessus.</string>
     <string name="trip_list_empty_no_internet">Impossible de charger les trajets.</string>
-    <string name="trip_list_empty_no_internet_details">Vérifiez votre connexion internet ou essayez une autre date en tappant sur la flèche dans la barre ci-dessus.</string>
+    <string name="stop_list_empty">Aucun arrêt le {0}.</string>
+    <string name="stop_list_empty_no_internet">Impossible de charger les arrêts.</string>
+
 
     <string name="trip_details_no_map">Aucune carte disponible pour ce trajet.</string>
 

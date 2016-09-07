@@ -9,48 +9,91 @@ using System.Linq;
 using RosebudAppCore.Model;
 using RosebudAppCore.Utils;
 using Java.Security;
+using Android.Support.V7.Widget;
+using RosebudAppCore.Model.Enum;
+using Android.Graphics.Drawables;
 
 namespace RosebudAppAndroid.Adapters
 {
-	public class StopAdapter : GenericAdapter<StopDetails>
-	{
-		public StopAdapter(Context context, List<StopDetails> stops) : base(context, stops)
-		{
-		}
+    public class StopAdapter : BaseRecyclerAdapter<Stop>
+    {
+        Route RouteInfo;
 
-		public override View GetView(int position, View convertView, ViewGroup parent)
-		{
-			if (convertView == null)
-			{
-				convertView = inflater.Inflate(Resource.Layout.stop_listitem, parent, false);
-			}
+        public StopAdapter(Context context, List<Stop> stops, Route routeInfo) : base(context, stops)
+        {
+            RouteInfo = routeInfo;
+        }
 
-			StopDetails currentStop = this[position];
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            View view = Inflater.Inflate(Resource.Layout.stop_listitem, parent, false);
+            return new StopViewHolder(view, OnClick, Context, this, RouteInfo);
+        }
 
-			TextView lblStopName = convertView.FindViewById<TextView>(Resource.Id.lbl_stop_name);
-			TextView lblArrivalTime = convertView.FindViewById<TextView>(Resource.Id.lbl_arrival_time);
-			TextView lblDepartureTime = convertView.FindViewById<TextView>(Resource.Id.lbl_departure_time);
+        public class StopViewHolder : BaseViewHolder
+        {
+            Context Context;
+            StopAdapter Adapter;
+            Route RouteInfo;
 
-			lblStopName.Text = currentStop.stop_name;
-			lblArrivalTime.Text = TimeFormatter.FormatHoursMinutes(currentStop.arrival_time);
-			lblDepartureTime.Text = TimeFormatter.FormatHoursMinutes(currentStop.departure_time);
+            TextView lblStopName;
+            View lineStopTop;
+            View lineStopBottom;
+            View mapMarker;
 
-			if (lblArrivalTime.Text == lblDepartureTime.Text)
-			{
-				lblArrivalTime.Visibility = ViewStates.Gone;
-			}
 
-			return convertView;
-		}
+            public StopViewHolder(View itemView, Action<int> listener, Context context, StopAdapter adapter, Route routeInfo) : base(itemView, listener)
+            {
+                Context = context;
+                Adapter = adapter;
+                RouteInfo = routeInfo;
 
-		protected override List<StopDetails> ApplyFilter()
-		{
-			return allItems;
-		}
+                lblStopName = view.FindViewById<TextView>(Resource.Id.lbl_stop_name);
+                lineStopTop = view.FindViewById<View>(Resource.Id.line_stop_top);
+                lineStopBottom = view.FindViewById<View>(Resource.Id.line_stop_bottom);
+                mapMarker = view.FindViewById<View>(Resource.Id.map_marker);
 
-		public int GetPositionOfNextStop()
-		{
-			return 0;
-		}
-	}
+                SetLineColor();
+            }
+
+            public override void BindData(Stop item, int position)
+            {
+                lblStopName.Text = item.stop_name;
+
+                lineStopTop.Visibility = position == 0 ? ViewStates.Invisible : ViewStates.Visible;
+                lineStopBottom.Visibility = position == Adapter.ItemCount - 1 ? ViewStates.Invisible : ViewStates.Visible;
+
+                if (item.location_type == LocationType.Station)
+                {
+                    //lblTempType.Text = "O";
+                }
+
+                
+            }
+
+            private void SetLineColor()
+            {
+                Color lineColor = new Color(Context.GetColor(Resource.Color.default_item_color));
+
+                if (!string.IsNullOrWhiteSpace(RouteInfo.route_color))
+                {
+                    lineColor = Color.ParseColor(ColorHelper.FormatColor(RouteInfo.route_color));
+                }
+
+                lineStopTop.SetBackgroundColor(lineColor);
+                lineStopBottom.SetBackgroundColor(lineColor);
+
+                GradientDrawable shape = (GradientDrawable)mapMarker.Background.Mutate();
+                shape.SetStroke(3 * (int)Context.Resources.DisplayMetrics.Density, lineColor);
+            }
+
+            protected string formatFrequencyTime(int timeSeconds)
+            {
+                TimeSpan time = TimeSpan.FromSeconds(timeSeconds);
+
+                return time.Minutes.ToString();
+            }
+        }
+
+    }
 }

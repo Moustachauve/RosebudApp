@@ -19,7 +19,7 @@ namespace RosebudAppAndroid.Adapters
         protected LayoutInflater inflater;
 
         protected List<T> allItems;
-        List<T> displayedItems;
+        protected List<T> displayedItems;
 
         public override T this[int position] { get { return displayedItems[position]; } }
         public override int Count { get { return displayedItems.Count; } }

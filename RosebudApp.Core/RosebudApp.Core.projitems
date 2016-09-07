@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\HttpHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\FeedAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Enum\BikesAllowed.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Enum\LocationType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Enum\TripDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Enum\WheelchairAccessibility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Feed.cs" />
@@ -23,13 +24,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Location.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Route.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Stop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\StopTime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Dependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ILocationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\INetworkStatusMonitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IPreferenceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Trip.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\StopTime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\StopTimeDetails.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeFormatter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\StopAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ShapePoint.cs" />
@@ -42,5 +44,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Cache\CacheItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Cache\IRouteCacheManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Cache\IStopCacheManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\TripDirectionHelper.cs" />
   </ItemGroup>
 </Project>

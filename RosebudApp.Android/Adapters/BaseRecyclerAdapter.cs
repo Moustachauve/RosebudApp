@@ -20,25 +20,10 @@ namespace RosebudAppAndroid
         protected readonly Context Context;
         protected readonly LayoutInflater Inflater;
         protected List<TItem> AllItems { get; set; }
-        protected List<TItem> DisplayedItems { get; set; }
 
-        string filter;
-        public string Filter
-        {
-            get { return filter; }
-            set
-            {
-                if (value.ToLower() == filter)
-                    return;
+        public override int ItemCount { get { return AllItems.Count; } }
 
-                filter = value.ToLower();
-                AnimateTo(ApplyFilter());
-            }
-        }
-
-        public override int ItemCount { get { return DisplayedItems.Count; } }
-
-        public TItem this[int i] { get { return DisplayedItems[i]; } }
+        public virtual TItem this[int i] { get { return AllItems[i]; } }
 
         public event EventHandler<int> ItemClick;
 
@@ -55,8 +40,6 @@ namespace RosebudAppAndroid
             {
                 AllItems = new List<TItem>(items);
             }
-
-            DisplayedItems = new List<TItem>(AllItems);
         }
 
         protected void OnClick(int position)
@@ -68,26 +51,23 @@ namespace RosebudAppAndroid
         {
             TItem currentItem = this[position];
 
-            ((BaseViewHolder)holder).BindData(currentItem);
+            ((BaseViewHolder)holder).BindData(currentItem, position);
         }
 
-        protected abstract List<TItem> ApplyFilter();
-
-        public void AddItem(TItem item)
+        public virtual void AddItem(TItem item)
         {
             AllItems.Add(item);
-            AnimateTo(ApplyFilter());
+            AnimateTo(AllItems);
         }
 
-        public void ClearItems()
+        public virtual void ClearItems()
         {
             int numberElements = ItemCount;
             AllItems = new List<TItem>();
-            DisplayedItems = new List<TItem>();
             NotifyItemRangeRemoved(0, numberElements);
         }
 
-        public void ReplaceItems(List<TItem> items)
+        public virtual void ReplaceItems(List<TItem> items)
         {
             if (items == null)
             {
@@ -97,28 +77,27 @@ namespace RosebudAppAndroid
             {
                 AllItems = new List<TItem>(items);
             }
-            AnimateTo(ApplyFilter());
+            AnimateTo(AllItems);
         }
 
-        protected TItem RemoveItem(int position)
+        protected virtual TItem RemoveItem(int position)
         {
-            TItem item = DisplayedItems[position];
-            DisplayedItems.Remove(item);
+            TItem item = AllItems[position];
             NotifyItemRemoved(position);
             return item;
         }
 
-        protected void InsertItem(int position, TItem item)
+        protected virtual void InsertItem(int position, TItem item)
         {
-            DisplayedItems.Insert(position, item);
+            AllItems.Insert(position, item);
             NotifyItemInserted(position);
         }
 
-        public void MoveItem(int fromPosition, int toPosition)
+        public virtual void MoveItem(int fromPosition, int toPosition)
         {
-            TItem item = DisplayedItems[fromPosition];
-            DisplayedItems.Remove(item);
-            DisplayedItems.Insert(toPosition, item);
+            TItem item = AllItems[fromPosition];
+            AllItems.Remove(item);
+            AllItems.Insert(toPosition, item);
             NotifyItemMoved(fromPosition, toPosition);
         }
 
@@ -129,11 +108,11 @@ namespace RosebudAppAndroid
             ApplyAndAnimateMovedItems(items);
         }
 
-        void ApplyAndAnimateRemovals(List<TItem> items)
+        protected virtual void ApplyAndAnimateRemovals(List<TItem> items)
         {
-            for (int i = DisplayedItems.Count - 1; i >= 0; i--)
+            for (int i = AllItems.Count - 1; i >= 0; i--)
             {
-                TItem item = DisplayedItems[i];
+                TItem item = AllItems[i];
                 if (!items.Contains(item))
                 {
                     RemoveItem(i);
@@ -141,24 +120,24 @@ namespace RosebudAppAndroid
             }
         }
 
-        void ApplyAndAnimateAdditions(List<TItem> items)
+        protected virtual void ApplyAndAnimateAdditions(List<TItem> items)
         {
             for (int i = 0; i < items.Count; i++)
             {
                 TItem item = items[i];
-                if (!DisplayedItems.Contains(item))
+                if (!AllItems.Contains(item))
                 {
                     InsertItem(i, item);
                 }
             }
         }
 
-        void ApplyAndAnimateMovedItems(List<TItem> items)
+        protected virtual void ApplyAndAnimateMovedItems(List<TItem> items)
         {
             for (int toPosition = items.Count - 1; toPosition >= 0; toPosition--)
             {
                 TItem item = items[toPosition];
-                int fromPosition = DisplayedItems.IndexOf(item);
+                int fromPosition = AllItems.IndexOf(item);
                 if (fromPosition >= 0 && fromPosition != toPosition)
                 {
                     MoveItem(fromPosition, toPosition);
@@ -173,10 +152,13 @@ namespace RosebudAppAndroid
             public BaseViewHolder(View itemView, Action<int> listener) : base(itemView)
             {
                 view = itemView;
-                itemView.Click += (sender, e) => listener(base.AdapterPosition);
+                if (listener != null)
+                {
+                    itemView.Click += (sender, e) => listener(base.AdapterPosition);
+                }
             }
 
-            public abstract void BindData(TItem item);
+            public abstract void BindData(TItem item, int position);
         }
 
     }

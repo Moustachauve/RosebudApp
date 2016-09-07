@@ -46,12 +46,7 @@ namespace RosebudAppAndroid.Adapters
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			View view = Inflater.Inflate(Resource.Layout.trip_listitem, parent, false);
-			return new TripAdapter.TripViewHolder(view, OnClick, Context);
-		}
-
-		protected override List<Trip> ApplyFilter()
-		{
-			return AllItems;
+			return new TripViewHolder(view, OnClick, Context);
 		}
 
 		public class TripViewHolder : BaseViewHolder
@@ -63,7 +58,7 @@ namespace RosebudAppAndroid.Adapters
                 Context = context;
             }
 
-			public override void BindData(Trip item)
+			public override void BindData(Trip item, int position)
 			{
 				TextView lblHeadsign = view.FindViewById<TextView>(Resource.Id.lbl_headsign);
 				TextView lblFrequency = view.FindViewById<TextView>(Resource.Id.lbl_frequency);

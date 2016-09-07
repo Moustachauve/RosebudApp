@@ -4,39 +4,52 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="70dp">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="10dp"
-        android:orientation="vertical"
-        android:layout_marginLeft="5dp">
-        <TextView
-            android:id="@+id/lbl_arrival_time"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            tools:text="00:00" />
-        <TextView
-            android:id="@+id/lbl_departure_time"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            tools:text="11:00" />
-    </LinearLayout>
-    <LinearLayout
+    android:background="?android:selectableItemBackground"
+    android:gravity="center_vertical"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:minHeight="?android:attr/listPreferredItemHeight">
+
+    <RelativeLayout
+        android:layout_width="30dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:weightSum="2">
+            <View
+                android:id="@+id/line_stop_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/default_item_color" />
+            <View
+                android:id="@+id/line_stop_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/default_item_color" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/map_marker"
+            android:background="@drawable/map_marker"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/lbl_stop_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="10dp"
-        android:paddingLeft="0dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/lbl_stop_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Headsign"
-            style="@android:style/TextAppearance.Medium" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        tools:text="Headsign" />
 </LinearLayout>

@@ -13,7 +13,7 @@ using Android.Support.V7.Widget;
 
 namespace RosebudAppAndroid.Adapters
 {
-	public class FeedAdapter : BaseRecyclerAdapter<Feed>
+	public class FeedAdapter : SearchableRecyclerAdapter<Feed>
 	{
         public FeedAdapter(Context context, List<Feed> feeds) : base(context, feeds)
 		{
@@ -41,7 +41,7 @@ namespace RosebudAppAndroid.Adapters
 			{
 			}
 
-			public override void BindData(Feed item)
+			public override void BindData(Feed item, int position)
 			{
 				TextView lblAgencyName = view.FindViewById<TextView>(Resource.Id.lbl_agency_name);
 

@@ -1,7 +1,7 @@
 ﻿using System;
 namespace RosebudAppCore.Model
 {
-	public class StopDetails : StopTime
+	public class StopDetails : StopTimeTrip
 	{
 		public string stop_code { get; set; }
         public string stop_name { get; set; }

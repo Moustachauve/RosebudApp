@@ -11,6 +11,7 @@ using Android.Views;
 using Java.Lang;
 using System.Linq;
 using RosebudAppCore.Model.Enum;
+using RosebudAppCore.Utils;
 
 namespace RosebudAppAndroid
 {
@@ -39,10 +40,10 @@ namespace RosebudAppAndroid
         {
             if (Count <= 1)
             {
-                return new Java.Lang.String(routeDetails.GetDirectionName(TripDirection.AnyDirection));
+                return new Java.Lang.String(TripDirectionHelper.GetDirectionName(routeDetails.trips, TripDirection.AnyDirection));
             }
 
-            return new Java.Lang.String(routeDetails.GetDirectionName((TripDirection)position));
+            return new Java.Lang.String(TripDirectionHelper.GetDirectionName(routeDetails.trips, (TripDirection)position));
         }
 
         public void UpdateTrips(RouteDetails routeDetails)
@@ -52,14 +53,14 @@ namespace RosebudAppAndroid
 
             if (routeDetails != null)
             {
-                if (routeDetails.HasMultipleDirection())
+                if (TripDirectionHelper.HasMultipleDirection(routeDetails.trips))
                 {
-                    itemTrips.Add(new List<Trip>(routeDetails.GetTripsForDirection(TripDirection.MainDirection)));
-                    itemTrips.Add(new List<Trip>(routeDetails.GetTripsForDirection(TripDirection.OppositeDirection)));
+                    itemTrips.Add(new List<Trip>(TripDirectionHelper.GetTripsForDirection(routeDetails.trips, TripDirection.MainDirection)));
+                    itemTrips.Add(new List<Trip>(TripDirectionHelper.GetTripsForDirection(routeDetails.trips, TripDirection.OppositeDirection)));
                 }
                 else
                 {
-                    itemTrips.Add(new List<Trip>(routeDetails.GetTripsForDirection(TripDirection.AnyDirection)));
+                    itemTrips.Add(new List<Trip>(TripDirectionHelper.GetTripsForDirection(routeDetails.trips, TripDirection.AnyDirection)));
                 }
             }
 

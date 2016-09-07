@@ -13,7 +13,7 @@ using Android.Support.V7.Widget;
 
 namespace RosebudAppAndroid.Adapters
 {
-	public class RouteAdapter : BaseRecyclerAdapter<Route>
+	public class RouteAdapter : SearchableRecyclerAdapter<Route>
 	{
 		public RouteAdapter(Context context, List<Route> routes) : base(context, routes)
 		{
@@ -41,7 +41,7 @@ namespace RosebudAppAndroid.Adapters
 			{
 			}
 
-			public override void BindData(Route item)
+			public override void BindData(Route item, int position)
 			{
 				TextView lblRouteShortName = view.FindViewById<TextView>(Resource.Id.lbl_route_short_name);
 				TextView lblRouteLongName = view.FindViewById<TextView>(Resource.Id.lbl_route_long_name);

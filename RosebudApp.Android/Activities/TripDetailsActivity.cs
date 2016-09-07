@@ -38,7 +38,8 @@ namespace RosebudAppAndroid.Activities
 
         Route routeInfo;
         Trip tripInfo;
-        StopAdapter stopAdapter;
+        string stopId;
+        StopTimeTripAdapter stopAdapter;
         ListView stopListView;
         TextView emptyView;
         LinearLayout slidingContainer;
@@ -104,6 +105,7 @@ namespace RosebudAppAndroid.Activities
 
             routeInfo = JsonConvert.DeserializeObject<Route>(Intent.GetStringExtra("routeInfos"));
             tripInfo = JsonConvert.DeserializeObject<Trip>(Intent.GetStringExtra("tripInfos"));
+            stopId = Intent.GetStringExtra("stopId");
 
             showRouteInfo();
             LoadStops();
@@ -220,7 +222,7 @@ namespace RosebudAppAndroid.Activities
             {
                 if (details != null)
                 {
-                    stopAdapter = new StopAdapter(this, details.stops);
+                    stopAdapter = new StopTimeTripAdapter(this, details.stops);
                     stopListView.Adapter = stopAdapter;
                 }
                 InvalidateOptionsMenu();
@@ -239,10 +241,13 @@ namespace RosebudAppAndroid.Activities
 
             showTripOnMap(details);
 
-            //stopListView.Post(() =>
-            //{
-            //	stopListView.SmoothScrollToPositionFromTop(stopAdapter.GetPositionOfNextTrip(), 50);
-            //});
+            stopListView.Post(() =>
+            {
+                if(!string.IsNullOrWhiteSpace(stopId))
+                {
+                    stopListView.SmoothScrollToPositionFromTop(stopAdapter.GetPositionByStopId(stopId), 50);
+                }
+            });
         }
 
         async void showTripOnMap(TripDetails details)

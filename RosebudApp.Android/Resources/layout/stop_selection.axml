@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/trip_list_empty"
+                android:text="@string/stop_list_empty"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <TextView
                 android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/trip_list_empty_no_internet"
+                android:text="@string/stop_list_empty_no_internet"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <TextView
                 android:layout_width="match_parent"

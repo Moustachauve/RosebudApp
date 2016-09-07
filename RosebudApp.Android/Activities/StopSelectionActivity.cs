@@ -1,32 +1,35 @@
-﻿
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
-using Android.Support.V4.View;
-using Android.Support.V7.App;
+using Android.Runtime;
 using Android.Views;
-using Android.Views.Animations;
 using Android.Widget;
+using Android.Support.V7.App;
+using Android.Support.Design.Widget;
+using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using RosebudAppAndroid.Fragments;
+using Android.Support.V4.View;
+using Newtonsoft.Json;
+using RosebudAppCore.Utils;
+using RosebudAppCore.Model;
+using Android.Views.Animations;
+using System.Threading.Tasks;
 using RosebudAppCore;
 using RosebudAppCore.DataAccessor;
-using RosebudAppCore.Model;
-using Newtonsoft.Json;
-using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
-using RosebudAppAndroid.Utils;
-using RosebudAppCore.Utils;
 using RosebudAppCore.Model.Enum;
 
 namespace RosebudAppAndroid.Activities
 {
-    [Activity(Label = "RouteDetailsActivity"/*, ConfigurationChanges = Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize*/)]
-    public class RouteDetailsActivity : AppCompatActivity
+    [Activity(Label = "StopSelectionActivity")]
+    public class StopSelectionActivity : AppCompatActivity
     {
         Route routeInfo;
-        TripDirectionPagerAdapter tripDirectionPagerAdapter;
+        StopDirectionPagerAdapter stopDirectionPagerAdapter;
 
         AppBarLayout appBarLayout;
         TextView lblToolbarDate;
@@ -44,7 +47,7 @@ namespace RosebudAppAndroid.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.route_details);
+            SetContentView(Resource.Layout.stop_selection);
 
             appBarLayout = FindViewById<AppBarLayout>(Resource.Id.app_bar_layout);
             var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
@@ -93,18 +96,9 @@ namespace RosebudAppAndroid.Activities
 
             networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
-                await LoadDetails();
+                await LoadStops();
             };
-        }
 
-        protected override void OnDestroy()
-        {
-            if (tripDirectionPagerAdapter != null)
-            {
-                tripDirectionPagerAdapter.ItemClicked -= OnItemClicked;
-            }
-
-            base.OnDestroy();
         }
 
         async Task SwitchDate(int year, int month, int day)
@@ -117,27 +111,7 @@ namespace RosebudAppAndroid.Activities
             Dependency.PreferenceManager.SelectedDatetime = date;
             lblToolbarDate.Text = TimeFormatter.ToFullShortDate(date);
             emptyViewMainText.Text = string.Format(Resources.GetText(Resource.String.trip_list_empty), TimeFormatter.ToAbrevShortDate(date));
-            await LoadDetails();
-        }
-
-        async Task LoadDetails(bool overrideCache = false)
-        {
-            RouteDetails currentRouteDetails = await RouteAccessor.GetRouteDetails(routeInfo.feed_id, routeInfo.route_id, Dependency.PreferenceManager.SelectedDatetime, overrideCache);
-
-            UpdateEmptyMessage(currentRouteDetails);
-            SetDirectionTabs(currentRouteDetails);
-
-            if (tripDirectionPagerAdapter == null)
-            {
-                tripDirectionPagerAdapter = new TripDirectionPagerAdapter(SupportFragmentManager);
-                tripDirectionPagerAdapter.ItemClicked += OnItemClicked;
-                viewPager.Adapter = tripDirectionPagerAdapter;
-                tabLayout.SetupWithViewPager(viewPager);
-            }
-
-            tripDirectionPagerAdapter.UpdateTrips(currentRouteDetails);
-
-            InvalidateOptionsMenu();
+            await LoadStops();
         }
 
         void ToggleDatePicker()
@@ -151,45 +125,29 @@ namespace RosebudAppAndroid.Activities
             isCalendarExpanded = !isCalendarExpanded;
         }
 
-        void SetDirectionTabs(RouteDetails routeDetails)
+        async Task LoadStops(bool overrideCache = false)
         {
-            tabLayout.RemoveAllTabs();
+            List<Stop> currentStops = await RouteAccessor.GetRouteStops(routeInfo.feed_id, routeInfo.route_id, Dependency.PreferenceManager.SelectedDatetime, overrideCache);
 
-            if (routeDetails != null)
-            {
-                if (TripDirectionHelper.HasMultipleDirection(routeDetails.trips))
-                {
-                    tabLayout.Visibility = ViewStates.Visible;
-                }
-                else
-                {
-                    if (string.IsNullOrWhiteSpace(TripDirectionHelper.GetDirectionName(routeDetails.trips, TripDirection.AnyDirection)))
-                        tabLayout.Visibility = ViewStates.Gone;
+            UpdateEmptyMessage(currentStops);
+            SetDirectionTabs(currentStops);
 
-                    else
-                    {
-                        tabLayout.Visibility = ViewStates.Visible;
-                    }
-                }
-            }
-            else
+            if (stopDirectionPagerAdapter == null)
             {
-                tabLayout.Visibility = ViewStates.Gone;
+                stopDirectionPagerAdapter = new StopDirectionPagerAdapter(SupportFragmentManager, routeInfo);
+                stopDirectionPagerAdapter.ItemClicked += OnItemClicked;
+                viewPager.Adapter = stopDirectionPagerAdapter;
+                tabLayout.SetupWithViewPager(viewPager);
             }
+
+            stopDirectionPagerAdapter.UpdateStops(currentStops);
+
+            InvalidateOptionsMenu();
         }
 
-        void OnItemClicked(object sender, TripClickedEventArgs e)
+        void UpdateEmptyMessage(List<Stop> currentStops)
         {
-            Intent detailsIntent = new Intent(this, typeof(TripDetailsActivity));
-            detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(routeInfo));
-            detailsIntent.PutExtra("tripInfos", JsonConvert.SerializeObject(e.Trip));
-
-            StartActivity(detailsIntent);
-        }
-
-        void UpdateEmptyMessage(RouteDetails routeDetails)
-        {
-            if (routeDetails == null || routeDetails.trips.Count == 0)
+            if (currentStops == null || currentStops.Count == 0)
             {
                 viewPager.Visibility = ViewStates.Gone;
 
@@ -211,6 +169,43 @@ namespace RosebudAppAndroid.Activities
                 emptyViewNoInternet.Visibility = ViewStates.Gone;
             }
         }
+
+        void SetDirectionTabs(List<Stop> currentStops)
+        {
+            tabLayout.RemoveAllTabs();
+
+            if (currentStops != null)
+            {
+                if (TripDirectionHelper.HasMultipleDirection(currentStops))
+                {
+                    tabLayout.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(TripDirectionHelper.GetDirectionName(currentStops, TripDirection.AnyDirection)))
+                        tabLayout.Visibility = ViewStates.Gone;
+
+                    else
+                    {
+                        tabLayout.Visibility = ViewStates.Visible;
+                    }
+                }
+            }
+            else
+            {
+                tabLayout.Visibility = ViewStates.Gone;
+            }
+        }
+
+
+        void OnItemClicked(object sender, StopClickedEventArgs e)
+        {
+            Intent detailsIntent = new Intent(this, typeof(StopTimeActivity));
+            detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(routeInfo));
+            detailsIntent.PutExtra("stopInfos", JsonConvert.SerializeObject(e.Stop));
+
+            StartActivity(detailsIntent);
+        }
+
     }
 }
-
