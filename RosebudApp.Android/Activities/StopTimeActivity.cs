@@ -24,21 +24,29 @@ using RosebudAppCore.DataAccessor;
 using RosebudAppAndroid.Adapters;
 using Android.Support.V7.Widget;
 using Com.Tonicartos.Superslim;
+using Android.Support.V4.Widget;
 
 namespace RosebudAppAndroid.Activities
 {
     [Activity(Label = "StopTimesActivity")]
     public class StopTimeActivity : AppCompatActivity
     {
+        const string STATE_RECYCLER_VIEW = "state-recycler-view";
+
         Route routeInfo;
         Stop stopInfo;
 
         RecyclerView stopTimeRecyclerView;
         StopTimeAdapter stopTimeAdapter;
+        SwipeRefreshLayout stopTimePullToRefresh;
+        SwipeRefreshLayout stopTimePullToRefreshEmpty;
+
 
         LinearLayout emptyView;
         LinearLayout emptyViewNoInternet;
         TextView emptyViewMainText;
+
+        IParcelable recyclerViewLayoutState;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -60,6 +68,15 @@ namespace RosebudAppAndroid.Activities
             stopInfo = JsonConvert.DeserializeObject<Stop>(Intent.GetStringExtra("stopInfos"));
             Title = routeInfo.route_short_name + " - " + stopInfo.stop_name;
 
+            stopTimePullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.stop_time_pull_to_refresh);
+            stopTimePullToRefreshEmpty = FindViewById<SwipeRefreshLayout>(Resource.Id.stop_time_pull_to_refresh_empty);
+            stopTimePullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+            stopTimePullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
+
+
+            stopTimePullToRefresh.Refresh += PullToRefresh_Refresh;
+            stopTimePullToRefreshEmpty.Refresh += PullToRefresh_Refresh;
+
             toolbar.NavigationClick += delegate
             {
                 OnBackPressed();
@@ -74,11 +91,31 @@ namespace RosebudAppAndroid.Activities
             {
                 await LoadStopTimes();
             });
-            
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            outState.PutParcelable(STATE_RECYCLER_VIEW, stopTimeRecyclerView.GetLayoutManager().OnSaveInstanceState());
+            base.OnSaveInstanceState(outState);
+        }
+
+        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
+        {
+            recyclerViewLayoutState = (IParcelable)savedInstanceState.GetParcelable(STATE_RECYCLER_VIEW);
+            base.OnRestoreInstanceState(savedInstanceState);
+        }
+
+
+        private async void PullToRefresh_Refresh(object sender, EventArgs e)
+        {
+            await LoadStopTimes(true);
         }
 
         async Task LoadStopTimes(bool overrideCache = false)
         {
+            stopTimePullToRefresh.Refreshing = true;
+            stopTimePullToRefreshEmpty.Refreshing = true;
+
             List<StopTime> stopTimes = await StopAccessor.GetStopTimes(routeInfo.feed_id, routeInfo.route_id, stopInfo.stop_id, Dependency.PreferenceManager.SelectedDatetime, overrideCache);
 
             UpdateEmptyMessage(stopTimes);
@@ -89,18 +126,27 @@ namespace RosebudAppAndroid.Activities
                 stopTimeAdapter.ItemClick += OnItemClicked;
                 stopTimeRecyclerView.SetAdapter(stopTimeAdapter);
                 stopTimeRecyclerView.SetLayoutManager(new LayoutManager(this));
+
+                if (recyclerViewLayoutState != null)
+                {
+                    stopTimeRecyclerView.GetLayoutManager().OnRestoreInstanceState(recyclerViewLayoutState);
+                }
             }
             else
             {
                 stopTimeAdapter.ReplaceItems(stopTimes);
             }
+
+            stopTimePullToRefresh.Refreshing = false;
+            stopTimePullToRefreshEmpty.Refreshing = false;
         }
 
         void UpdateEmptyMessage(List<StopTime> stopTimes)
         {
             if (stopTimes == null || stopTimes.Count == 0)
             {
-                stopTimeRecyclerView.Visibility = ViewStates.Gone;
+                stopTimePullToRefresh.Visibility = ViewStates.Gone;
+                stopTimePullToRefreshEmpty.Visibility = ViewStates.Visible;
 
                 if (Dependency.NetworkStatusMonitor.CanConnect)
                 {
@@ -115,9 +161,8 @@ namespace RosebudAppAndroid.Activities
             }
             else
             {
-                stopTimeRecyclerView.Visibility = ViewStates.Visible;
-                emptyView.Visibility = ViewStates.Gone;
-                emptyViewNoInternet.Visibility = ViewStates.Gone;
+                stopTimePullToRefresh.Visibility = ViewStates.Visible;
+                stopTimePullToRefreshEmpty.Visibility = ViewStates.Gone;
             }
         }
 

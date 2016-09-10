@@ -2720,10 +2720,7 @@ namespace RosebudAppAndroid
 			public const int lbl_agency_name = 2131427475;
 			
 			// aapt resource value: 0x7f0b00c2
-			public const int lbl_arrival_time = 2131427522;
-			
-			// aapt resource value: 0x7f0b00c1
-			public const int lbl_departure_time = 2131427521;
+			public const int lbl_departure_time = 2131427522;
 			
 			// aapt resource value: 0x7f0b00d5
 			public const int lbl_end_time = 2131427541;
@@ -3014,13 +3011,16 @@ namespace RosebudAppAndroid
 			public const int sticky = 2131427400;
 			
 			// aapt resource value: 0x7f0b00ce
-			public const int stop_listview = 2131427534;
-			
-			// aapt resource value: 0x7f0b00bf
-			public const int stop_time_pull_to_refresh = 2131427519;
+			public const int stop_recyclerview = 2131427534;
 			
 			// aapt resource value: 0x7f0b00c0
-			public const int stop_time_recyclerview = 2131427520;
+			public const int stop_time_pull_to_refresh = 2131427520;
+			
+			// aapt resource value: 0x7f0b00bf
+			public const int stop_time_pull_to_refresh_empty = 2131427519;
+			
+			// aapt resource value: 0x7f0b00c1
+			public const int stop_time_recyclerview = 2131427521;
 			
 			// aapt resource value: 0x7f0b007c
 			public const int submit_area = 2131427452;

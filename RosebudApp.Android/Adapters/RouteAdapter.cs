@@ -47,7 +47,15 @@ namespace RosebudAppAndroid.Adapters
 				TextView lblRouteLongName = view.FindViewById<TextView>(Resource.Id.lbl_route_long_name);
 
 				lblRouteShortName.Text = item.route_short_name;
-				lblRouteLongName.Text = item.route_long_name;
+
+                if(!string.IsNullOrWhiteSpace(item.route_long_name))
+                {
+                    lblRouteLongName.Text = item.route_long_name;
+                }
+                else
+                {
+                    lblRouteLongName.Text = item.route_desc;
+                }
 
 				if (!string.IsNullOrWhiteSpace(item.route_color))
 				{

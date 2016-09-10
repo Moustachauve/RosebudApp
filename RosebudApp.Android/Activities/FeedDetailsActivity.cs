@@ -22,6 +22,8 @@ using SearchViewCompat = Android.Support.V7.Widget.SearchView;
 using RosebudAppAndroid.Fragments;
 using RosebudAppAndroid.Utils;
 using RosebudAppCore.Utils;
+using Android;
+using Android.Content.PM;
 
 namespace RosebudAppAndroid.Activities
 {
@@ -80,15 +82,8 @@ namespace RosebudAppAndroid.Activities
                 OnBackPressed();
             };
 
-            routePullToRefresh.Refresh += async delegate
-            {
-                await LoadRoutes(true);
-            };
-
-            routePullToRefreshEmpty.Refresh += async delegate
-            {
-                await LoadRoutes(true);
-            };
+            routePullToRefresh.Refresh += PullToRefresh_Refresh;
+            routePullToRefreshEmpty.Refresh += PullToRefresh_Refresh;
 
             btnDatePicker.Click += delegate
             {
@@ -199,21 +194,10 @@ namespace RosebudAppAndroid.Activities
         {
             Route clickedRoute = routeAdapter[position];
 
-            if (false)
-            {
-                //TODO: if location permission is given, open time for closest stop automatic
-                Intent detailsIntent = new Intent(this, typeof(RouteDetailsActivity));
-                detailsIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(clickedRoute));
+            Intent stopSelectionIntent = new Intent(this, typeof(StopSelectionActivity));
+            stopSelectionIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(clickedRoute));
 
-                StartActivity(detailsIntent);
-            }
-            else
-            {
-                Intent stopSelectionIntent = new Intent(this, typeof(StopSelectionActivity));
-                stopSelectionIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(clickedRoute));
-
-                StartActivity(stopSelectionIntent);
-            }
+            StartActivity(stopSelectionIntent);
         }
 
         void ToggleDatePicker()
@@ -225,6 +209,11 @@ namespace RosebudAppAndroid.Activities
 
             appBarLayout.SetExpanded(!isCalendarExpanded, true);
             isCalendarExpanded = !isCalendarExpanded;
+        }
+
+        private async void PullToRefresh_Refresh(object sender, EventArgs e)
+        {
+            await LoadRoutes(true);
         }
     }
 }

@@ -9,59 +9,94 @@ using System.Linq;
 using RosebudAppCore.Model;
 using RosebudAppCore.Utils;
 using Java.Security;
+using Android.Graphics.Drawables;
+using Android.Support.V7.Widget;
 
 namespace RosebudAppAndroid.Adapters
 {
-	public class StopTimeTripAdapter : GenericAdapter<StopDetails>
+	public class StopTimeTripAdapter : BaseRecyclerAdapter<StopDetails>
 	{
-		public StopTimeTripAdapter(Context context, List<StopDetails> stops) : base(context, stops)
+        Route RouteInfo;
+
+		public StopTimeTripAdapter(Context context, List<StopDetails> stops, Route routeInfo) : base(context, stops)
 		{
-		}
-
-		public override View GetView(int position, View convertView, ViewGroup parent)
-		{
-			if (convertView == null)
-			{
-				convertView = inflater.Inflate(Resource.Layout.stop_time_trip_listitem, parent, false);
-			}
-
-			StopDetails currentStop = this[position];
-
-			TextView lblStopName = convertView.FindViewById<TextView>(Resource.Id.lbl_stop_name);
-			TextView lblArrivalTime = convertView.FindViewById<TextView>(Resource.Id.lbl_arrival_time);
-			TextView lblDepartureTime = convertView.FindViewById<TextView>(Resource.Id.lbl_departure_time);
-
-			lblStopName.Text = currentStop.stop_name;
-			lblArrivalTime.Text = TimeFormatter.FormatHoursMinutes(currentStop.arrival_time);
-			lblDepartureTime.Text = TimeFormatter.FormatHoursMinutes(currentStop.departure_time);
-
-			if (lblArrivalTime.Text == lblDepartureTime.Text)
-			{
-				lblArrivalTime.Visibility = ViewStates.Gone;
-			}
-
-			return convertView;
-		}
-
-		protected override List<StopDetails> ApplyFilter()
-		{
-			return allItems;
-		}
-
-		public int GetPositionOfNextStop()
-		{
-			return 0;
+            RouteInfo = routeInfo;
 		}
 
         public int GetPositionByStopId(string stopId)
         {
-            for (int i = 0; i < displayedItems.Count; i++)
+            for (int i = 0; i < AllItems.Count; i++)
             {
-                if (displayedItems[i].stop_id == stopId)
+                if (AllItems[i].stop_id == stopId)
                     return i;
             }
 
             return -1;
         }
-	}
+
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            View view = Inflater.Inflate(Resource.Layout.stop_time_trip_listitem, parent, false);
+            return new StopTimeTripViewHolder(view, OnClick, Context, this, RouteInfo);
+        }
+
+        public class StopTimeTripViewHolder : BaseViewHolder
+        {
+            Context Context;
+            StopTimeTripAdapter Adapter;
+            Route RouteInfo;
+
+            TextView lblStopName;
+            TextView lblDepartureTime;
+            View lineStopTop;
+            View lineStopBottom;
+
+
+            public StopTimeTripViewHolder(View itemView, Action<int> listener, Context context, StopTimeTripAdapter adapter, Route routeInfo) : base(itemView, null)
+            {
+                Context = context;
+                Adapter = adapter;
+                RouteInfo = routeInfo;
+
+                lblStopName = view.FindViewById<TextView>(Resource.Id.lbl_stop_name);
+                lineStopTop = view.FindViewById<View>(Resource.Id.line_stop_top);
+                lineStopBottom = view.FindViewById<View>(Resource.Id.line_stop_bottom);
+                lblDepartureTime = view.FindViewById<TextView>(Resource.Id.lbl_departure_time);
+
+                SetLineColor();
+            }
+
+            public override void BindData(StopDetails item, int position)
+            {
+                lblStopName.Text = item.stop_name;
+                lblDepartureTime.Text = TimeFormatter.FormatHoursMinutes(item.departure_time);
+
+                lineStopTop.Visibility = position == 0 ? ViewStates.Invisible : ViewStates.Visible;
+                lineStopBottom.Visibility = position == Adapter.ItemCount - 1 ? ViewStates.Invisible : ViewStates.Visible;
+            }
+
+            private void SetLineColor()
+            {
+                Color lineColor;
+
+                if (!string.IsNullOrWhiteSpace(RouteInfo.route_color))
+                {
+                    lineColor = Color.ParseColor(ColorHelper.FormatColor(RouteInfo.route_color));
+                }
+                else
+                {
+                    lineColor = new Color(Context.GetColor(Resource.Color.default_item_color));
+                }
+
+                Color contrastColor = ColorHelper.ContrastColor(lineColor);
+
+                lineStopTop.SetBackgroundColor(lineColor);
+                lineStopBottom.SetBackgroundColor(lineColor);
+                lblDepartureTime.SetBackgroundColor(lineColor);
+                lblDepartureTime.SetTextColor(contrastColor);
+            }
+
+        }
+
+    }
 }

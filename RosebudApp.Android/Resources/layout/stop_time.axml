@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +16,6 @@
             android:background="?attr/colorPrimary"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     </android.support.design.widget.AppBarLayout>
-    
     <LinearLayout
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:orientation="vertical"
@@ -29,52 +27,57 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_container"
             class="rosebudappandroid.fragments.NetworkStatusFragment" />
-        <LinearLayout
-            android:id="@+id/empty_view"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/stop_time_pull_to_refresh_empty"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="10dp"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/empty_view_main_text"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/empty_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:text="@string/stop_list_empty"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <TextView
+                android:padding="10dp"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/empty_view_main_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/stop_list_empty"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/select_calendar"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/empty_view_no_internet"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:text="@string/select_calendar"
-                android:layout_marginTop="8dp"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/empty_view_no_internet"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="10dp"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/empty_view_no_internet_main_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/stop_list_empty_no_internet"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/select_calendar_no_internet"
-                android:layout_marginTop="8dp"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
+                android:padding="10dp"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/empty_view_no_internet_main_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/stop_list_empty_no_internet"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/select_calendar_no_internet"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/stop_time_pull_to_refresh"
             android:layout_width="match_parent"

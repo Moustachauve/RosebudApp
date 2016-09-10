@@ -28,6 +28,9 @@ namespace RosebudAppAndroid.Activities
     [Activity(Label = "StopSelectionActivity")]
     public class StopSelectionActivity : AppCompatActivity
     {
+        const string STATE_TAB_PAGE = "state-tab-page";
+        const string STATE_RECYCLER_VIEW = "state-recycler-view";
+
         Route routeInfo;
         StopDirectionPagerAdapter stopDirectionPagerAdapter;
 
@@ -43,6 +46,8 @@ namespace RosebudAppAndroid.Activities
         LinearLayout emptyView;
         LinearLayout emptyViewNoInternet;
         TextView emptyViewMainText;
+
+        int? restoreTabPage;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -101,6 +106,17 @@ namespace RosebudAppAndroid.Activities
 
         }
 
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            outState.PutInt(STATE_TAB_PAGE, tabLayout.SelectedTabPosition);
+        }
+        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
+        {
+            base.OnRestoreInstanceState(savedInstanceState);
+            restoreTabPage = savedInstanceState.GetInt(STATE_TAB_PAGE);
+        }
+
         async Task SwitchDate(int year, int month, int day)
         {
             await SwitchDate(new DateTime(year, month, day));
@@ -141,6 +157,7 @@ namespace RosebudAppAndroid.Activities
             }
 
             stopDirectionPagerAdapter.UpdateStops(currentStops);
+            tabLayout.GetTabAt(restoreTabPage ?? 0).Select();
 
             InvalidateOptionsMenu();
         }

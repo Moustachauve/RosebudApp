@@ -120,7 +120,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Adapters\FeedAdapter.cs" />
     <Compile Include="Adapters\RouteAdapter.cs" />
-    <Compile Include="Adapters\GenericAdapter.cs" />
     <Compile Include="Adapters\TripAdapter.cs" />
     <Compile Include="Adapters\StopTimeTripAdapter.cs" />
     <Compile Include="Adapters\BaseRecyclerAdapter.cs" />

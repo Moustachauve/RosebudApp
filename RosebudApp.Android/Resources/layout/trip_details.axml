@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     android:gravity="bottom"
     android:fitsSystemWindows="false"
-    sothree:umanoPanelHeight="76dp"
+    sothree:umanoPanelHeight="73dp"
     sothree:umanoShadowHeight="4dp"
     sothree:umanoDragView="@+id/drag_view"
-    sothree:umanoScrollableView="@+id/stop_listview">
+    sothree:umanoScrollableView="@+id/stop_recyclerview">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +37,7 @@
                 android:padding="30dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/trip_details_no_map"
-                android:textColor="#ffffff"/>
+                android:textColor="#ffffff" />
         </LinearLayout>
         <android.support.v7.widget.Toolbar
             android:id="@+id/my_awesome_toolbar"
@@ -53,11 +53,12 @@
         android:orientation="vertical"
         android:id="@+id/sliding_container">
         <LinearLayout
-            android:background="#ffffff"
+            android:id="@+id/drag_view"
+            android:background="@color/default_item_color"
+            android:elevation="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/drag_view">
+            android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,12 +72,8 @@
                     android:gravity="center"
                     android:padding="7dp"
                     style="?android:attr/textAppearanceLarge"
-                    tools:text="ROUTE"
-                    android:elevation="6dp"
-                    android:background="@color/default_item_color"
-                    android:textColor="#FFFFFF"
                     android:layout_marginRight="10dp"
-                    android:minWidth="65dp" />
+                    tools:text="ROUTE"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -96,8 +93,8 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:ellipsize="end"
-                        tools:text="Direction"
-                        style="@android:style/@android:style/TextAppearance.Small" />
+                        style="@android:style/@android:style/TextAppearance.Small"
+                        tools:text="Direction"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -115,10 +112,11 @@
             android:gravity="center"
             android:visibility="gone"
             android:text="@string/feed_list_empty" />
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:id="@+id/stop_listview" />
+            android:layout_marginBottom="24dp"
+            android:id="@+id/stop_recyclerview" />
     </LinearLayout>
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

@@ -17,17 +17,26 @@ namespace RosebudAppAndroid.Adapters
 {
     public class StopAdapter : BaseRecyclerAdapter<Stop>
     {
-        Route RouteInfo;
+        Route routeInfo;
+        public Route RouteInfo
+        {
+            get { return routeInfo; }
+            set
+            {
+                routeInfo = value;
+                NotifyDataSetChanged();
+            }
+        }
 
         public StopAdapter(Context context, List<Stop> stops, Route routeInfo) : base(context, stops)
         {
-            RouteInfo = routeInfo;
+            this.routeInfo = routeInfo;
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             View view = Inflater.Inflate(Resource.Layout.stop_listitem, parent, false);
-            return new StopViewHolder(view, OnClick, Context, this, RouteInfo);
+            return new StopViewHolder(view, OnClick, Context, this, routeInfo);
         }
 
         public class StopViewHolder : BaseViewHolder
@@ -68,14 +77,14 @@ namespace RosebudAppAndroid.Adapters
                     //lblTempType.Text = "O";
                 }
 
-                
+
             }
 
             private void SetLineColor()
             {
                 Color lineColor = new Color(Context.GetColor(Resource.Color.default_item_color));
 
-                if (!string.IsNullOrWhiteSpace(RouteInfo.route_color))
+                if (RouteInfo != null && !string.IsNullOrWhiteSpace(RouteInfo.route_color))
                 {
                     lineColor = Color.ParseColor(ColorHelper.FormatColor(RouteInfo.route_color));
                 }

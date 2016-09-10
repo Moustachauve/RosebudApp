@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Route.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Stop.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\StopTime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\CoordinateHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Dependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ILocationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\INetworkStatusMonitor.cs" />

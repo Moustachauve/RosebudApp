@@ -23,6 +23,7 @@ using Newtonsoft.Json;
 using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using RosebudAppAndroid.Fragments;
 using System;
+using Android.Support.V7.Widget;
 
 namespace RosebudAppAndroid.Activities
 {
@@ -40,13 +41,14 @@ namespace RosebudAppAndroid.Activities
         Trip tripInfo;
         string stopId;
         StopTimeTripAdapter stopAdapter;
-        ListView stopListView;
+        RecyclerView stopRecyclerView;
         TextView emptyView;
         LinearLayout slidingContainer;
         SlidingUpPanelLayout slidingLayout;
 
         ToolbarCompat toolbar;
 
+        LinearLayout dragView;
         TextView lblRouteShortName;
         TextView lblRouteLongName;
         TextView lblTripHeadsign;
@@ -78,8 +80,9 @@ namespace RosebudAppAndroid.Activities
             MapFragment mapFragment = (MapFragment)FragmentManager.FindFragmentById(Resource.Id.trip_map);
             slidingContainer = FindViewById<LinearLayout>(Resource.Id.sliding_container);
             slidingLayout = FindViewById<SlidingUpPanelLayout>(Resource.Id.sliding_layout);
-            stopListView = FindViewById<ListView>(Resource.Id.stop_listview);
+            stopRecyclerView = FindViewById<RecyclerView>(Resource.Id.stop_recyclerview);
             emptyView = FindViewById<TextView>(Resource.Id.empty_view);
+            dragView = FindViewById<LinearLayout>(Resource.Id.drag_view);
             lblRouteShortName = FindViewById<TextView>(Resource.Id.lbl_route_short_name);
             lblRouteLongName = FindViewById<TextView>(Resource.Id.lbl_route_long_name);
             lblTripHeadsign = FindViewById<TextView>(Resource.Id.lbl_trip_headsign);
@@ -107,8 +110,14 @@ namespace RosebudAppAndroid.Activities
             tripInfo = JsonConvert.DeserializeObject<Trip>(Intent.GetStringExtra("tripInfos"));
             stopId = Intent.GetStringExtra("stopId");
 
-            showRouteInfo();
-            LoadStops();
+            ShowRouteInfo();
+            SetRouteColor();
+
+            toolbar.Post(async () =>
+            {
+                await LoadStops();
+            });
+            
 
             slidingLayout.PanelStateChanged += delegate (object sender, SlidingUpPanelLayout.PanelStateChangedEventArgs args)
             {
@@ -121,9 +130,9 @@ namespace RosebudAppAndroid.Activities
 
             slidingLayout.PanelSlide += SlidingLayout_PanelSlide;
 
-            networkFragment.RetryLastRequest += (object sender, EventArgs args) =>
+            networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
-                LoadStops();
+                await LoadStops();
             };
         }
 
@@ -201,14 +210,14 @@ namespace RosebudAppAndroid.Activities
             return;
         }
 
-        async void LoadStops(bool overrideCache = false)
+        async Task LoadStops(bool overrideCache = false)
         {
             var details = await StopAccessor.GetStopsForTrip(routeInfo.feed_id, routeInfo.route_id, tripInfo.trip_id, overrideCache);
 
             if (details == null)
             {
                 slidingLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Expanded);
-                stopListView.Visibility = ViewStates.Gone;
+                stopRecyclerView.Visibility = ViewStates.Gone;
                 emptyView.Visibility = ViewStates.Visible;
                 Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
                 //slidingLayout.TouchEnabled = false;
@@ -216,36 +225,29 @@ namespace RosebudAppAndroid.Activities
             }
 
             emptyView.Visibility = ViewStates.Gone;
-            stopListView.Visibility = ViewStates.Visible;
+            stopRecyclerView.Visibility = ViewStates.Visible;
 
             if (stopAdapter == null)
             {
-                if (details != null)
-                {
-                    stopAdapter = new StopTimeTripAdapter(this, details.stops);
-                    stopListView.Adapter = stopAdapter;
-                }
-                InvalidateOptionsMenu();
+                stopAdapter = new StopTimeTripAdapter(this, details.stops, routeInfo);
+                //stopAdapter.ItemClick += OnItemClicked;
+                stopRecyclerView.SetAdapter(stopAdapter);
+                stopRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
             }
             else
             {
-                if (details == null)
-                {
-                    stopAdapter.ReplaceItems(new List<StopDetails>());
-                }
-                else
-                {
-                    stopAdapter.ReplaceItems(details.stops);
-                }
+                stopAdapter.ReplaceItems(details.stops);
             }
+
 
             showTripOnMap(details);
 
-            stopListView.Post(() =>
+            stopRecyclerView.Post(() =>
             {
                 if(!string.IsNullOrWhiteSpace(stopId))
                 {
-                    stopListView.SmoothScrollToPositionFromTop(stopAdapter.GetPositionByStopId(stopId), 50);
+                    int position = stopAdapter.GetPositionByStopId(stopId);
+                    ((LinearLayoutManager)stopRecyclerView.GetLayoutManager()).ScrollToPositionWithOffset(position, 50);
                 }
             });
         }
@@ -309,23 +311,49 @@ namespace RosebudAppAndroid.Activities
             UpdateMapZoom();
         }
 
-        void showRouteInfo()
+        void ShowRouteInfo()
         {
             lblRouteShortName.Text = routeInfo.route_short_name;
-            lblRouteLongName.Text = routeInfo.route_long_name;
             lblTripHeadsign.Text = tripInfo.trip_headsign;
+
+            if (!string.IsNullOrWhiteSpace(routeInfo.route_long_name))
+            {
+                lblRouteLongName.Text = routeInfo.route_long_name;
+            }
+            else
+            {
+                lblRouteLongName.Text = routeInfo.route_desc;
+            }
+
+        }
+
+        void SetRouteColor()
+        {
+            Color mainColor;
 
             if (!string.IsNullOrWhiteSpace(routeInfo.route_color))
             {
-                lblRouteShortName.SetBackgroundColor(Color.ParseColor(ColorHelper.FormatColor(routeInfo.route_color)));
-                lblRouteShortName.SetTextColor(ColorHelper.ContrastColor(routeInfo.route_color));
+                mainColor = Color.ParseColor(ColorHelper.FormatColor(routeInfo.route_color));
             }
+            else
+            {
+                mainColor = new Color(GetColor(Resource.Color.default_item_color));
+            }
+
+            Color contrastColor = ColorHelper.ContrastColor(mainColor);
+
+            dragView.SetBackgroundColor(mainColor);
+            lblRouteShortName.SetTextColor(contrastColor);
+            lblRouteLongName.SetTextColor(contrastColor);
+            lblTripHeadsign.SetTextColor(contrastColor);
+
+            Window.SetStatusBarColor(ColorHelper.DarkenColor(mainColor));
         }
 
         public void RequestLocationPermission()
         {
             string permission = Manifest.Permission.AccessFineLocation;
-            if (CheckSelfPermission(permission) == (int)Permission.Granted)
+            if (CheckSelfPermission(permission) == Permission.Granted)
             {
                 ShowMyPosition();
                 return;

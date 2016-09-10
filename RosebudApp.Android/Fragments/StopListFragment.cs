@@ -71,6 +71,7 @@ namespace RosebudAppAndroid.Fragments
         {
             string jsonStops = JsonConvert.SerializeObject(stops);
             outState.PutString(BUNDLE_KEY_TRIPS, jsonStops);
+            //outState.PutParcelable(STATE_RECYCLER_VIEW, stopRecyclerView.GetLayoutManager().OnSaveInstanceState());
             base.OnSaveInstanceState(outState);
         }
 
@@ -99,6 +100,7 @@ namespace RosebudAppAndroid.Fragments
             }
             else
             {
+                stopAdapter.RouteInfo = RouteInfo;
                 stopAdapter.ReplaceItems(stops);
             }
 

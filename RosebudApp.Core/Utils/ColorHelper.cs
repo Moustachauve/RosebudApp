@@ -28,6 +28,15 @@ namespace RosebudAppCore
 			else
 				return Color.White;
 		}
+
+        public static Color DarkenColor(Color color)
+        {
+            float[] hsv = new float[3];
+            Color.ColorToHSV(color, hsv);
+            hsv[2] *= 0.8f; // value component
+
+            return Color.HSVToColor(hsv);
+        }
 	}
 }
 

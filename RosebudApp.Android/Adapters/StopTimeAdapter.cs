@@ -33,7 +33,7 @@ namespace RosebudAppAndroid.Adapters
                 if (!sections.ContainsKey(hour))
                 {
                     section = new HeaderItem();
-                    section.Title = hour + ":00";
+                    section.Title = TimeFormatter.FormatHoursMinutes(hour + ":00:00");
                     section.SectionFirstPosition = position;
                     sections.Add(hour, section);
                     internalItems.Add(section);
