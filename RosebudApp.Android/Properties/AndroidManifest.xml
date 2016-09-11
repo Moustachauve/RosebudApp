@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0.3" package="ca.cgagnier.RosebudApp" android:installLocation="auto" android:versionCode="6">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0.4" package="ca.cgagnier.RosebudApp" android:installLocation="auto" android:versionCode="7">
 	<uses-sdk android:minSdkVersion="17" android:targetSdkVersion="23" />
 	<uses-feature android:glEsVersion="0x00020000" android:required="true" />
 	<uses-permission android:name="android.permission.INTERNET" />
