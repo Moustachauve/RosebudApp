@@ -24,10 +24,14 @@ namespace RosebudAppAndroid.Fragments
 {
     public class FeedListFragment : Fragment
     {
+        const string STATE_RECYCLER_VIEW = "state-recycler-view";
+
         FeedAdapter feedAdapter;
         RecyclerView feedRecyclerView;
         SwipeRefreshLayout feedPullToRefresh;
         SwipeRefreshLayout feedPullToRefreshEmpty;
+
+        IParcelable recyclerViewLayoutState;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -72,8 +76,23 @@ namespace RosebudAppAndroid.Fragments
         public override void OnDetach()
         {
             ((MainActivity)Activity).SearchTextChanged -= OnSearchTextChanged;
-            ((MainActivity)Activity).RetryLastRequest += OnRetryLastRequest;
+            ((MainActivity)Activity).RetryLastRequest -= OnRetryLastRequest;
             base.OnDetach();
+        }
+
+        public override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            outState.PutParcelable(STATE_RECYCLER_VIEW, feedRecyclerView.GetLayoutManager().OnSaveInstanceState());
+        }
+
+        public override void OnViewStateRestored(Bundle savedInstanceState)
+        {
+            base.OnViewStateRestored(savedInstanceState);
+            if (savedInstanceState != null)
+            {
+                recyclerViewLayoutState = (IParcelable)savedInstanceState.GetParcelable(STATE_RECYCLER_VIEW);
+            }
         }
 
         async Task LoadFeeds(bool overrideCache = false)
@@ -92,6 +111,11 @@ namespace RosebudAppAndroid.Fragments
                 feedAdapter.ItemClick += OnItemClick;
                 feedRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
                 feedRecyclerView.SetAdapter(feedAdapter);
+
+                if (recyclerViewLayoutState != null)
+                {
+                    feedRecyclerView.GetLayoutManager().OnRestoreInstanceState(recyclerViewLayoutState);
+                }
             }
             else
                 feedAdapter.ReplaceItems(feeds);

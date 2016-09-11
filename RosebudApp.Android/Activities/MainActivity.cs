@@ -19,15 +19,20 @@ using Android.Support.V4.Content;
 using Android.Support.Design.Widget;
 using Android.Widget;
 using Android.App;
+using System.Collections.Generic;
 
 namespace RosebudAppAndroid.Activities
 {
     [Activity(Label = "Rosebud", MainLauncher = true, Icon = "@mipmap/ic_launcher")]
     public class MainActivity : AppCompatActivity
     {
+        const string STATE_SELECTED_MENU_POSITION = "state-selected-menu-position";
+
         IMenuItem searchMenu;
         DrawerLayout drawerLayout;
         NavigationView navigationView;
+
+        int selectedMenuPosition;
 
         public event EventHandler<string> SearchTextChanged;
         public event EventHandler RetryLastRequest;
@@ -52,17 +57,27 @@ namespace RosebudAppAndroid.Activities
             navigationView = FindViewById<NavigationView>(Resource.Id.drawer_navigation_view);
             NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
+            if (savedInstanceState == null)
+            {
+                SelectDrawerItem(navigationView.Menu.GetItem(0));
+            }
+            else
+            {
+                selectedMenuPosition = savedInstanceState.GetInt(STATE_SELECTED_MENU_POSITION);
+                SelectDrawerItem(navigationView.Menu.GetItem(selectedMenuPosition));
+                //RestoreSelectedDrawerItem();
+            }
+
             navigationView.NavigationItemSelected += (sender, e) =>
             {
                 SelectDrawerItem(e.MenuItem);
                 drawerLayout.CloseDrawers();
             };
-            SelectDrawerItem(navigationView.Menu.GetItem(0));
+            
 
             networkFragment.RetryLastRequest += (object sender, EventArgs args) =>
            {
-               if (RetryLastRequest != null)
-                   RetryLastRequest(sender, args);
+               RetryLastRequest?.Invoke(sender, args);
            };
         }
 
@@ -72,21 +87,53 @@ namespace RosebudAppAndroid.Activities
 
             switch (menuItem.ItemId)
             {
-                case Resource.Id.menu_drawer_agency:
-                    fragment = new FeedListFragment();
-                    break;
                 case Resource.Id.menu_drawer_settings:
                     Intent intent = new Intent(this, typeof(SettingsActivity));
                     StartActivity(intent);
                     return;
+                case Resource.Id.menu_drawer_agency:
                 default:
-                    fragment = new FeedListFragment();
+                    fragment = GetFragment(typeof(FeedListFragment));
                     break;
             }
 
-            FragmentManager.BeginTransaction().Replace(Resource.Id.content, fragment).Commit();
+            SetCurrentFragment(fragment);
             menuItem.SetChecked(true);
+            selectedMenuPosition = GetItemPositionInMenu(menuItem);
             Title = menuItem.TitleFormatted.ToString();
+        }
+
+        private int GetItemPositionInMenu(IMenuItem menuItem)
+        {
+            List<IMenuItem> items = new List<IMenuItem>();
+            for (int i = 0; i < navigationView.Menu.Size(); i++)
+            {
+                items.Add(navigationView.Menu.GetItem(i));
+            }
+
+            return items.IndexOf(menuItem);
+        }
+
+        private Fragment GetFragment(Type fragmentType)
+        {
+            string fragmentTag = fragmentType.FullName;
+
+            Fragment fragment = FragmentManager.FindFragmentByTag(fragmentTag);
+
+            if(fragment == null)
+            {
+                fragment = (Fragment)Activator.CreateInstance(fragmentType);
+            }
+
+            return fragment;
+        }
+
+        private void SetCurrentFragment(Fragment fragment)
+        {
+            Type fragmentType = fragment.GetType();
+            string fragmentTag = fragmentType.FullName;
+
+            FragmentManager.BeginTransaction().Replace(Resource.Id.content, fragment, fragmentTag).Commit();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -120,6 +167,18 @@ namespace RosebudAppAndroid.Activities
             }
 
             return base.OnOptionsItemSelected(item);
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            outState.PutInt(STATE_SELECTED_MENU_POSITION, selectedMenuPosition);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            navigationView.Menu.GetItem(selectedMenuPosition).SetChecked(true);
         }
     }
 }
