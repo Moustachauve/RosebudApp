@@ -17,10 +17,47 @@ namespace RosebudAppAndroid.Adapters
             MarginsFixed = false;
         }
 
+        public int GetNearestTimeSectionPosition(DateTime time)
+        {
+            HeaderTimeItem closestHeader = null;
+            int smallestDifference = int.MaxValue;
+
+            foreach (InternalItem item in AllItems)
+            {
+                HeaderTimeItem header = item as HeaderTimeItem;
+                if(header == null)
+                {
+                    continue;
+                }
+
+                int headerHour = header.Hour;
+                if(headerHour >= 24)
+                {
+                    headerHour -= 24;
+                } 
+
+                int difference = Math.Abs(header.Hour - time.Hour);
+                if(difference < smallestDifference)
+                {
+                    smallestDifference = difference;
+                    closestHeader = header;
+                }
+            }
+
+            if(closestHeader != null)
+            {
+                return closestHeader.SectionFirstPosition;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         protected override List<InternalItem> CreateInternalItems(List<StopTime> items)
         {
             List<InternalItem> internalItems = new List<InternalItem>();
-            Dictionary<string, HeaderItem> sections = new Dictionary<string, HeaderItem>();
+            Dictionary<string, HeaderTimeItem> sections = new Dictionary<string, HeaderTimeItem>();
 
             int position = 0;
 
@@ -28,12 +65,13 @@ namespace RosebudAppAndroid.Adapters
             {
                 string hour = item.departure_time.Split(':')[0];
 
-                HeaderItem section = null;
+                HeaderTimeItem section = null;
 
                 if (!sections.ContainsKey(hour))
                 {
-                    section = new HeaderItem();
+                    section = new HeaderTimeItem();
                     section.Title = TimeFormatter.FormatHoursMinutes(hour + ":00:00");
+                    section.Hour = int.Parse(hour);
                     section.SectionFirstPosition = position;
                     sections.Add(hour, section);
                     internalItems.Add(section);
@@ -105,6 +143,11 @@ namespace RosebudAppAndroid.Adapters
 
                 lblHeaderTitle.Text = title;
             }
+        }
+
+        public class HeaderTimeItem : HeaderItem
+        {
+            public int Hour { get; set; }
         }
     }
 }

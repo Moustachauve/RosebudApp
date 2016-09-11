@@ -90,6 +90,8 @@ namespace RosebudAppAndroid.Activities
             toolbar.Post(async () =>
             {
                 await LoadStopTimes();
+                int scrollPosition = stopTimeAdapter.GetNearestTimeSectionPosition(DateTime.Now);
+                stopTimeRecyclerView.SmoothScrollToPosition(scrollPosition);
             });
         }
 

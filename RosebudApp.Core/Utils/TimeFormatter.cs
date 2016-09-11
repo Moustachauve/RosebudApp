@@ -23,28 +23,43 @@ namespace RosebudAppCore
 			return FormatHoursMinutes(StringToTimeSpan(time));
 		}
 
-		public static string FormatHoursMinutes(double seconds)
+        /// <summary>
+        /// Seconds -> "HH:MM"
+        /// </summary>
+        public static string FormatHoursMinutes(double seconds)
 		{
 			TimeSpan time = TimeSpan.FromSeconds(seconds);
 			return FormatHoursMinutes(time);
 		}
 
-		public static string FormatHoursMinutes(TimeSpan time)
+        /// <summary>
+        /// time -> "HH:MM"
+        /// </summary>
+        public static string FormatHoursMinutes(TimeSpan time)
 		{
 			return time.ToString(@"hh\:mm");
 		}
 
-		public static string ToShortDateApi(DateTime date)
+        /// <summary>
+        /// datetime -> "yyyyMMdd"
+        /// </summary>
+        public static string ToShortDateApi(DateTime date)
 		{
 			return date.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
 		}
 
+        /// <summary>
+        /// Take a datetime and format it to properly display it in an abreviated format (Ex: Mon. 13 Sept.)
+        /// </summary>
 		public static string ToAbrevShortDate(DateTime date)
 		{
 			return date.ToString("ddd d MMM", CultureInfo.InvariantCulture);
 		}
 
-		public static string ToFullShortDate(DateTime date)
+        /// <summary>
+        /// Take a datetime and format it to properly display it in full format (Ex: Monday 13 September)
+        /// </summary>
+        public static string ToFullShortDate(DateTime date)
 		{
 			return date.ToString("dddd dd MMMM", CultureInfo.InvariantCulture);
 		}
