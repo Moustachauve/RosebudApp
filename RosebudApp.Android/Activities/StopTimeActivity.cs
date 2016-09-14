@@ -97,8 +97,11 @@ namespace RosebudAppAndroid.Activities
 
         protected override void OnSaveInstanceState(Bundle outState)
         {
-            outState.PutParcelable(STATE_RECYCLER_VIEW, stopTimeRecyclerView.GetLayoutManager().OnSaveInstanceState());
             base.OnSaveInstanceState(outState);
+            if (stopTimeRecyclerView != null)
+            {
+                outState.PutParcelable(STATE_RECYCLER_VIEW, stopTimeRecyclerView.GetLayoutManager().OnSaveInstanceState());
+            }
         }
 
         protected override void OnRestoreInstanceState(Bundle savedInstanceState)

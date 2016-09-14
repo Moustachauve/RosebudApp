@@ -12,6 +12,7 @@ using Java.Security;
 using Android.Support.V7.Widget;
 using RosebudAppCore.Model.Enum;
 using Android.Graphics.Drawables;
+using Android.Support.V4.Content;
 
 namespace RosebudAppAndroid.Adapters
 {
@@ -82,7 +83,7 @@ namespace RosebudAppAndroid.Adapters
 
             private void SetLineColor()
             {
-                Color lineColor = new Color(Context.GetColor(Resource.Color.default_item_color));
+                Color lineColor = new Color(ContextCompat.GetColor(Context, Resource.Color.default_item_color));
 
                 if (RouteInfo != null && !string.IsNullOrWhiteSpace(RouteInfo.route_color))
                 {

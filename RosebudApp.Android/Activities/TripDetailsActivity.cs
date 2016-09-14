@@ -24,13 +24,16 @@ using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using RosebudAppAndroid.Fragments;
 using System;
 using Android.Support.V7.Widget;
+using Android.Gms.Common;
 
 namespace RosebudAppAndroid.Activities
 {
     [Activity(Label = "TripDetailsActivity")]
     public class TripDetailsActivity : AppCompatActivity, IOnMapReadyCallback
     {
-        const int RequestLocationId = 0;
+
+        const int REQUEST_GOOGLE_PLAY_SERVICES = 42;
+        const int REQUEST_LOCATION_ID = 0;
         readonly string[] PermissionsLocation =
         {
             Manifest.Permission.AccessCoarseLocation,
@@ -55,6 +58,7 @@ namespace RosebudAppAndroid.Activities
 
         GoogleMap map;
         bool isMapLoaded = false;
+        bool isMapAvailable;
         List<Marker> markers = new List<Marker>();
         LatLngBounds mapBounds;
         int mapBoundPadding;
@@ -88,7 +92,19 @@ namespace RosebudAppAndroid.Activities
             lblTripHeadsign = FindViewById<TextView>(Resource.Id.lbl_trip_headsign);
 
             mapBoundPadding = 30 * (int)Resources.DisplayMetrics.Density;
-            mapFragment.GetMapAsync(this);
+
+            if (IsGooglePlayServiceAvailable())
+            {
+                isMapAvailable = true;
+                mapFragment.GetMapAsync(this);
+            }
+            else
+            {
+                isMapAvailable = false;
+                int paddingPixel = 25 * (int)Resources.DisplayMetrics.Density;
+                int paddingPixelTop = 120 * (int)Resources.DisplayMetrics.Density;
+                mapFragment.View.SetPadding(paddingPixel, paddingPixelTop, paddingPixel, paddingPixel);
+            }
 
             slidingLayout.AnchorPoint = 0.4f;
             slidingLayout.SetPanelState(SlidingUpPanelLayout.PanelState.Anchored);
@@ -162,7 +178,7 @@ namespace RosebudAppAndroid.Activities
         {
             switch (requestCode)
             {
-                case RequestLocationId:
+                case REQUEST_LOCATION_ID:
                     {
                         if (grantResults[0] == Permission.Granted)
                         {
@@ -239,8 +255,10 @@ namespace RosebudAppAndroid.Activities
                 stopAdapter.ReplaceItems(details.stops);
             }
 
-
-            showTripOnMap(details);
+            if (isMapAvailable)
+            {
+                showTripOnMap(details);
+            }
 
             stopRecyclerView.Post(() =>
             {
@@ -347,7 +365,10 @@ namespace RosebudAppAndroid.Activities
             lblRouteLongName.SetTextColor(contrastColor);
             lblTripHeadsign.SetTextColor(contrastColor);
 
-            Window.SetStatusBarColor(ColorHelper.DarkenColor(mainColor));
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                Window.SetStatusBarColor(ColorHelper.DarkenColor(mainColor));
+            }
         }
 
         public void RequestLocationPermission()
@@ -362,12 +383,12 @@ namespace RosebudAppAndroid.Activities
             if (ShouldShowRequestPermissionRationale(permission))
             {
                 Snackbar.Make(lblTripHeadsign, "Localisation désactivé", Snackbar.LengthLong)
-                        .SetAction("Activer", v => RequestPermissions(PermissionsLocation, RequestLocationId))
+                        .SetAction("Activer", v => RequestPermissions(PermissionsLocation, REQUEST_LOCATION_ID))
                         .Show();
                 return;
             }
 
-            RequestPermissions(PermissionsLocation, RequestLocationId);
+            RequestPermissions(PermissionsLocation, REQUEST_LOCATION_ID);
         }
 
         void ShowMyPosition()
@@ -464,6 +485,24 @@ namespace RosebudAppAndroid.Activities
                     slidingContainer.LayoutParameters = layoutParams;
                 }
             }
+        }
+
+        bool IsGooglePlayServiceAvailable()
+        {
+            GoogleApiAvailability googleAPI = GoogleApiAvailability.Instance;
+            int result = googleAPI.IsGooglePlayServicesAvailable(this);
+            if (result != ConnectionResult.Success)
+            {
+                if (googleAPI.IsUserResolvableError(result))
+                {
+                    googleAPI.GetErrorDialog(this, result,
+                            REQUEST_GOOGLE_PLAY_SERVICES).Show();
+                }
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -19,22 +19,17 @@ using ToolbarCompat = Android.Support.V7.Widget.Toolbar;
 using RosebudAppAndroid.Utils;
 using RosebudAppCore.Utils;
 using RosebudAppCore.Model.Enum;
+using RosebudApp.AndroidMaterialCalendarBinding;
+using Java.Util;
 
 namespace RosebudAppAndroid.Activities
 {
     [Activity(Label = "RouteDetailsActivity"/*, ConfigurationChanges = Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize*/)]
-    public class RouteDetailsActivity : AppCompatActivity
+    public class RouteDetailsActivity : CalendarToolBarActivity
     {
         Route routeInfo;
         TripDirectionPagerAdapter tripDirectionPagerAdapter;
-
-        AppBarLayout appBarLayout;
-        TextView lblToolbarDate;
         TabLayout tabLayout;
-
-        ImageView icoDropdownDatePicker;
-        bool isCalendarExpanded;
-        float currentCalendarArrowRotation = 360f;
 
         ViewPager viewPager;
         LinearLayout emptyView;
@@ -43,13 +38,9 @@ namespace RosebudAppAndroid.Activities
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            ActivityLayout = Resource.Layout.route_details;
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.route_details);
 
-            appBarLayout = FindViewById<AppBarLayout>(Resource.Id.app_bar_layout);
-            var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
-            var lblToolbarTitle = FindViewById<TextView>(Resource.Id.lbl_toolbar_title);
-            lblToolbarDate = FindViewById<TextView>(Resource.Id.lbl_toolbar_date);
             NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             tabLayout = FindViewById<TabLayout>(Resource.Id.tab_layout);
@@ -58,43 +49,15 @@ namespace RosebudAppAndroid.Activities
             emptyViewNoInternet = FindViewById<LinearLayout>(Resource.Id.empty_view_no_internet);
             emptyViewMainText = FindViewById<TextView>(Resource.Id.empty_view_main_text);
 
-            var btnDatePicker = FindViewById<RelativeLayout>(Resource.Id.btn_date_picker);
-            icoDropdownDatePicker = FindViewById<ImageView>(Resource.Id.ico_dropdown_calendar);
-            var calendarView = FindViewById<CalendarView>(Resource.Id.calendar_view);
-
-            SetSupportActionBar(toolbar);
-            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
-
             routeInfo = JsonConvert.DeserializeObject<Route>(Intent.GetStringExtra("routeInfos"));
             lblToolbarTitle.Text = routeInfo.route_short_name + " " + routeInfo.route_long_name;
-
-            toolbar.NavigationClick += delegate
-            {
-                OnBackPressed();
-            };
-
-            btnDatePicker.Click += delegate
-            {
-                ToggleDatePicker();
-            };
-
-            calendarView.DateChange += async (object sender, CalendarView.DateChangeEventArgs e) =>
-            {
-                ToggleDatePicker();
-                await SwitchDate(e.Year, e.Month + 1, e.DayOfMonth);
-            };
-
-            calendarView.Post(async () =>
-            {
-                long epochTime = (long)(Dependency.PreferenceManager.SelectedDatetime.AddDays(1) - new DateTime(1970, 1, 1)).TotalMilliseconds;
-                calendarView.SetDate(epochTime, false, true);
-                await SwitchDate(Dependency.PreferenceManager.SelectedDatetime);
-            });
 
             networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
                 await LoadDetails();
             };
+
+            SwitchDate(Dependency.PreferenceManager.SelectedDatetime);
         }
 
         protected override void OnDestroy()
@@ -105,19 +68,6 @@ namespace RosebudAppAndroid.Activities
             }
 
             base.OnDestroy();
-        }
-
-        async Task SwitchDate(int year, int month, int day)
-        {
-            await SwitchDate(new DateTime(year, month, day));
-        }
-
-        async Task SwitchDate(DateTime date)
-        {
-            Dependency.PreferenceManager.SelectedDatetime = date;
-            lblToolbarDate.Text = TimeFormatter.ToFullShortDate(date);
-            emptyViewMainText.Text = string.Format(Resources.GetText(Resource.String.trip_list_empty), TimeFormatter.ToAbrevShortDate(date));
-            await LoadDetails();
         }
 
         async Task LoadDetails(bool overrideCache = false)
@@ -138,17 +88,6 @@ namespace RosebudAppAndroid.Activities
             tripDirectionPagerAdapter.UpdateTrips(currentRouteDetails);
 
             InvalidateOptionsMenu();
-        }
-
-        void ToggleDatePicker()
-        {
-            RotateAnimation animation = ArrowRotateAnimation.GetAnimation(currentCalendarArrowRotation, 180);
-            icoDropdownDatePicker.StartAnimation(animation);
-
-            currentCalendarArrowRotation = (currentCalendarArrowRotation + 180f) % 360f;
-
-            appBarLayout.SetExpanded(!isCalendarExpanded, true);
-            isCalendarExpanded = !isCalendarExpanded;
         }
 
         void SetDirectionTabs(RouteDetails routeDetails)
@@ -210,6 +149,12 @@ namespace RosebudAppAndroid.Activities
                 emptyView.Visibility = ViewStates.Gone;
                 emptyViewNoInternet.Visibility = ViewStates.Gone;
             }
+        }
+
+        protected override async void OnSelectedDateChanged(object sender, DateTime selectedDate)
+        {
+            emptyViewMainText.Text = string.Format(Resources.GetText(Resource.String.trip_list_empty), TimeFormatter.ToAbrevShortDate(selectedDate));
+            await LoadDetails();
         }
     }
 }

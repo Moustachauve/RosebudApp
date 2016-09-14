@@ -39,7 +39,7 @@
             android:background="@color/default_item_color"
             android:textColor="#ffffff"
             android:padding="7dp"
-            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:textAppearance="@style/SmallTextListItem"
             android:elevation="2dp"
             tools:text="23:54" />
     </RelativeLayout>
@@ -47,7 +47,7 @@
         android:id="@+id/lbl_stop_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textAppearance="@style/MediumTextListItem"
         android:gravity="center_vertical"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
         tools:text="Headsign" />

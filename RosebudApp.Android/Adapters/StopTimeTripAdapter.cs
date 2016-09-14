@@ -11,6 +11,7 @@ using RosebudAppCore.Utils;
 using Java.Security;
 using Android.Graphics.Drawables;
 using Android.Support.V7.Widget;
+using Android.Support.V4.Content;
 
 namespace RosebudAppAndroid.Adapters
 {
@@ -85,7 +86,7 @@ namespace RosebudAppAndroid.Adapters
                 }
                 else
                 {
-                    lineColor = new Color(Context.GetColor(Resource.Color.default_item_color));
+                    lineColor = new Color(ContextCompat.GetColor(Context, Resource.Color.default_item_color));
                 }
 
                 Color contrastColor = ColorHelper.ContrastColor(lineColor);

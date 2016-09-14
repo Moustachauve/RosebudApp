@@ -103,7 +103,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\AbstractHttpActivity.cs" />
+    <Compile Include="Activities\CalendarToolBarActivity.cs" />
     <Compile Include="Activities\SettingsActivity.cs" />
     <Compile Include="Activities\StopTimeActivity.cs" />
     <Compile Include="Activities\StopSelectionActivity.cs" />
@@ -231,6 +231,10 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RosebudApp.AndroidMaterialCalendarBinding\RosebudApp.AndroidMaterialCalendarBinding.csproj">
+      <Project>{768cbfc3-ac52-4989-82cf-69777452eb50}</Project>
+      <Name>RosebudApp.AndroidMaterialCalendarBinding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RosebudApp.AndroidSlidingUpPanelBinding\RosebudApp.AndroidSlidingUpPanelBinding.csproj">
       <Project>{796A0082-9D78-41E4-820C-0A6479EB21BF}</Project>
       <Name>RosebudApp.AndroidSlidingUpPanelBinding</Name>

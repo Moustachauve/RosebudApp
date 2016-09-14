@@ -8,6 +8,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RosebudApp.Core", "RosebudA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosebudApp.AndroidSlidingUpPanelBinding", "RosebudApp.AndroidSlidingUpPanelBinding\RosebudApp.AndroidSlidingUpPanelBinding.csproj", "{796A0082-9D78-41E4-820C-0A6479EB21BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosebudApp.AndroidMaterialCalendarBinding", "RosebudApp.AndroidMaterialCalendarBinding\RosebudApp.AndroidMaterialCalendarBinding.csproj", "{768CBFC3-AC52-4989-82CF-69777452EB50}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		RosebudApp.Core\RosebudApp.Core.projitems*{98175b7f-8d2d-4bd6-a203-0354ad4c572e}*SharedItemsImports = 13
@@ -27,6 +29,10 @@ Global
 		{796A0082-9D78-41E4-820C-0A6479EB21BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{796A0082-9D78-41E4-820C-0A6479EB21BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{796A0082-9D78-41E4-820C-0A6479EB21BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{768CBFC3-AC52-4989-82CF-69777452EB50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{768CBFC3-AC52-4989-82CF-69777452EB50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{768CBFC3-AC52-4989-82CF-69777452EB50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{768CBFC3-AC52-4989-82CF-69777452EB50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

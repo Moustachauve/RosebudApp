@@ -13,6 +13,6 @@
         android:id="@+id/lbl_departure_time"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textAppearance="@style/SmallTextListItem"
         tools:text="11:00" />
 </LinearLayout>

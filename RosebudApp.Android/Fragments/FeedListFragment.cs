@@ -83,7 +83,11 @@ namespace RosebudAppAndroid.Fragments
         public override void OnSaveInstanceState(Bundle outState)
         {
             base.OnSaveInstanceState(outState);
-            outState.PutParcelable(STATE_RECYCLER_VIEW, feedRecyclerView.GetLayoutManager().OnSaveInstanceState());
+
+            if(feedRecyclerView != null)
+            {
+                outState.PutParcelable(STATE_RECYCLER_VIEW, feedRecyclerView.GetLayoutManager().OnSaveInstanceState());
+            }
         }
 
         public override void OnViewStateRestored(Bundle savedInstanceState)
