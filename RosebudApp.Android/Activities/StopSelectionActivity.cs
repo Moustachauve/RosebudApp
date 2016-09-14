@@ -48,6 +48,8 @@ namespace RosebudAppAndroid.Activities
             ActivityLayout = Resource.Layout.stop_selection;
             base.OnCreate(savedInstanceState);
 
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+
             NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             tabLayout = FindViewById<TabLayout>(Resource.Id.tab_layout);

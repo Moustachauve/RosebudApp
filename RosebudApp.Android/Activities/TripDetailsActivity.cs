@@ -355,7 +355,7 @@ namespace RosebudAppAndroid.Activities
             }
             else
             {
-                mainColor = new Color(GetColor(Resource.Color.default_item_color));
+                mainColor = new Color(ContextCompat.GetColor(this, Resource.Color.default_item_color));
             }
 
             Color contrastColor = ColorHelper.ContrastColor(mainColor);
@@ -365,7 +365,7 @@ namespace RosebudAppAndroid.Activities
             lblRouteLongName.SetTextColor(contrastColor);
             lblTripHeadsign.SetTextColor(contrastColor);
 
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
                 Window.SetStatusBarColor(ColorHelper.DarkenColor(mainColor));
             }

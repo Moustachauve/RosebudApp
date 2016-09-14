@@ -23,6 +23,9 @@ namespace RosebudAppAndroid.Cache
 
         public async Task<TripDetails> GetStopsForTrip(int feedId, string routeId, string tripId)
         {
+            if (Context.ExternalCacheDir == null)
+                return null;
+
             string fileName = string.Format("trips-{0}-{1}-{2}.json", feedId, routeId, tripId);
             string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
             return await CacheFileManager.GetFromFile<TripDetails>(path);
@@ -30,6 +33,9 @@ namespace RosebudAppAndroid.Cache
 
         public async Task SaveStopsForTrip(int feedId, string routeId, string tripId, TripDetails tripDetails)
         {
+            if (Context.ExternalCacheDir == null)
+                return;
+
             string fileName = string.Format("trips-{0}-{1}-{2}.json", feedId, routeId, tripId);
             string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
             await CacheFileManager.SaveToFile(path, tripDetails);
@@ -37,6 +43,9 @@ namespace RosebudAppAndroid.Cache
 
         public async Task<List<StopTime>> GetStopTimes(int feedId, string routeId, string stopId, DateTime date)
         {
+            if (Context.ExternalCacheDir == null)
+                return null;
+
             string fileName = string.Format("stoptimes-{0}-{1}-{2}-{3}.json", feedId, routeId, stopId, TimeFormatter.ToShortDateApi(date));
             string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
             return await CacheFileManager.GetFromFile<List<StopTime>>(path);
@@ -44,6 +53,9 @@ namespace RosebudAppAndroid.Cache
 
         public async Task SaveStopTimes(int feedId, string routeId, string stopId, DateTime date, List<StopTime> tripDetails)
         {
+            if (Context.ExternalCacheDir == null)
+                return;
+
             string fileName = string.Format("stoptimes-{0}-{1}-{2}-{3}.json", feedId, routeId, stopId, TimeFormatter.ToShortDateApi(date));
             string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
             await CacheFileManager.SaveToFile(path, tripDetails);
