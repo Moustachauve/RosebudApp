@@ -84,7 +84,7 @@ namespace RosebudAppAndroid.Fragments
         {
             base.OnSaveInstanceState(outState);
 
-            if(feedRecyclerView != null)
+            if(feedRecyclerView != null && feedRecyclerView.GetLayoutManager() != null)
             {
                 outState.PutParcelable(STATE_RECYCLER_VIEW, feedRecyclerView.GetLayoutManager().OnSaveInstanceState());
             }
@@ -95,7 +95,8 @@ namespace RosebudAppAndroid.Fragments
             base.OnViewStateRestored(savedInstanceState);
             if (savedInstanceState != null)
             {
-                recyclerViewLayoutState = (IParcelable)savedInstanceState.GetParcelable(STATE_RECYCLER_VIEW);
+                if(savedInstanceState.ContainsKey(STATE_RECYCLER_VIEW))
+                    recyclerViewLayoutState = (IParcelable)savedInstanceState.GetParcelable(STATE_RECYCLER_VIEW);
             }
         }
 
