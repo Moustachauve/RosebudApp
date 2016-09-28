@@ -3,13 +3,17 @@
     <string name="app_name">Rosebud App</string>
 	
     <string name="activity_settings">Paramètres</string>
-	
+
+    <string name="menu_drawer_favorite">Favoris</string>
     <string name="menu_drawer_agency">Agences de transport</string>
 	<string name="menu_drawer_settings">@string/activity_settings</string>
 
     <string name="network_no_connection">Aucune connexion internet. Affichage des données en cache seulement.</string>
     <string name="network_server_error">Impossible de contacter le serveur. Veuillez réessayer plus tard.</string>
     <string name="network_retry">Réessayer</string>
+
+    <string name="feed_list_favorite_empty">Vous n\'avez pas d\'agence de transport favorite.</string>
+    <string name="route_list_favorite_empty">Vous n\'avez pas de route favorite.</string>
 
     <string name="feed_list_empty">Aucune agence de transport n\'est disponible pour le moment.</string>
     <string name="route_list_empty">Aucune route n\'est disponible pour le moment.</string>

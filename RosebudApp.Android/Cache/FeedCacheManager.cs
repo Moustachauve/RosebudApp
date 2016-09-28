@@ -23,20 +23,12 @@ namespace RosebudAppAndroid.Cache
 
         public async Task<List<Feed>> GetAllFeeds()
         {
-            if (Context.ExternalCacheDir == null)
-                return null;
-            
-            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, FEED_LIST_FILENAME);
-            return await CacheFileManager.GetFromFile<List<Feed>>(path);
+            return await CacheFileManager.GetFromFile<List<Feed>>(FEED_LIST_FILENAME);
         }
 
         public async Task SaveAllFeeds(List<Feed> allFeeds)
         {
-            if (Context.ExternalCacheDir == null)
-                return;
-            
-            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, FEED_LIST_FILENAME);
-            await CacheFileManager.SaveToFile(path, allFeeds);
+            await CacheFileManager.SaveToFile(FEED_LIST_FILENAME, allFeeds);
         }
     }
 }

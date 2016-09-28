@@ -33,6 +33,7 @@ namespace RosebudAppAndroid
             Dependency.NetworkStatusMonitor = new NetworkStatusMonitor();
             Dependency.PreferenceManager = new PreferenceManager(Context);
             Dependency.LocationService = new LocationService(Context);
+            Dependency.PathHelper = new PathHelper(ApplicationContext);
 
             ((LocationService)Dependency.LocationService).ConnectGoogleApi();
         }

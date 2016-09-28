@@ -7,6 +7,7 @@ using RosebudAppCore.Cache;
 using Newtonsoft.Json;
 using System.Security.Principal;
 using RosebudAppCore.Utils;
+using RosebudAppCore.DataAccessor;
 
 namespace RosebudAppAndroid.Cache
 {
@@ -15,32 +16,27 @@ namespace RosebudAppAndroid.Cache
         const string LOG_TAG = "RosebudAppCore.Cache";
         static TimeSpan CacheExpirationTime = new TimeSpan(10, 0, 0);
 
-        public static async Task<T> GetFromFile<T>(string filePath)
+        public static async Task<T> GetFromFile<T>(string fileName)
         {
-            if (!File.Exists(filePath))
+            if (Dependency.PathHelper.TempFolderPath == null)
                 return default(T);
 
-            string json;
-            using (var reader = File.OpenText(filePath))
-            {
-                json = await reader.ReadToEndAsync();
-            }
+            string path = Path.Combine(Dependency.PathHelper.TempFolderPath, fileName);
+
+            if (!File.Exists(path))
+                return default(T);
 
             CacheItem<T> cacheItem;
             try
             {
-                cacheItem = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<CacheItem<T>>(json));
+                cacheItem = await LocalFileHelper.GetFromFile<CacheItem<T>>(path);
             }
             catch (JsonSerializationException ex)
             {
-                Log.Warn(LOG_TAG, "Could not deserialize file {0}", filePath);
+                Log.Warn(LOG_TAG, "Could not deserialize file {0}", fileName);
                 Log.Warn(LOG_TAG, ex.ToString());
 
-                //Logging the json if it is not too long to facilitate debugging
-                if (json != null && json.Length < 4000)
-                    Log.Warn(LOG_TAG, json);
-
-                File.Delete(filePath);
+                File.Delete(path);
                 return default(T);
             }
 
@@ -49,22 +45,24 @@ namespace RosebudAppAndroid.Cache
                cacheItem.CacheExpirationDate < DateTime.Now &&
                !Dependency.NetworkStatusMonitor.CanConnect)
             {
-                File.Delete(filePath);
+                File.Delete(path);
                 return default(T);
             }
 
             return cacheItem.Item;
         }
 
-        public static async Task SaveToFile(string filePath, object item)
+        public static async Task SaveToFile(string fileName, object item)
         {
+            if (Dependency.PathHelper.TempFolderPath == null)
+                return;
+
+            string path = Path.Combine(Dependency.PathHelper.TempFolderPath, fileName);
+
             DateTime expirationDate = DateTime.Now.Add(CacheExpirationTime);
             var cacheItem = new CacheItem<object>(item, expirationDate);
-            string json = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(cacheItem));
-            using (var writer = new StreamWriter(filePath))
-            {
-                await writer.WriteAsync(json);
-            }
+
+            await LocalFileHelper.SaveToFile(path, item);
         }
     }
 }

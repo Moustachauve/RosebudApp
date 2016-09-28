@@ -108,10 +108,12 @@
     <Compile Include="Activities\StopTimeActivity.cs" />
     <Compile Include="Activities\StopSelectionActivity.cs" />
     <Compile Include="Adapters\BaseSectionRecyclerAdapter.cs" />
+    <Compile Include="Adapters\Events\ItemCheckChangedEventArgs.cs" />
     <Compile Include="Adapters\SearchableRecyclerAdapter.cs" />
     <Compile Include="Adapters\StopTimeAdapter.cs" />
     <Compile Include="Adapters\StopDirectionPagerAdapter.cs" />
     <Compile Include="Adapters\StopAdapter.cs" />
+    <Compile Include="Fragments\FavoriteFragment.cs" />
     <Compile Include="Fragments\FeedListFragment.cs" />
     <Compile Include="Fragments\NetworkStatusFragment.cs" />
     <Compile Include="Fragments\SettingsFragment.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Cache\CacheFileManager.cs" />
     <Compile Include="Cache\RouteCacheManager.cs" />
     <Compile Include="Cache\StopCacheManager.cs" />
+    <Compile Include="Utils\PathHelper.cs" />
     <Compile Include="Utils\PreferenceManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +181,12 @@
     <AndroidResource Include="Resources\drawable\list_stop_stop_both.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\btn_favorite.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\favorite.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -186,7 +195,9 @@
     <AndroidResource Include="Resources\values\Strings.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\feed_listitem.axml" />
+    <AndroidResource Include="Resources\layout\feed_listitem.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\feed_details.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -306,6 +317,66 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values-w820dp\dimens.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_favorite_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_favorite_border_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_favorite_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_favorite_border_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_favorite_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_favorite_border_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_favorite_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_favorite_border_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_favorite_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_favorite_border_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_favorite_border_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_favorite_border_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_favorite_border_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_favorite_border_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_favorite_border_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_favorite_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_favorite_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_favorite_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_favorite_black_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_favorite_black_36dp.png" />
   </ItemGroup>
   <Import Project="..\RosebudApp.Core\RosebudApp.Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

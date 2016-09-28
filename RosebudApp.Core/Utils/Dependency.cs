@@ -11,5 +11,6 @@ namespace RosebudAppCore.Utils
         public static INetworkStatusMonitor NetworkStatusMonitor { get; set; }
         public static IPreferenceManager PreferenceManager { get; set; }
         public static ILocationService LocationService { get; set; }
+        public static IPathHelper PathHelper { get; set; }
     }
 }

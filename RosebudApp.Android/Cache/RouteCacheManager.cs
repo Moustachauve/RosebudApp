@@ -20,62 +20,38 @@ namespace RosebudAppAndroid.Cache
 
         public async Task<List<Route>> GetAllRoutes(int feedId)
         {
-            if (Context.ExternalCacheDir == null)
-                return null;
-            
             string fileName = string.Format("{0}.json", feedId);
-            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
-            return await CacheFileManager.GetFromFile<List<Route>>(path);
+            return await CacheFileManager.GetFromFile<List<Route>>(fileName);
         }
 
         public async Task SaveAllRoutes(int feedId, List<Route> routes)
         {
-            if (Context.ExternalCacheDir == null)
-                return;
-
             string fileName = string.Format("{0}.json", feedId);
-            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
-            await CacheFileManager.SaveToFile(path, routes);
+            await CacheFileManager.SaveToFile(fileName, routes);
         }
 
         public async Task<RouteDetails> GetRouteDetails(int feedId, string routeId, DateTime date)
         {
-            if (Context.ExternalCacheDir == null)
-                return null;
-
             string fileName = string.Format("{0}-{1}-{2}.json", feedId, routeId, TimeFormatter.ToShortDateApi(date));
-            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
-            return await CacheFileManager.GetFromFile<RouteDetails>(path);
+            return await CacheFileManager.GetFromFile<RouteDetails>(fileName);
         }
 
         public async Task SaveRouteDetails(int feedId, string routeId, DateTime date, RouteDetails routeDetails)
         {
-            if (Context.ExternalCacheDir == null)
-                return;
-
             string fileName = string.Format("{0}-{1}-{2}.json", feedId, routeId, TimeFormatter.ToShortDateApi(date));
-            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
-            await CacheFileManager.SaveToFile(path, routeDetails);
+            await CacheFileManager.SaveToFile(fileName, routeDetails);
         }
 
         public async Task<List<Stop>> GetRouteStops(int feedId, string routeId, DateTime date)
         {
-            if (Context.ExternalCacheDir == null)
-                return null;
-
             string fileName = string.Format("{0}-{1}-{2}-stops.json", feedId, routeId, TimeFormatter.ToShortDateApi(date));
-            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
-            return await CacheFileManager.GetFromFile<List<Stop>>(path);
+            return await CacheFileManager.GetFromFile<List<Stop>>(fileName);
         }
 
         public async Task SaveRouteStops(int feedId, string routeId, DateTime date, List<Stop> routeStops)
         {
-            if (Context.ExternalCacheDir == null)
-                return;
-
             string fileName = string.Format("{0}-{1}-{2}-stops.json", feedId, routeId, TimeFormatter.ToShortDateApi(date));
-            string path = Path.Combine(Context.ExternalCacheDir.AbsolutePath, fileName);
-            await CacheFileManager.SaveToFile(path, routeStops);
+            await CacheFileManager.SaveToFile(fileName, routeStops);
         }
     }
 }

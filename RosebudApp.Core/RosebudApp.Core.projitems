@@ -9,12 +9,15 @@
     <Import_RootNamespace>RosebudAppCore</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)DataAccessor\" />
     <Folder Include="$(MSBuildThisFileDirectory)Cache\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\FavoriteRouteAccessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\FavoriteFeedAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\HttpHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\FeedAccessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\LocalFileHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Comparators\AlphanumComparator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Enum\BikesAllowed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Enum\LocationType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Enum\TripDirection.cs" />
@@ -29,6 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Dependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\ILocationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\INetworkStatusMonitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\IPathHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\IPreferenceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Trip.cs" />

@@ -9,15 +9,23 @@
     android:minWidth="25px"
     android:minHeight="25px">
     <ImageView
+        android:id="@+id/img_logo"
         android:src="@android:drawable/ic_menu_gallery"
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/img_logo" />
+        android:layout_height="60dp" />
     <TextView
         android:id="@+id/lbl_agency_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
+        android:layout_weight="1"
         tools:text="Feed name" />
+    <CheckBox
+        android:id="@+id/chk_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:padding="3dp"
+        android:button="@drawable/btn_favorite" />
 </LinearLayout>

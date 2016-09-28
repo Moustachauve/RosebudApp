@@ -3,6 +3,9 @@
     android:id="@+id/first_category">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/menu_drawer_favorite"
+            android:title="@string/menu_drawer_favorite" />
+        <item
             android:id="@+id/menu_drawer_agency"
             android:title="@string/menu_drawer_agency" />
     </group>

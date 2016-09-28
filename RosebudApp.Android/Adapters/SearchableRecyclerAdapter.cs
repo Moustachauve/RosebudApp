@@ -38,6 +38,7 @@ namespace RosebudAppAndroid.Adapters
         public SearchableRecyclerAdapter(Context context, List<TItem> items) : base(context, items)
         {
             DisplayedItems = new List<TItem>(AllItems);
+            ApplySort();
         }
 
         override public void AddItem(TItem item)

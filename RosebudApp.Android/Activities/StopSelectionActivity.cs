@@ -97,7 +97,11 @@ namespace RosebudAppAndroid.Activities
             }
 
             stopDirectionPagerAdapter.UpdateStops(currentStops);
-            tabLayout.GetTabAt(restoreTabPage ?? 0).Select();
+
+            if (tabLayout.TabCount > 0)
+            {
+                tabLayout.GetTabAt(restoreTabPage ?? 0).Select();
+            }
 
             InvalidateOptionsMenu();
         }

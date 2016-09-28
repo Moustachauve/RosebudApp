@@ -91,6 +91,9 @@ namespace RosebudAppAndroid.Activities
                     Intent intent = new Intent(this, typeof(SettingsActivity));
                     StartActivity(intent);
                     return;
+                case Resource.Id.menu_drawer_favorite:
+                    fragment = GetFragment(typeof(FavoriteFragment));
+                    break;
                 case Resource.Id.menu_drawer_agency:
                 default:
                     fragment = GetFragment(typeof(FeedListFragment));
@@ -148,10 +151,7 @@ namespace RosebudAppAndroid.Activities
 
             searchView.QueryTextChange += (sender, args) =>
             {
-                if (SearchTextChanged != null)
-                {
-                    SearchTextChanged(this, args.NewText);
-                }
+                SearchTextChanged?.Invoke(this, args.NewText);
             };
 
             return true;

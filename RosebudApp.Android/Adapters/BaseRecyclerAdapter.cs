@@ -39,6 +39,7 @@ namespace RosebudAppAndroid
             else
             {
                 AllItems = new List<TItem>(items);
+                AllItems = ApplySort();
             }
         }
 
@@ -54,9 +55,15 @@ namespace RosebudAppAndroid
             ((BaseViewHolder)holder).BindData(currentItem, position);
         }
 
+        protected virtual List<TItem> ApplySort()
+        {
+            return AllItems;
+        }
+
         public virtual void AddItem(TItem item)
         {
             AllItems.Add(item);
+            ApplySort();
             AnimateTo(AllItems);
         }
 
@@ -77,6 +84,8 @@ namespace RosebudAppAndroid
             {
                 AllItems = new List<TItem>(items);
             }
+
+            ApplySort();
             AnimateTo(AllItems);
         }
 
