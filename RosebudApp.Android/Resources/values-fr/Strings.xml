@@ -15,6 +15,8 @@
     <string name="feed_list_favorite_empty">Vous n\'avez pas d\'agence de transport favorite.</string>
     <string name="route_list_favorite_empty">Vous n\'avez pas de route favorite.</string>
 
+	<string name="route_next_departure">Prochain départ</string>
+
     <string name="feed_list_empty">Aucune agence de transport n\'est disponible pour le moment.</string>
     <string name="route_list_empty">Aucune route n\'est disponible pour le moment.</string>
     <string name="select_calendar">Vous pouvez sélectionner une autre date en tappant sur la flèche dans la barre ci-dessus.</string>

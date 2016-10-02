@@ -63,7 +63,7 @@ namespace RosebudAppAndroid
         public virtual void AddItem(TItem item)
         {
             AllItems.Add(item);
-            ApplySort();
+            AllItems = ApplySort();
             AnimateTo(AllItems);
         }
 
@@ -85,7 +85,7 @@ namespace RosebudAppAndroid
                 AllItems = new List<TItem>(items);
             }
 
-            ApplySort();
+            AllItems = ApplySort();
             AnimateTo(AllItems);
         }
 

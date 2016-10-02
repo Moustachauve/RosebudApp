@@ -142,6 +142,7 @@
     <Compile Include="Cache\StopCacheManager.cs" />
     <Compile Include="Utils\PathHelper.cs" />
     <Compile Include="Utils\PreferenceManager.cs" />
+    <Compile Include="Adapters\RouteWithStopLocationAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml">
@@ -187,6 +188,7 @@
     <AndroidResource Include="Resources\layout\favorite.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\route_stop_location_listitem.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">

@@ -28,7 +28,18 @@ namespace RosebudAppAndroid.Utils
 
         GoogleApiClient GoogleApiClient;
         LocationRequest LocationRequest;
-        public Location LastKnownLocation { get; private set; }
+
+        private Location lastKnownLocation;
+        public RosebudAppCore.Model.Location LastKnownLocation
+        {
+            get
+            {
+                if (lastKnownLocation == null)
+                    return null;
+                
+                return new RosebudAppCore.Model.Location(lastKnownLocation.Latitude, lastKnownLocation.Longitude);
+            }
+        }
 
         List<ILocationServiceListener> LocationListeners;
 
@@ -84,7 +95,7 @@ namespace RosebudAppAndroid.Utils
         {
             if (LastKnownLocation == null)
             {
-                LastKnownLocation = LocationServices.FusedLocationApi.GetLastLocation(GoogleApiClient);
+                lastKnownLocation = LocationServices.FusedLocationApi.GetLastLocation(GoogleApiClient);
                 LastUpdateTime = DateTime.Now.TimeOfDay.ToString();
             }
 
@@ -102,7 +113,7 @@ namespace RosebudAppAndroid.Utils
 
         public void OnLocationChanged(Location location)
         {
-            LastKnownLocation = location;
+            lastKnownLocation = location;
             LastUpdateTime = DateTime.Now.TimeOfDay.ToString();
             NotifyListeners(location);
         }
@@ -138,6 +149,21 @@ namespace RosebudAppAndroid.Utils
         public void OnConnectionFailed(ConnectionResult result)
         {
             throw new NotImplementedException();
+        }
+
+        public int CalculateDistance(double latA, double lonA, double latB, double lonB)
+        {
+            Location locationA = new Location("point A");
+
+            locationA.Latitude = latA;
+            locationA.Longitude = lonA;
+
+            Location locationB = new Location("point B");
+
+            locationB.Latitude = latB;
+            locationB.Longitude = lonB;
+
+            return (int)locationA.DistanceTo(locationB);
         }
     }
 }

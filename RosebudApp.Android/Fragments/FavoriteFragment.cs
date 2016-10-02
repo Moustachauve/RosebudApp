@@ -17,16 +17,17 @@ using RosebudAppCore.DataAccessor;
 using RosebudAppAndroid.Activities;
 using RosebudAppCore.Model;
 using Newtonsoft.Json;
+using RosebudAppCore.Utils;
 
 namespace RosebudAppAndroid.Fragments
 {
-    public class FavoriteFragment : Fragment
+    public class FavoriteFragment : Fragment, ILocationServiceListener
     {
         const string STATE_FEED_RECYCLER_VIEW = "state-feed-recycler-view";
         const string STATE_ROUTE_RECYCLER_VIEW = "state-route-recycler-view";
 
         FeedAdapter feedAdapter;
-        RouteAdapter routeAdapter;
+        RouteWithStopLocationAdapter routeAdapter;
         RecyclerView feedRecyclerView;
         RecyclerView routeRecyclerView;
         TextView feedEmptyView;
@@ -34,6 +35,8 @@ namespace RosebudAppAndroid.Fragments
 
         IParcelable feedRecyclerViewLayoutState;
         IParcelable routeRecyclerViewLayoutState;
+
+        List<RouteWithStopLocation> favoriteRoutes;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -86,6 +89,20 @@ namespace RosebudAppAndroid.Fragments
             }
         }
 
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            Dependency.LocationService.AddOnLocationChangedListener(this);
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+
+            Dependency.LocationService.RemoveOnLocationChangedListener(this);
+        }
+
         async Task LoadFavorites()
         {
             await LoadFeeds();
@@ -115,19 +132,26 @@ namespace RosebudAppAndroid.Fragments
             }
             else
                 feedAdapter.ReplaceItems(feeds);
-
         }
 
         async Task LoadRoutes()
         {
-            var routes = await FavoriteRouteAccessor.GetFavoriteRoutes();
+            List<Route> routes = await FavoriteRouteAccessor.GetFavoriteRoutes();
+            favoriteRoutes = new List<RouteWithStopLocation>();
 
-            routeEmptyView.Visibility = routes.Count > 0 ? ViewStates.Gone : ViewStates.Visible;
-            routeRecyclerView.Visibility = routes.Count > 0 ? ViewStates.Visible : ViewStates.Gone;
+            foreach (var route in routes)
+            {
+                RouteWithStopLocation routeWithStopLocation = new RouteWithStopLocation();
+                routeWithStopLocation.Route = route;
+                favoriteRoutes.Add(routeWithStopLocation);
+            }
+
+            routeEmptyView.Visibility = favoriteRoutes.Count > 0 ? ViewStates.Gone : ViewStates.Visible;
+            routeRecyclerView.Visibility = favoriteRoutes.Count > 0 ? ViewStates.Visible : ViewStates.Gone;
 
             if (routeAdapter == null)
             {
-                routeAdapter = new RouteAdapter(Activity, routes);
+                routeAdapter = new RouteWithStopLocationAdapter(Activity, favoriteRoutes);
                 routeAdapter.ItemClick += OnRouteItemClick;
                 routeRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
                 routeRecyclerView.SetAdapter(routeAdapter);
@@ -138,8 +162,12 @@ namespace RosebudAppAndroid.Fragments
                 }
             }
             else
-                routeAdapter.ReplaceItems(routes);
+                routeAdapter.ReplaceItems(favoriteRoutes);
 
+            if (Dependency.LocationService.LastKnownLocation != null)
+            {
+                await UpdateRoutesLocation(Dependency.LocationService.LastKnownLocation);
+            }
         }
 
         private void OnFeedItemClick(object sender, int e)
@@ -153,12 +181,32 @@ namespace RosebudAppAndroid.Fragments
 
         private void OnRouteItemClick(object sender, int e)
         {
-            Route clickedRoute = routeAdapter[e];
+            Route clickedRoute = routeAdapter[e].Route;
 
             Intent stopSelectionIntent = new Intent(Activity, typeof(StopSelectionActivity));
             stopSelectionIntent.PutExtra("routeInfos", JsonConvert.SerializeObject(clickedRoute));
 
             StartActivity(stopSelectionIntent);
+        }
+
+        public async Task OnLocationChanged(Location location)
+        {
+            await UpdateRoutesLocation(location);
+        }
+
+        private async Task UpdateRoutesLocation(Location location)
+        {
+            if (favoriteRoutes == null || favoriteRoutes.Count == 0)
+                return;
+
+            foreach (var routeWithLocation in favoriteRoutes)
+            {
+                StopLocation stopLocation = await RouteLocationHelper.GetClosestStop(routeWithLocation.Route, location.Latitude, location.Longitude);
+                routeWithLocation.StopLocation = stopLocation;
+            }
+
+            routeAdapter.ReplaceItems(favoriteRoutes);
+            routeAdapter.NotifyDataSetChanged();
         }
     }
 }

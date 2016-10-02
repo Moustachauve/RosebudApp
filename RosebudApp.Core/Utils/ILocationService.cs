@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RosebudAppCore.Utils
 {
@@ -9,10 +10,12 @@ namespace RosebudAppCore.Utils
     {
         void RemoveOnLocationChangedListener(ILocationServiceListener listener);
         void AddOnLocationChangedListener(ILocationServiceListener listener);
+        Location LastKnownLocation { get; }
+        int CalculateDistance(double latA, double lonA, double latB, double lonB);
     }
 
     public interface ILocationServiceListener
     {
-        void OnLocationChanged(Location location);
+        Task OnLocationChanged(Location location);
     }
 }
