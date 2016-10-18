@@ -31,7 +31,6 @@ namespace RosebudAppAndroid.Activities
     [Activity(Label = "TripDetailsActivity")]
     public class TripDetailsActivity : AppCompatActivity, IOnMapReadyCallback
     {
-
         const int REQUEST_GOOGLE_PLAY_SERVICES = 42;
         const int REQUEST_LOCATION_ID = 0;
         readonly string[] PermissionsLocation =

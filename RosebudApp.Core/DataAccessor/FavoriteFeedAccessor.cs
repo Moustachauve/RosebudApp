@@ -19,7 +19,7 @@ namespace RosebudAppCore.DataAccessor
         {
             if (favoritesCached == null)
             {
-                string path = Path.Combine(Dependency.PathHelper.TempFolderPath, FAVORITE_FEED_FILENAME);
+                string path = Path.Combine(Dependency.PathHelper.PermanentFolderPath, FAVORITE_FEED_FILENAME);
                 favoritesCached = await LocalFileHelper.GetFromFile<List<Feed>>(path);
 
                 if (favoritesCached == null)
@@ -33,7 +33,7 @@ namespace RosebudAppCore.DataAccessor
 
         private static async Task SaveFavoriteFeeds()
         {
-            string path = Path.Combine(Dependency.PathHelper.TempFolderPath, FAVORITE_FEED_FILENAME);
+            string path = Path.Combine(Dependency.PathHelper.PermanentFolderPath, FAVORITE_FEED_FILENAME);
             await LocalFileHelper.SaveToFile(path, favoritesCached);
         }
 

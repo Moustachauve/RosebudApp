@@ -12,6 +12,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/feed_list_favorite_title"
+                style="@android:style/TextAppearance.Material.Title" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/favorite_feed_recyclerview"
                 android:layout_width="match_parent"
@@ -28,7 +33,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Routessss" />
+                android:text="@string/route_list_favorite_title"
+                style="@android:style/TextAppearance.Material.Title" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/favorite_route_recyclerview"
                 android:layout_width="match_parent"

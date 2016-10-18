@@ -18,6 +18,7 @@ namespace RosebudAppCore.Model
         public string stop_url { get; set; }
         public LocationType location_type { get; set; }
         public WheelchairAccessibility wheelchair_boarding { get; set; }
+        public string trip_id { get; set; }
         public string trip_headsign { get; set; }
         public TripDirection direction_id { get; set; }
     }

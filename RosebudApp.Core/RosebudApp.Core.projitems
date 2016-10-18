@@ -12,6 +12,7 @@
     <Folder Include="$(MSBuildThisFileDirectory)Cache\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Comparators\TimeComparator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\FavoriteRouteAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\FavoriteFeedAccessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataAccessor\HttpHelper.cs" />

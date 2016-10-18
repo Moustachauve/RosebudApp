@@ -38,9 +38,49 @@ namespace RosebudAppCore.Utils
             return stopLocation;
         }
 
-        public static async Task GetNextTimeForStop()
+        public static async Task GetNextTimeForStop(Route route, StopLocation stopLocation)
         {
+            if (stopLocation.Stop == null)
+                return;
 
+            List<StopTime> stopTimes = await StopAccessor.GetStopTimes(route.feed_id, route.route_id, stopLocation.Stop.stop_id, DateTime.Now, false);
+
+            DateTime now = DateTime.Now;
+            DateTime closestTime = DateTime.MaxValue;
+
+            foreach (var stopTime in stopTimes)
+            {
+                DateTime currentItemTime = TimeFormatter.StringToDateTime(stopTime.departure_time);
+                if (currentItemTime < now)
+                    continue;
+
+                if(currentItemTime < closestTime)
+                {
+                    closestTime = currentItemTime;
+                }
+            }
+
+            if(closestTime != DateTime.MaxValue)
+            {
+                stopLocation.NextDepartureTime = closestTime;
+            }
+        }
+
+        public static string FormatDistance(int meter)
+        {
+            if (meter < 1000)
+            {
+                return meter + "m";
+            }
+
+            if (meter < 100000)
+            {
+                string distance = (meter / 1000.0).ToString("F");
+                return distance + "km";
+            }
+
+            else
+                return "+100km";
         }
     }
 }

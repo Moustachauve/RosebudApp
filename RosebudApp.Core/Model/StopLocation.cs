@@ -5,5 +5,6 @@ namespace RosebudAppCore.Model
     {
         public Stop Stop { get; set; }
         public int DistanceInMeter { get; set; }
+        public DateTime NextDepartureTime { get; set; }
     }
 }

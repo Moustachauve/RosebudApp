@@ -14,7 +14,12 @@ namespace RosebudAppAndroid.Cache
     public static class CacheFileManager
     {
         const string LOG_TAG = "RosebudAppCore.Cache";
+
+#if DEBUG
+        static TimeSpan CacheExpirationTime = new TimeSpan(0, 0, 5);
+#else
         static TimeSpan CacheExpirationTime = new TimeSpan(10, 0, 0);
+#endif
 
         public static async Task<T> GetFromFile<T>(string fileName)
         {
@@ -31,7 +36,7 @@ namespace RosebudAppAndroid.Cache
             {
                 cacheItem = await LocalFileHelper.GetFromFile<CacheItem<T>>(path);
             }
-            catch (JsonSerializationException ex)
+            catch (Exception ex) when (ex is JsonSerializationException || ex is JsonReaderException)
             {
                 Log.Warn(LOG_TAG, "Could not deserialize file {0}", fileName);
                 Log.Warn(LOG_TAG, ex.ToString());
@@ -62,7 +67,7 @@ namespace RosebudAppAndroid.Cache
             DateTime expirationDate = DateTime.Now.Add(CacheExpirationTime);
             var cacheItem = new CacheItem<object>(item, expirationDate);
 
-            await LocalFileHelper.SaveToFile(path, item);
+            await LocalFileHelper.SaveToFile(path, cacheItem);
         }
     }
 }

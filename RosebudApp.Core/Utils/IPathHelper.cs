@@ -7,5 +7,6 @@ namespace RosebudAppCore.Utils
     public interface IPathHelper
     {
         string TempFolderPath { get; }
+        string PermanentFolderPath { get; }
     }
 }

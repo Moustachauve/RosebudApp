@@ -28,6 +28,18 @@ namespace RosebudAppAndroid.Utils
             }
         }
 
+        public string PermanentFolderPath
+        {
+            get
+            {
+                if (Context.FilesDir == null)
+                    return null;
+
+                return Context.FilesDir.AbsolutePath;
+            }
+        }
+
+
         public PathHelper(Context context)
         {
             Context = context;

@@ -4,7 +4,12 @@
 	
     <string name="activity_settings">Paramètres</string>
 
-    <string name="menu_drawer_favorite">Favoris</string>
+    <string name="hour">heure</string>
+    <string name="minute">minute</string>
+    <string name="hours">heures</string>
+    <string name="minutes">minutes</string>
+
+    <string name="menu_drawer_favorite">Préférés</string>
     <string name="menu_drawer_agency">Agences de transport</string>
 	<string name="menu_drawer_settings">@string/activity_settings</string>
 
@@ -12,10 +17,13 @@
     <string name="network_server_error">Impossible de contacter le serveur. Veuillez réessayer plus tard.</string>
     <string name="network_retry">Réessayer</string>
 
-    <string name="feed_list_favorite_empty">Vous n\'avez pas d\'agence de transport favorite.</string>
-    <string name="route_list_favorite_empty">Vous n\'avez pas de route favorite.</string>
+    <string name="feed_list_favorite_title">Agences de transport préférées</string>
+    <string name="route_list_favorite_title">Routes préférées</string>
+    <string name="feed_list_favorite_empty">Vous n\'avez pas d\'agence de transport préférée.</string>
+    <string name="route_list_favorite_empty">Vous n\'avez pas de route préférée.</string>
 
 	<string name="route_next_departure">Prochain départ</string>
+    <string name="route_next_departure_no_service">Pas de service aujourd\'hui</string>
 
     <string name="feed_list_empty">Aucune agence de transport n\'est disponible pour le moment.</string>
     <string name="route_list_empty">Aucune route n\'est disponible pour le moment.</string>

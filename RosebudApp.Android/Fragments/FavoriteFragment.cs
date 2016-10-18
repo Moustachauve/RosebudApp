@@ -18,6 +18,9 @@ using RosebudAppAndroid.Activities;
 using RosebudAppCore.Model;
 using Newtonsoft.Json;
 using RosebudAppCore.Utils;
+using Android;
+using Android.Content.PM;
+using Android.Support.Design.Widget;
 
 namespace RosebudAppAndroid.Fragments
 {
@@ -25,6 +28,13 @@ namespace RosebudAppAndroid.Fragments
     {
         const string STATE_FEED_RECYCLER_VIEW = "state-feed-recycler-view";
         const string STATE_ROUTE_RECYCLER_VIEW = "state-route-recycler-view";
+        const int REQUEST_LOCATION_ID = 0;
+
+        readonly string[] PermissionsLocation =
+        {
+            Manifest.Permission.AccessCoarseLocation,
+            Manifest.Permission.AccessFineLocation
+        };
 
         FeedAdapter feedAdapter;
         RouteWithStopLocationAdapter routeAdapter;
@@ -37,6 +47,8 @@ namespace RosebudAppAndroid.Fragments
         IParcelable routeRecyclerViewLayoutState;
 
         List<RouteWithStopLocation> favoriteRoutes;
+
+        bool IsListeningToLocationChange;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -93,14 +105,16 @@ namespace RosebudAppAndroid.Fragments
         {
             base.OnResume();
 
-            Dependency.LocationService.AddOnLocationChangedListener(this);
+            if (IsListeningToLocationChange)
+                Dependency.LocationService.AddOnLocationChangedListener(this);
         }
 
         public override void OnPause()
         {
             base.OnPause();
 
-            Dependency.LocationService.RemoveOnLocationChangedListener(this);
+            if(IsListeningToLocationChange)
+                Dependency.LocationService.RemoveOnLocationChangedListener(this);
         }
 
         async Task LoadFavorites()
@@ -164,9 +178,13 @@ namespace RosebudAppAndroid.Fragments
             else
                 routeAdapter.ReplaceItems(favoriteRoutes);
 
-            if (Dependency.LocationService.LastKnownLocation != null)
+            if ((int)Build.VERSION.SdkInt < 23)
             {
-                await UpdateRoutesLocation(Dependency.LocationService.LastKnownLocation);
+                await StartListeningLocation();
+            }
+            else
+            {
+                await RequestLocationPermission();
             }
         }
 
@@ -202,11 +220,44 @@ namespace RosebudAppAndroid.Fragments
             foreach (var routeWithLocation in favoriteRoutes)
             {
                 StopLocation stopLocation = await RouteLocationHelper.GetClosestStop(routeWithLocation.Route, location.Latitude, location.Longitude);
+                await RouteLocationHelper.GetNextTimeForStop(routeWithLocation.Route, stopLocation);
                 routeWithLocation.StopLocation = stopLocation;
+                routeAdapter.UpdateItem(routeWithLocation);
+            }
+        }
+
+        public async Task RequestLocationPermission()
+        {
+            string permission = Manifest.Permission.AccessFineLocation;
+            if (Activity.CheckSelfPermission(permission) == Permission.Granted)
+            {
+                await StartListeningLocation();
+                return;
             }
 
-            routeAdapter.ReplaceItems(favoriteRoutes);
-            routeAdapter.NotifyDataSetChanged();
+            if (ShouldShowRequestPermissionRationale(permission))
+            {
+                Snackbar.Make(feedRecyclerView, "Localisation désactivé", Snackbar.LengthLong)
+                        .SetAction("Activer", v => RequestPermissions(PermissionsLocation, REQUEST_LOCATION_ID))
+                        .Show();
+                routeAdapter.IsLocationVisible = false;
+                return;
+            }
+
+            RequestPermissions(PermissionsLocation, REQUEST_LOCATION_ID);
+        }
+
+        private async Task StartListeningLocation()
+        {
+            routeAdapter.IsLocationVisible = true;
+
+            if (Dependency.LocationService.LastKnownLocation != null)
+            {
+                await UpdateRoutesLocation(Dependency.LocationService.LastKnownLocation);
+            }
+
+            IsListeningToLocationChange = true;
+            Dependency.LocationService.AddOnLocationChangedListener(this);
         }
     }
 }

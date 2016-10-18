@@ -7,8 +7,8 @@ namespace RosebudAppCore.Model
 {
     public class StopTime
     {
-        public string trip_id{ get; set; }
-        public string arrival_time{ get; set; }
+        public string trip_id { get; set; }
+        public string arrival_time { get; set; }
         public string departure_time{ get; set; }
         public string stop_headsign { get; set; }
         public string pickup_type { get; set; }

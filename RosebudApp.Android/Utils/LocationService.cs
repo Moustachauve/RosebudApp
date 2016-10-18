@@ -23,6 +23,7 @@ namespace RosebudAppAndroid.Utils
     {
         const long UPDATE_INTERVAL = 30000;
         const long FASTEST_UPDATE_INTERVAL = UPDATE_INTERVAL / 2;
+        const long DISPLACEMENT = 10;
 
         Context Context;
 
@@ -36,7 +37,7 @@ namespace RosebudAppAndroid.Utils
             {
                 if (lastKnownLocation == null)
                     return null;
-                
+
                 return new RosebudAppCore.Model.Location(lastKnownLocation.Latitude, lastKnownLocation.Longitude);
             }
         }
@@ -61,6 +62,7 @@ namespace RosebudAppAndroid.Utils
             LocationRequest.SetInterval(UPDATE_INTERVAL);
             LocationRequest.SetFastestInterval(FASTEST_UPDATE_INTERVAL);
             LocationRequest.SetPriority(LocationRequest.PriorityHighAccuracy);
+            LocationRequest.SetSmallestDisplacement(DISPLACEMENT);
         }
 
         protected void BuildGoogleApiClient()
@@ -68,7 +70,11 @@ namespace RosebudAppAndroid.Utils
             GoogleApiClient = new GoogleApiClient.Builder(Context)
                 .AddConnectionCallbacks(this)
                 .AddApi(LocationServices.API)
+                .AddOnConnectionFailedListener(this)
                 .Build();
+
+            //ConnectGoogleApi();
+
             CreateLocationRequest();
         }
 
@@ -81,21 +87,32 @@ namespace RosebudAppAndroid.Utils
         {
             RequestingLocationUpdates = true;
 
-            if (GoogleApiClient.IsConnected)
-                await LocationServices.FusedLocationApi.RequestLocationUpdates(GoogleApiClient, LocationRequest, this);
+            if (GoogleApiClient.IsConnected && RequestingLocationUpdates)
+            {
+                var result = await LocationServices.FusedLocationApi.RequestLocationUpdates(GoogleApiClient, LocationRequest, this);
+            }
         }
 
         private async Task StopLocationUpdates()
         {
             RequestingLocationUpdates = false;
-            await LocationServices.FusedLocationApi.RemoveLocationUpdates(GoogleApiClient, this);
+
+            if (GoogleApiClient.IsConnected)
+                await LocationServices.FusedLocationApi.RemoveLocationUpdates(GoogleApiClient, this);
         }
 
         public async void OnConnected(Bundle connectionHint)
         {
-            if (LastKnownLocation == null)
+            if (lastKnownLocation == null)
             {
                 lastKnownLocation = LocationServices.FusedLocationApi.GetLastLocation(GoogleApiClient);
+
+                if (lastKnownLocation == null)
+                {
+                    var result = await LocationServices.FusedLocationApi.RequestLocationUpdates(GoogleApiClient, LocationRequest, this);
+                    Toast.MakeText(Context, "Allo", ToastLength.Long);
+                }
+
                 LastUpdateTime = DateTime.Now.TimeOfDay.ToString();
             }
 
@@ -103,7 +120,6 @@ namespace RosebudAppAndroid.Utils
             {
                 await StartLocationUpdates();
             }
-
         }
 
         public void OnConnectionSuspended(int cause)
