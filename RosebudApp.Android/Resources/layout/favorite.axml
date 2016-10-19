@@ -16,7 +16,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/feed_list_favorite_title"
-                style="@android:style/TextAppearance.Material.Title" />
+                style="@style/MainTitleText" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/favorite_feed_recyclerview"
                 android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             <TextView
                 android:id="@+id/feed_list_empty"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="60dp"
                 android:gravity="center"
                 android:text="@string/feed_list_favorite_empty"
                 android:visibility="gone" />
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/route_list_favorite_title"
-                style="@android:style/TextAppearance.Material.Title" />
+                style="@style/MainTitleText" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/favorite_route_recyclerview"
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
             <TextView
                 android:id="@+id/route_list_empty"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="60dp"
                 android:gravity="center"
                 android:text="@string/route_list_favorite_empty"
                 android:visibility="gone" />
