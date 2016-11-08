@@ -5,30 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@+id/toolbar_container">
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/feed_pull_to_refresh_empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
-            <TextView
-                android:id="@+id/empty_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/feed_list_empty" />
-        </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/feed_pull_to_refresh"
+    <ca.cgagnier.rosebudapp.views.LoadingContainer
+        android:id="@+id/loading_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="@dimen/empty_message_min_height"
+            android:gravity="center"
+            android:text="@string/feed_list_empty" />
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/feed_recyclerview" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </ca.cgagnier.rosebudapp.views.LoadingContainer>
 </LinearLayout>

@@ -7,4 +7,6 @@
 
     <dimen name="small_list_item_text">16dp</dimen>
     <dimen name="medium_list_item_text">18dp</dimen>
+
+    <dimen name="empty_message_min_height">200dp</dimen>
 </resources>

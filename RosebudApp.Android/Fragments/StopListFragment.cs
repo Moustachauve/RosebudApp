@@ -17,12 +17,13 @@ using Newtonsoft.Json;
 using FragmentSupport = Android.Support.V4.App.Fragment;
 using System.Threading.Tasks;
 using System.Threading;
+using Android.Support.V4.View;
 
 namespace RosebudAppAndroid.Fragments
 {
     public class StopListFragment : FragmentSupport
     {
-        const string BUNDLE_KEY_TRIPS = "bundle_trips_frag";
+        const string BUNDLE_KEY_STOPS = "bundle_stops_frag";
 
         StopAdapter stopAdapter;
         List<Stop> stops;
@@ -33,13 +34,13 @@ namespace RosebudAppAndroid.Fragments
 
         public event EventHandler<StopClickedEventArgs> ItemClicked;
 
-        public List<Stop> Trips
+        public List<Stop> Stops
         {
             get { return new List<Stop>(stops); }
             set
             {
                 stops = new List<Stop>(value);
-                UpdateTrips();
+                UpdateStops();
             }
         }
 
@@ -47,22 +48,23 @@ namespace RosebudAppAndroid.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View view = inflater.Inflate(Resource.Layout.trip_list, container, false);
+            View view = inflater.Inflate(Resource.Layout.stop_list, container, false);
 
             if (savedInstanceState != null)
             {
-                string jsonTrips = savedInstanceState.GetString(BUNDLE_KEY_TRIPS);
-                if (!string.IsNullOrEmpty(jsonTrips))
+                string jsonInfo = savedInstanceState.GetString(BUNDLE_KEY_STOPS);
+                if (!string.IsNullOrEmpty(jsonInfo))
                 {
-                    stops = JsonConvert.DeserializeObject<List<Stop>>(jsonTrips);
+                    stops = JsonConvert.DeserializeObject<List<Stop>>(jsonInfo);
                 }
             }
 
-            stopRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.trip_recyclerview);
-            stopRecyclerView.NestedScrollingEnabled = false;
+            stopRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.stop_recyclerview);
+            //This line enable smooth scrolling inside the LoadingContainer
+            //ViewCompat.SetNestedScrollingEnabled(stopRecyclerView, false);
 
             isViewLoaded = true;
-            UpdateTrips();
+            UpdateStops();
 
             return view;
         }
@@ -70,7 +72,7 @@ namespace RosebudAppAndroid.Fragments
         public override void OnSaveInstanceState(Bundle outState)
         {
             string jsonStops = JsonConvert.SerializeObject(stops);
-            outState.PutString(BUNDLE_KEY_TRIPS, jsonStops);
+            outState.PutString(BUNDLE_KEY_STOPS, jsonStops);
             //outState.PutParcelable(STATE_RECYCLER_VIEW, stopRecyclerView.GetLayoutManager().OnSaveInstanceState());
             base.OnSaveInstanceState(outState);
         }
@@ -84,7 +86,7 @@ namespace RosebudAppAndroid.Fragments
             ItemClicked(this, new StopClickedEventArgs(clickedStop));
         }
 
-        void UpdateTrips()
+        void UpdateStops()
         {
             if (stops == null)
                 return;

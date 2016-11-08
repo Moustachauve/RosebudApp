@@ -16,31 +16,21 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_container"
             class="rosebudappandroid.fragments.NetworkStatusFragment" />
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/route_pull_to_refresh_empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
-                <TextView
-                    android:id="@+id/empty_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/route_list_empty" />
-            </ScrollView>
-        </android.support.v4.widget.SwipeRefreshLayout>
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/route_pull_to_refresh"
+        <ca.cgagnier.rosebudapp.views.LoadingContainer
+            android:id="@+id/loading_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="@dimen/empty_message_min_height"
+                android:gravity="center"
+                android:text="@string/route_list_empty" />
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/route_recyclerview" />
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </ca.cgagnier.rosebudapp.views.LoadingContainer>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

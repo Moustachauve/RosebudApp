@@ -19,6 +19,8 @@ using RosebudAppAndroid.Activities;
 using Newtonsoft.Json;
 using Android.Support.V7.App;
 using Android.App;
+using RosebudAppAndroid.Views;
+using Android.Support.V4.View;
 
 namespace RosebudAppAndroid.Fragments
 {
@@ -28,15 +30,14 @@ namespace RosebudAppAndroid.Fragments
 
         FeedAdapter feedAdapter;
         RecyclerView feedRecyclerView;
-        SwipeRefreshLayout feedPullToRefresh;
-        SwipeRefreshLayout feedPullToRefreshEmpty;
+        LoadingContainer loadingContainer;
+        View emptyView;
 
         IParcelable recyclerViewLayoutState;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            // Create your fragment here
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -44,23 +45,24 @@ namespace RosebudAppAndroid.Fragments
             View view = inflater.Inflate(Resource.Layout.feed_list, container, false);
 
             feedRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.feed_recyclerview);
-            feedPullToRefresh = view.FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh);
-            feedPullToRefreshEmpty = view.FindViewById<SwipeRefreshLayout>(Resource.Id.feed_pull_to_refresh_empty);
+            loadingContainer = view.FindViewById<LoadingContainer>(Resource.Id.loading_container);
+            emptyView = view.FindViewById<View>(Resource.Id.empty_view);
 
-            feedPullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-            feedPullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-            feedPullToRefresh.Post(async () =>
+            //This line enable smooth scrolling inside the LoadingContainer
+            ViewCompat.SetNestedScrollingEnabled(feedRecyclerView, false);
+
+            loadingContainer.Post(async () =>
             {
+                loadingContainer.Loading = true;
                 await LoadFeeds();
+                loadingContainer.Loading = false;
             });
 
-            feedPullToRefresh.Refresh += async delegate
+            loadingContainer.Refresh += async delegate
             {
+                loadingContainer.Refreshing = true;
                 await LoadFeeds(true);
-            };
-            feedPullToRefreshEmpty.Refresh += async delegate
-            {
-                await LoadFeeds(true);
+                loadingContainer.Refreshing = false;
             };
 
             return view;
@@ -102,13 +104,10 @@ namespace RosebudAppAndroid.Fragments
 
         async Task LoadFeeds(bool overrideCache = false)
         {
-            feedPullToRefresh.Refreshing = true;
-            feedPullToRefreshEmpty.Refreshing = true;
-
             var feeds = await FeedAccessor.GetAllFeeds(overrideCache);
 
-            feedPullToRefresh.Visibility = feeds == null ? ViewStates.Gone : ViewStates.Visible;
-            feedPullToRefreshEmpty.Visibility = feeds == null ? ViewStates.Visible : ViewStates.Gone;
+            feedRecyclerView.Visibility = feeds == null ? ViewStates.Gone : ViewStates.Visible;
+            emptyView.Visibility = feeds == null ? ViewStates.Visible : ViewStates.Gone;
 
             if (feedAdapter == null)
             {
@@ -125,11 +124,7 @@ namespace RosebudAppAndroid.Fragments
             else
                 feedAdapter.ReplaceItems(feeds);
 
-            ((MainActivity)Activity).SearchBarVisible = feedPullToRefresh.Visibility == ViewStates.Visible;
-
-
-            feedPullToRefresh.Refreshing = false;
-            feedPullToRefreshEmpty.Refreshing = false;
+            ((MainActivity)Activity).SearchBarVisible = feeds != null;
         }
 
         void OnItemClick(object sender, int position)

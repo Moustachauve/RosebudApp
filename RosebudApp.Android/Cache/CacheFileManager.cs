@@ -45,10 +45,11 @@ namespace RosebudAppAndroid.Cache
                 return default(T);
             }
 
-            //We delete cache only if it is expired and we are connected to the internet - Better show expired data than nothing!
+            //We delete cache only if it is created in the future or expired and we are connected to the internet - Better show expired data than nothing!
             if (cacheItem == null ||
-               cacheItem.CacheExpirationDate < DateTime.Now &&
-               !Dependency.NetworkStatusMonitor.CanConnect)
+               (cacheItem.CacheCreationDate > DateTime.Now || 
+               cacheItem.CacheCreationDate < cacheItem.CacheCreationDate.Add(CacheExpirationTime)/* &&
+               Dependency.NetworkStatusMonitor.CanConnect*/))
             {
                 File.Delete(path);
                 return default(T);
@@ -64,8 +65,7 @@ namespace RosebudAppAndroid.Cache
 
             string path = Path.Combine(Dependency.PathHelper.TempFolderPath, fileName);
 
-            DateTime expirationDate = DateTime.Now.Add(CacheExpirationTime);
-            var cacheItem = new CacheItem<object>(item, expirationDate);
+            var cacheItem = new CacheItem<object>(item);
 
             await LocalFileHelper.SaveToFile(path, cacheItem);
         }

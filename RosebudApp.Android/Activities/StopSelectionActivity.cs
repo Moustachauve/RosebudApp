@@ -23,6 +23,7 @@ using RosebudAppCore;
 using RosebudAppCore.DataAccessor;
 using RosebudAppCore.Model.Enum;
 using RosebudApp.AndroidMaterialCalendarBinding;
+using RosebudAppAndroid.Views;
 
 namespace RosebudAppAndroid.Activities
 {
@@ -33,6 +34,7 @@ namespace RosebudAppAndroid.Activities
         const string STATE_RECYCLER_VIEW = "state-recycler-view";
 
         Route routeInfo;
+        LoadingContainer loadingContainer;
         StopDirectionPagerAdapter stopDirectionPagerAdapter;
         TabLayout tabLayout;
 
@@ -52,6 +54,7 @@ namespace RosebudAppAndroid.Activities
 
             NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
+            loadingContainer = FindViewById<LoadingContainer>(Resource.Id.loading_container);
             tabLayout = FindViewById<TabLayout>(Resource.Id.tab_layout);
             viewPager = FindViewById<ViewPager>(Resource.Id.view_pager);
             emptyView = FindViewById<LinearLayout>(Resource.Id.empty_view);
@@ -63,12 +66,22 @@ namespace RosebudAppAndroid.Activities
 
             networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
+                loadingContainer.Loading = true;
                 await LoadStops();
+                loadingContainer.Loading = false;
             };
+
+            loadingContainer.Refresh += LoadingContainerRefresh;
 
             SwitchDate(Dependency.PreferenceManager.SelectedDatetime);
         }
 
+        private async void LoadingContainerRefresh(object sender, EventArgs e)
+        {
+            loadingContainer.Refreshing = true;
+            await LoadStops(true);
+            loadingContainer.Refreshing = false;
+        }
 
         protected override void OnSaveInstanceState(Bundle outState)
         {

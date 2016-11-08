@@ -5,6 +5,7 @@ using RosebudAppCore.DataAccessor;
 using RosebudAppCore.Model;
 using Newtonsoft.Json;
 using RosebudAppCore.Utils;
+using RosebudAppCore.Model.Enum;
 
 namespace RosebudAppCore.DataAccessor
 {
@@ -37,27 +38,27 @@ namespace RosebudAppCore.DataAccessor
             return tripDetails;
         }
 
-        public static async Task<List<StopTime>> GetStopTimes(int feedId, string routeId, string stopId, DateTime date, bool overrideCache)
+        public static async Task<List<StopTime>> GetStopTimes(int feedId, string routeId, string stopId, TripDirection directionId, DateTime date, bool overrideCache)
         {
             List<StopTime> stopTimes = null;
             if (!overrideCache)
             {
-                stopTimes = await Dependency.CacheRepository.StopCacheManager.GetStopTimes(feedId, routeId, stopId, date);
+                stopTimes = await Dependency.CacheRepository.StopCacheManager.GetStopTimes(feedId, routeId, stopId, directionId, date);
                 if (stopTimes != null)
                     return stopTimes;
             }
 
             string dateFormatted = TimeFormatter.ToShortDateApi(date);
-            string apiUrl = string.Format(API_ENDPOINT, feedId, routeId, stopId) + "stops/time?date=" + dateFormatted;
+            string apiUrl = string.Format(API_ENDPOINT, feedId, routeId, stopId) + "stops/time?date=" + dateFormatted + "&directionid=" + (int)directionId;
             stopTimes = await HttpHelper.GetDataFromHttp<List<StopTime>>(apiUrl);
 
             if (stopTimes == null && overrideCache && !Dependency.NetworkStatusMonitor.CanConnect)
             {
-                stopTimes = await Dependency.CacheRepository.StopCacheManager.GetStopTimes(feedId, routeId, stopId, date);
+                stopTimes = await Dependency.CacheRepository.StopCacheManager.GetStopTimes(feedId, routeId, stopId, directionId, date);
             }
             else
             {
-                await Dependency.CacheRepository.StopCacheManager.SaveStopTimes(feedId, routeId, stopId, date, stopTimes);
+                await Dependency.CacheRepository.StopCacheManager.SaveStopTimes(feedId, routeId, stopId, directionId, date, stopTimes);
             }
 
             return stopTimes;

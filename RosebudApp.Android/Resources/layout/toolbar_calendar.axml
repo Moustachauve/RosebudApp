@@ -14,23 +14,28 @@
         android:minHeight="?attr/actionBarSize"
         android:fitsSystemWindows="true"
         app:contentScrim="?attr/colorPrimary"
-        app:statusBarScrim="?attr/colorPrimaryDark"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+        app:statusBarScrim="?attr/colorPrimaryDark">
         <LinearLayout
             android:id="@+id/compactcalendar_view_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            android:paddingTop="?attr/actionBarSize"
-            app:layout_collapseMode="parallax"
-            app:layout_collapseParallaxMultiplier="1.0">
-            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-                android:id="@+id/calendar_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:mcv_dateTextAppearance="@style/CalendarTextAppearance"
-                app:mcv_arrowColor="#FFF"
-                android:fitsSystemWindows="true" />
+            android:paddingTop="?attr/actionBarSize">
+            <net.cachapa.expandablelayout.ExpandableLayout
+            android:id="@+id/expandable_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:el_duration="300"
+            app:el_expanded="false"
+            app:el_translate_children="true">
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendar_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:mcv_dateTextAppearance="@style/CalendarTextAppearance"
+                    app:mcv_arrowColor="#FFF"
+                    android:fitsSystemWindows="true" />
+            </net.cachapa.expandablelayout.ExpandableLayout>
         </LinearLayout>
         <android.support.v7.widget.Toolbar
             android:id="@+id/my_awesome_toolbar"

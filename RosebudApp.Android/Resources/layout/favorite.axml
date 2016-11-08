@@ -5,49 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@+id/toolbar_container">
-    <android.support.v4.widget.NestedScrollView
+    <ca.cgagnier.rosebudapp.views.LoadingContainer
+        android:id="@+id/loading_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/feed_list_favorite_title"
-                style="@android:style/TextAppearance.Material.Title" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/favorite_feed_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:visibility="gone" />
-            <TextView
-                android:id="@+id/feed_list_empty"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:gravity="center"
-                android:text="@string/feed_list_favorite_empty"
-                android:visibility="gone" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/route_list_favorite_title"
-                style="@android:style/TextAppearance.Material.Title" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/favorite_route_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:visibility="gone" />
-            <TextView
-                android:id="@+id/route_list_empty"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:gravity="center"
-                android:text="@string/route_list_favorite_empty"
-                android:visibility="gone" />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+            android:padding="10dp"
+            android:text="@string/feed_list_favorite_title"
+            style="@android:style/TextAppearance.Material.Title" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/favorite_feed_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+        <TextView
+            android:id="@+id/feed_list_empty"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/empty_message_min_height"
+            android:gravity="center"
+            android:text="@string/feed_list_favorite_empty"
+            android:visibility="gone" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/route_list_favorite_title"
+            style="@android:style/TextAppearance.Material.Title" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/favorite_route_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+        <TextView
+            android:id="@+id/route_list_empty"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/empty_message_min_height"
+            android:gravity="center"
+            android:text="@string/route_list_favorite_empty"
+            android:visibility="gone" />
+    </ca.cgagnier.rosebudapp.views.LoadingContainer>
 </LinearLayout>

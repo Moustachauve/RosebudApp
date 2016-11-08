@@ -16,76 +16,69 @@
             android:background="?attr/colorPrimary"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     </android.support.design.widget.AppBarLayout>
-    <LinearLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:orientation="vertical"
+
+    <ca.cgagnier.rosebudapp.views.LoadingContainer
+        android:id="@+id/loading_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <fragment
             android:id="@+id/network_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_container"
             class="rosebudappandroid.fragments.NetworkStatusFragment" />
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/stop_time_pull_to_refresh_empty"
+
+        <LinearLayout
+            android:id="@+id/empty_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:id="@+id/empty_view"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/empty_view_main_text"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="10dp"
-                android:visibility="gone">
-                <TextView
-                    android:id="@+id/empty_view_main_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/stop_list_empty"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/select_calendar"
-                    android:layout_marginTop="8dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/empty_view_no_internet"
+                android:text="@string/stop_list_empty"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="10dp"
-                android:visibility="gone">
-                <TextView
-                    android:id="@+id/empty_view_no_internet_main_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/stop_list_empty_no_internet"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/select_calendar_no_internet"
-                    android:layout_marginTop="8dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-            </LinearLayout>
-        </android.support.v4.widget.SwipeRefreshLayout>
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/stop_time_pull_to_refresh"
+                android:text="@string/select_calendar"
+                android:layout_marginTop="8dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/empty_view_no_internet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <android.support.v7.widget.RecyclerView
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/empty_view_no_internet_main_text"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/stop_time_recyclerview" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-    </LinearLayout>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/stop_list_empty_no_internet"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/select_calendar_no_internet"
+                android:layout_marginTop="8dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/stop_time_recyclerview" />
+    </ca.cgagnier.rosebudapp.views.LoadingContainer>
 </android.support.design.widget.CoordinatorLayout>

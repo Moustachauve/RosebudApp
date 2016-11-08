@@ -25,26 +25,26 @@ namespace RosebudAppAndroid.Adapters
             foreach (InternalItem item in AllItems)
             {
                 HeaderTimeItem header = item as HeaderTimeItem;
-                if(header == null)
+                if (header == null)
                 {
                     continue;
                 }
 
                 int headerHour = header.Hour;
-                if(headerHour >= 24)
+                if (headerHour >= 24)
                 {
                     headerHour -= 24;
-                } 
+                }
 
                 int difference = Math.Abs(header.Hour - time.Hour);
-                if(difference < smallestDifference)
+                if (difference < smallestDifference)
                 {
                     smallestDifference = difference;
                     closestHeader = header;
                 }
             }
 
-            if(closestHeader != null)
+            if (closestHeader != null)
             {
                 return closestHeader.SectionFirstPosition;
             }
@@ -57,6 +57,9 @@ namespace RosebudAppAndroid.Adapters
         protected override List<InternalItem> CreateInternalItems(List<StopTime> items)
         {
             List<InternalItem> internalItems = new List<InternalItem>();
+            if (items == null)
+                return internalItems;
+
             Dictionary<string, HeaderTimeItem> sections = new Dictionary<string, HeaderTimeItem>();
 
             int position = 0;
@@ -91,7 +94,7 @@ namespace RosebudAppAndroid.Adapters
 
             foreach (var section in sections.Values)
             {
-                if(section.SectionFirstPosition - 1 >= 0)
+                if (section.SectionFirstPosition - 1 >= 0)
                 {
                     ObjectItem item = internalItems[section.SectionFirstPosition - 1] as ObjectItem;
                     item.IsLast = true;

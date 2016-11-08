@@ -79,7 +79,7 @@ namespace RosebudAppAndroid
             StopListFragment fragment = (StopListFragment)base.InstantiateItem(container, position);
 
             fragment.RouteInfo = RouteInfo;
-            fragment.Trips = itemStops[position];
+            fragment.Stops = itemStops[position];
             fragment.ItemClicked += OnItemClicked;
             fragments.Add(position, fragment);
 
@@ -93,7 +93,7 @@ namespace RosebudAppAndroid
 
             if (itemStops.Count < position)
             {
-                fragment.Trips = itemStops[position];
+                fragment.Stops = itemStops[position];
             }
 
             return base.GetItemPosition(objectValue);

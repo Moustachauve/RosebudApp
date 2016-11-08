@@ -136,13 +136,11 @@
     <Compile Include="Adapters\BaseRecyclerAdapter.cs" />
     <Compile Include="Animations\ArrowRotateAnimation.cs" />
     <Compile Include="RosebudApp.cs" />
+    <Compile Include="Utils\DisableableAppBarLayoutBehavior.cs" />
     <Compile Include="Utils\LocationService.cs" />
     <Compile Include="Utils\NetworkStatusMonitor.cs" />
-    <Compile Include="Fragments\TripListFragment.cs" />
-    <Compile Include="Adapters\TripDirectionPagerAdapter.cs" />
     <Compile Include="Activities\FeedDetailsActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
-    <Compile Include="Activities\RouteDetailsActivity.cs" />
     <Compile Include="Activities\TripDetailsActivity.cs" />
     <Compile Include="Cache\FeedCacheManager.cs" />
     <Compile Include="Cache\CacheRepository.cs" />
@@ -152,6 +150,9 @@
     <Compile Include="Utils\PathHelper.cs" />
     <Compile Include="Utils\PreferenceManager.cs" />
     <Compile Include="Adapters\RouteWithStopLocationAdapter.cs" />
+    <Compile Include="Views\CustomSwipeToRefresh.cs" />
+    <Compile Include="Views\LoadingContainer.cs" />
+    <Compile Include="Views\LockableNestedScrollView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml">
@@ -198,6 +199,13 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\route_stop_location_listitem.axml" />
+    <AndroidResource Include="Resources\layout\loading_container.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\trip_details.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\trip_listitem.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -213,13 +221,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\route_listitem.axml" />
-    <AndroidResource Include="Resources\layout\trip_details.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\route_details.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\trip_listitem.axml" />
     <AndroidResource Include="Resources\layout\stop_time_trip_listitem.axml" />
     <AndroidResource Include="Resources\layout\map_marker.axml" />
     <AndroidResource Include="Resources\drawable\map_marker.axml" />
@@ -229,7 +233,9 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_arrow_drop_down_white_24dp.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_arrow_drop_down_white_24dp.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_arrow_drop_down_white_24dp.png" />
-    <AndroidResource Include="Resources\layout\trip_list.axml" />
+    <AndroidResource Include="Resources\layout\stop_list.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
@@ -253,6 +259,10 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RosebudApp.AndroidExpandableLayoutBinding\RosebudApp.AndroidExpandableLayoutBinding.csproj">
+      <Project>{c04103fb-6992-4c2c-9796-aef0e00f0ba8}</Project>
+      <Name>RosebudApp.AndroidExpandableLayoutBinding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RosebudApp.AndroidMaterialCalendarBinding\RosebudApp.AndroidMaterialCalendarBinding.csproj">
       <Project>{768cbfc3-ac52-4989-82cf-69777452eb50}</Project>
       <Name>RosebudApp.AndroidMaterialCalendarBinding</Name>

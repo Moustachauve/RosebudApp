@@ -25,6 +25,7 @@ using RosebudAppCore.Utils;
 using Android;
 using Android.Content.PM;
 using RosebudApp.AndroidMaterialCalendarBinding;
+using RosebudAppAndroid.Views;
 
 namespace RosebudAppAndroid.Activities
 {
@@ -37,8 +38,8 @@ namespace RosebudAppAndroid.Activities
 
         RouteAdapter routeAdapter;
         RecyclerView routeRecyclerView;
-        SwipeRefreshLayout routePullToRefresh;
-        SwipeRefreshLayout routePullToRefreshEmpty;
+        View emptyView;
+        LoadingContainer loadingContainer;
         IMenuItem searchMenu;
 
         IParcelable recyclerViewLayoutState;
@@ -53,24 +54,23 @@ namespace RosebudAppAndroid.Activities
             NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             routeRecyclerView = FindViewById<RecyclerView>(Resource.Id.route_recyclerview);
-            routeRecyclerView.NestedScrollingEnabled = false;
-            routePullToRefresh = FindViewById<SwipeRefreshLayout>(Resource.Id.route_pull_to_refresh);
-            routePullToRefreshEmpty = FindViewById<SwipeRefreshLayout>(Resource.Id.route_pull_to_refresh_empty);
+            //This line enable smooth scrolling inside the LoadingContainer
+            ViewCompat.SetNestedScrollingEnabled(routeRecyclerView, false);
+            emptyView = FindViewById<View>(Resource.Id.empty_view);
+            loadingContainer = FindViewById<LoadingContainer>(Resource.Id.loading_container);
 
             feedInfo = JsonConvert.DeserializeObject<Feed>(Intent.GetStringExtra("feedInfos"));
             lblToolbarTitle.Text = feedInfo.agency_name;
 
-            routePullToRefresh.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-            routePullToRefreshEmpty.SetColorSchemeResources(Resource.Color.refresh_progress_1, Resource.Color.refresh_progress_2, Resource.Color.refresh_progress_3);
-
-            routePullToRefresh.Refresh += PullToRefreshRefresh;
-            routePullToRefreshEmpty.Refresh += PullToRefreshRefresh;
+            loadingContainer.Refresh += PullToRefreshRefresh;
 
             SwitchDate(Dependency.PreferenceManager.SelectedDatetime);
 
             networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
+                loadingContainer.Loading = true;
                 await LoadRoutes();
+                loadingContainer.Loading = false;
             };
         }
 
@@ -109,13 +109,9 @@ namespace RosebudAppAndroid.Activities
 
         async Task LoadRoutes(bool overrideCache = false)
         {
-            routePullToRefresh.Refreshing = true;
-            routePullToRefreshEmpty.Refreshing = true;
-
             var routes = await RouteAccessor.GetAllRoutes(feedInfo.feed_id, overrideCache);
 
-            routePullToRefresh.Visibility = routes == null ? ViewStates.Gone : ViewStates.Visible;
-            routePullToRefreshEmpty.Visibility = routes == null ? ViewStates.Visible : ViewStates.Gone;
+            emptyView.Visibility = routes == null ? ViewStates.Visible : ViewStates.Gone;
 
             if (routeAdapter == null)
             {
@@ -137,9 +133,6 @@ namespace RosebudAppAndroid.Activities
             {
                 routeAdapter.ReplaceItems(routes);
             }
-
-            routePullToRefresh.Refreshing = false;
-            routePullToRefreshEmpty.Refreshing = false;
         }
 
         public void OnItemClick(object sender, int position)
@@ -154,14 +147,18 @@ namespace RosebudAppAndroid.Activities
 
         private async void PullToRefreshRefresh(object sender, EventArgs e)
         {
+            loadingContainer.Refreshing = true;
             await LoadRoutes(true);
+            loadingContainer.Refreshing = false;
         }
 
         protected override async void OnSelectedDateChanged(object sender, DateTime selectedDate)
         {
+            loadingContainer.Loading = true;
             if (routeAdapter != null)
                 routeAdapter.ClearItems();
             await LoadRoutes();
+            loadingContainer.Loading = false;
         }
     }
 }

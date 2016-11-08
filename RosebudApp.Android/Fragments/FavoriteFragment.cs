@@ -21,6 +21,10 @@ using RosebudAppCore.Utils;
 using Android;
 using Android.Content.PM;
 using Android.Support.Design.Widget;
+using Android.Gms.Common;
+using RosebudAppAndroid.Utils;
+using RosebudAppAndroid.Views;
+using Android.Support.V4.View;
 
 namespace RosebudAppAndroid.Fragments
 {
@@ -28,6 +32,7 @@ namespace RosebudAppAndroid.Fragments
     {
         const string STATE_FEED_RECYCLER_VIEW = "state-feed-recycler-view";
         const string STATE_ROUTE_RECYCLER_VIEW = "state-route-recycler-view";
+        const int REQUEST_GOOGLE_PLAY_SERVICES = 42;
         const int REQUEST_LOCATION_ID = 0;
 
         readonly string[] PermissionsLocation =
@@ -36,6 +41,7 @@ namespace RosebudAppAndroid.Fragments
             Manifest.Permission.AccessFineLocation
         };
 
+        LoadingContainer loadingContainer;
         FeedAdapter feedAdapter;
         RouteWithStopLocationAdapter routeAdapter;
         RecyclerView feedRecyclerView;
@@ -59,16 +65,22 @@ namespace RosebudAppAndroid.Fragments
         {
             View view = inflater.Inflate(Resource.Layout.favorite, container, false);
 
+            loadingContainer = view.FindViewById<LoadingContainer>(Resource.Id.loading_container);
             feedRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.favorite_feed_recyclerview);
             routeRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.favorite_route_recyclerview);
             feedEmptyView = view.FindViewById<TextView>(Resource.Id.feed_list_empty);
             routeEmptyView = view.FindViewById<TextView>(Resource.Id.route_list_empty);
 
+            loadingContainer.Refreshable = false;
             feedRecyclerView.HasFixedSize = false;
             routeRecyclerView.HasFixedSize = false;
+            //This line enable smooth scrolling inside the LoadingContainer
+            ViewCompat.SetNestedScrollingEnabled(feedRecyclerView, false);
+            ViewCompat.SetNestedScrollingEnabled(routeRecyclerView, false);
 
             feedRecyclerView.Post(async () =>
             {
+                ((MainActivity)Activity).SearchBarVisible = false;
                 await LoadFavorites();
             });
 
@@ -119,10 +131,14 @@ namespace RosebudAppAndroid.Fragments
 
         async Task LoadFavorites()
         {
+            loadingContainer.Loading = true;
+
             await LoadFeeds();
             await LoadRoutes();
 
-            ((MainActivity)Activity).SearchBarVisible = false;
+            loadingContainer.Loading = false;
+
+            await InitLocationListener();
         }
 
         async Task LoadFeeds()
@@ -177,7 +193,10 @@ namespace RosebudAppAndroid.Fragments
             }
             else
                 routeAdapter.ReplaceItems(favoriteRoutes);
+        }
 
+        async Task InitLocationListener()
+        {
             if ((int)Build.VERSION.SdkInt < 23)
             {
                 await StartListeningLocation();
@@ -249,6 +268,21 @@ namespace RosebudAppAndroid.Fragments
 
         private async Task StartListeningLocation()
         {
+            ConnectionResult connectionError = ((LocationService)Dependency.LocationService).ConnectionError;
+            if (connectionError != null)
+            {
+                routeAdapter.IsLocationVisible = false;
+                IsListeningToLocationChange = false;
+
+                GoogleApiAvailability googleAPI = GoogleApiAvailability.Instance;
+                if (googleAPI.IsUserResolvableError(connectionError.ErrorCode))
+                {
+                    googleAPI.GetErrorDialog(Activity, connectionError.ErrorCode, REQUEST_GOOGLE_PLAY_SERVICES).Show();
+                }
+
+                return;
+            }
+
             routeAdapter.IsLocationVisible = true;
 
             if (Dependency.LocationService.LastKnownLocation != null)

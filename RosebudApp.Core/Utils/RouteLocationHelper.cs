@@ -43,7 +43,10 @@ namespace RosebudAppCore.Utils
             if (stopLocation.Stop == null)
                 return;
 
-            List<StopTime> stopTimes = await StopAccessor.GetStopTimes(route.feed_id, route.route_id, stopLocation.Stop.stop_id, DateTime.Now, false);
+            List<StopTime> stopTimes = await StopAccessor.GetStopTimes(route.feed_id, route.route_id, stopLocation.Stop.stop_id, stopLocation.Stop.direction_id, DateTime.Now, false);
+
+            if (stopTimes == null)
+                return;
 
             DateTime now = DateTime.Now;
             DateTime closestTime = DateTime.MaxValue;

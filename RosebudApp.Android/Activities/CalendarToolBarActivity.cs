@@ -16,6 +16,9 @@ using RosebudAppCore.Utils;
 using System.Threading.Tasks;
 using RosebudAppCore;
 using Android.Views.Animations;
+using Android.Support.V4.Widget;
+using Android.Support.V4.View;
+using RosebudApp.AndroidExpandableLayoutBinding;
 
 namespace RosebudAppAndroid.Activities
 {
@@ -23,6 +26,7 @@ namespace RosebudAppAndroid.Activities
     {
         protected int ActivityLayout;
         protected AppBarLayout appBarLayout;
+        protected ExpandableLayout expandableLayout;
         protected TextView lblToolbarTitle;
         protected TextView lblToolbarDate;
         protected MaterialCalendarView calendarView;
@@ -42,18 +46,20 @@ namespace RosebudAppAndroid.Activities
             SetContentView(ActivityLayout);
 
             appBarLayout = FindViewById<AppBarLayout>(Resource.Id.app_bar_layout);
+            expandableLayout = FindViewById<ExpandableLayout>(Resource.Id.expandable_layout);
             lblToolbarTitle = FindViewById<TextView>(Resource.Id.lbl_toolbar_title);
             lblToolbarDate = FindViewById<TextView>(Resource.Id.lbl_toolbar_date);
 
             var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.my_awesome_toolbar);
             SetSupportActionBar(toolbar);
+            toolbar.SetCollapsible(false);
 
             var btnDatePicker = FindViewById<RelativeLayout>(Resource.Id.btn_date_picker);
             icoDropdownDatePicker = FindViewById<ImageView>(Resource.Id.ico_dropdown_calendar);
             calendarView = FindViewById<MaterialCalendarView>(Resource.Id.calendar_view);
             SetCalendarSelectedDate(Dependency.PreferenceManager.SelectedDatetime);
 
-            appBarLayout.OffsetChanged += AppBarLayoutOffsetChanged;
+            //appBarLayout.OffsetChanged += AppBarLayoutOffsetChanged;
             toolbar.NavigationClick += ToolbarNavigationClick;
             btnDatePicker.Click += BtnDatePickerClick;
             calendarView.DateChanged += CalendarViewDateChanged;
@@ -118,60 +124,11 @@ namespace RosebudAppAndroid.Activities
         private void ToggleDatePicker()
         {
             isCalendarExpanded = !isCalendarExpanded;
-            appBarLayout.SetExpanded(isCalendarExpanded);
+
+            expandableLayout.Toggle();
+            RotateArrow();
         }
-
-        private void AppBarLayoutOffsetChanged(object sender, AppBarLayout.OffsetChangedEventArgs e)
-        {
-            if (e.VerticalOffset == previousToolbarOffset)
-                return;
-
-            if (Math.Abs(e.VerticalOffset) == appBarLayout.TotalScrollRange)
-            {
-                //Collapsed
-                if(isCalendarExpanded)
-                {
-                    if(isArrowPointingUp)
-                    {
-                        RotateArrow();
-                        isArrowPointingUp = false;
-                    }
-                    
-                    isCalendarExpanded = false;
-                }
-            }
-            else if(e.VerticalOffset == 0)
-            {
-                //Expanded
-                if (!isCalendarExpanded)
-                {
-                    if (!isArrowPointingUp)
-                    {
-                        RotateArrow();
-                        isArrowPointingUp = true;
-                    }
-
-                    isCalendarExpanded = true;
-                }
-            }
-            else
-            {
-                //Between
-                if(isCalendarExpanded && !isArrowPointingUp)
-                {
-                    RotateArrow();
-                    isArrowPointingUp = true;
-                }
-                else if(!isCalendarExpanded && isArrowPointingUp)
-                {
-                    RotateArrow();
-                    isArrowPointingUp = false;
-                }
-            }
-
-            previousToolbarOffset = e.VerticalOffset;
-        }
-
+        
         private void BtnDatePickerClick(object sender, EventArgs e)
         {
             ToggleDatePicker();

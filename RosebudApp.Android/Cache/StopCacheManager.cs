@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Android.Util;
 using System.Threading.Tasks;
 using RosebudAppCore;
+using RosebudAppCore.Model.Enum;
 
 namespace RosebudAppAndroid.Cache
 {
@@ -33,15 +34,15 @@ namespace RosebudAppAndroid.Cache
             await CacheFileManager.SaveToFile(fileName, tripDetails);
         }
 
-        public async Task<List<StopTime>> GetStopTimes(int feedId, string routeId, string stopId, DateTime date)
+        public async Task<List<StopTime>> GetStopTimes(int feedId, string routeId, string stopId, TripDirection directionId, DateTime date)
         {
-            string fileName = string.Format("stoptimes-{0}-{1}-{2}-{3}.json", feedId, routeId, stopId, TimeFormatter.ToShortDateApi(date));
+            string fileName = string.Format("stoptimes-{0}-{1}-{2}-{3}-{4}.json", feedId, routeId, stopId, directionId, TimeFormatter.ToShortDateApi(date));
             return await CacheFileManager.GetFromFile<List<StopTime>>(fileName);
         }
 
-        public async Task SaveStopTimes(int feedId, string routeId, string stopId, DateTime date, List<StopTime> tripDetails)
+        public async Task SaveStopTimes(int feedId, string routeId, string stopId, TripDirection directionId, DateTime date, List<StopTime> tripDetails)
         {
-            string fileName = string.Format("stoptimes-{0}-{1}-{2}-{3}.json", feedId, routeId, stopId, TimeFormatter.ToShortDateApi(date));
+            string fileName = string.Format("stoptimes-{0}-{1}-{2}-{3}-{4}.json", feedId, routeId, stopId, directionId, TimeFormatter.ToShortDateApi(date));
             await CacheFileManager.SaveToFile(fileName, tripDetails);
         }
     }

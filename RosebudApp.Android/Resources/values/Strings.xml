@@ -12,7 +12,7 @@
     <string name="menu_drawer_favorite">Favorites</string>
     <string name="menu_drawer_agency">All Agencies</string>
     <string name="menu_drawer_settings">@string/activity_settings</string>
-
+    
     <string name="network_no_connection">No internet connexion, showing cached data only.</string>
     <string name="network_server_error">Cannot connect to server. Please try again later.</string>
     <string name="network_retry">Retry</string>

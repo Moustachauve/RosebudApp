@@ -5,66 +5,71 @@
     android:layout_height="match_parent">
     <include
         layout="@layout/toolbar_calendar" />
-    <LinearLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:orientation="vertical"
+    <ca.cgagnier.rosebudapp.views.LoadingContainer
+        android:id="@+id/loading_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <fragment
-            android:id="@+id/network_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar_container"
-            class="rosebudappandroid.fragments.NetworkStatusFragment" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <LinearLayout
-            android:id="@+id/empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="center"
-            android:padding="10dp"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/empty_view_main_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/stop_list_empty"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/select_calendar"
-                android:layout_marginTop="8dp"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/empty_view_no_internet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="10dp"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/empty_view_no_internet_main_text"
+            android:layout_height="match_parent">
+            <fragment
+                android:id="@+id/network_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/stop_list_empty_no_internet"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            <TextView
+                android:layout_below="@+id/toolbar_container"
+                class="rosebudappandroid.fragments.NetworkStatusFragment" />
+            <LinearLayout
+                android:id="@+id/empty_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/empty_message_min_height"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:text="@string/select_calendar_no_internet"
-                android:layout_marginTop="8dp"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:padding="10dp"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/empty_view_main_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/stop_list_empty"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/select_calendar"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/empty_view_no_internet"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/empty_message_min_height"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="10dp"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/empty_view_no_internet_main_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/stop_list_empty_no_internet"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/select_calendar_no_internet"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </LinearLayout>
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+    </ca.cgagnier.rosebudapp.views.LoadingContainer>
 </android.support.design.widget.CoordinatorLayout>

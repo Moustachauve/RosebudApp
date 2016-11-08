@@ -42,6 +42,8 @@ namespace RosebudAppAndroid.Utils
             }
         }
 
+        public ConnectionResult ConnectionError { get; private set; }
+
         List<ILocationServiceListener> LocationListeners;
 
         bool RequestingLocationUpdates;
@@ -164,7 +166,7 @@ namespace RosebudAppAndroid.Utils
 
         public void OnConnectionFailed(ConnectionResult result)
         {
-            throw new NotImplementedException();
+            ConnectionError = result;
         }
 
         public int CalculateDistance(double latA, double lonA, double latB, double lonB)

@@ -40,7 +40,13 @@ namespace RosebudAppAndroid.Activities
         public bool SearchBarVisible
         {
             get { return searchMenu.IsVisible; }
-            set { searchMenu.SetVisible(value); }
+            set
+            {
+                if (searchMenu == null)
+                    return;
+
+                searchMenu.SetVisible(value);
+            }
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -73,7 +79,7 @@ namespace RosebudAppAndroid.Activities
                 SelectDrawerItem(e.MenuItem);
                 drawerLayout.CloseDrawers();
             };
-            
+
 
             networkFragment.RetryLastRequest += (object sender, EventArgs args) =>
            {
@@ -123,7 +129,7 @@ namespace RosebudAppAndroid.Activities
 
             Fragment fragment = FragmentManager.FindFragmentByTag(fragmentTag);
 
-            if(fragment == null)
+            if (fragment == null)
             {
                 fragment = (Fragment)Activator.CreateInstance(fragmentType);
             }

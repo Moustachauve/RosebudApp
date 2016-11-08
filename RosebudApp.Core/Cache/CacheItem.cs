@@ -4,16 +4,16 @@ namespace RosebudAppCore.Cache
 	public class CacheItem<T>
 	{
 		public T Item { get; set; }
-		public DateTime CacheExpirationDate { get; set; }
+		public DateTime CacheCreationDate { get; set; }
 
 		public CacheItem()
 		{
 		}
 
-		public CacheItem(T item, DateTime expiration)
+		public CacheItem(T item)
 		{
 			Item = item;
-			CacheExpirationDate = expiration;
+			CacheCreationDate = DateTime.Now;
 		}
 	}
 }
