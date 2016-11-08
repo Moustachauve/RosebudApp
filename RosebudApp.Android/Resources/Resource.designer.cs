@@ -4360,6 +4360,9 @@ namespace RosebudAppAndroid
 			// aapt resource value: 0x7f0c0177
 			public const int CalendarTextAppearance = 2131493239;
 			
+			// aapt resource value: 0x7f0c017b
+			public const int MainTitleText = 2131493243;
+			
 			// aapt resource value: 0x7f0c0179
 			public const int MediumTextListItem = 2131493241;
 			

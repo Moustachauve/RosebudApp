@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="@string/feed_list_favorite_title"
-            style="@android:style/TextAppearance.Material.Title" />
+                style="@style/MainTitleText" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/favorite_feed_recyclerview"
             android:layout_width="match_parent"
@@ -32,11 +32,12 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="@string/route_list_favorite_title"
-            style="@android:style/TextAppearance.Material.Title" />
+            style="@style/MainTitleText" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/favorite_route_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             android:visibility="gone" />
         <TextView
             android:id="@+id/route_list_empty"
