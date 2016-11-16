@@ -29,7 +29,7 @@ using Android.Gms.Common;
 namespace RosebudAppAndroid.Activities
 {
     [Activity(Label = "TripDetailsActivity")]
-    public class TripDetailsActivity : AppCompatActivity, IOnMapReadyCallback
+    public class TripDetailsActivity : AppCompatActivity, IOnMapReadyCallback, View.IOnClickListener
     {
         const int REQUEST_GOOGLE_PLAY_SERVICES = 42;
         const int REQUEST_LOCATION_ID = 0;
@@ -67,16 +67,13 @@ namespace RosebudAppAndroid.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.trip_details);
 
-            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
             toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
             SetSupportActionBar(toolbar);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
 
-            toolbar.NavigationClick += delegate
-            {
-                OnBackPressed();
-            };
+            toolbar.SetNavigationOnClickListener(this);
 
             Window.AddFlags(WindowManagerFlags.TranslucentStatus);
 
@@ -502,6 +499,12 @@ namespace RosebudAppAndroid.Activities
             }
 
             return true;
+        }
+
+        public void OnClick(View v)
+        {
+            //Back Button in nav bar
+            OnBackPressed();
         }
     }
 }

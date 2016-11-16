@@ -25,10 +25,12 @@ using Android.Gms.Common;
 using RosebudAppAndroid.Utils;
 using RosebudAppAndroid.Views;
 using Android.Support.V4.View;
+using FragmentSupport = Android.Support.V4.App.Fragment;
+using Android.Support.V7.App;
 
 namespace RosebudAppAndroid.Fragments
 {
-    public class FavoriteFragment : Fragment, ILocationServiceListener
+    public class FavoriteFragment : FragmentSupport, ILocationServiceListener
     {
         const string STATE_FEED_RECYCLER_VIEW = "state-feed-recycler-view";
         const string STATE_ROUTE_RECYCLER_VIEW = "state-route-recycler-view";
@@ -43,7 +45,7 @@ namespace RosebudAppAndroid.Fragments
 
         LoadingContainer loadingContainer;
         FeedAdapter feedAdapter;
-        RouteWithStopLocationAdapter routeAdapter;
+        FavoriteRouteAdapter routeAdapter;
         RecyclerView feedRecyclerView;
         RecyclerView routeRecyclerView;
         TextView feedEmptyView;
@@ -52,7 +54,7 @@ namespace RosebudAppAndroid.Fragments
         IParcelable feedRecyclerViewLayoutState;
         IParcelable routeRecyclerViewLayoutState;
 
-        List<RouteWithStopLocation> favoriteRoutes;
+        List<FavoriteRoute> favoriteRoutes;
 
         bool IsListeningToLocationChange;
 
@@ -167,11 +169,11 @@ namespace RosebudAppAndroid.Fragments
         async Task LoadRoutes()
         {
             List<Route> routes = await FavoriteRouteAccessor.GetFavoriteRoutes();
-            favoriteRoutes = new List<RouteWithStopLocation>();
+            favoriteRoutes = new List<FavoriteRoute>();
 
             foreach (var route in routes)
             {
-                RouteWithStopLocation routeWithStopLocation = new RouteWithStopLocation();
+                FavoriteRoute routeWithStopLocation = new FavoriteRoute();
                 routeWithStopLocation.Route = route;
                 favoriteRoutes.Add(routeWithStopLocation);
             }
@@ -181,7 +183,7 @@ namespace RosebudAppAndroid.Fragments
 
             if (routeAdapter == null)
             {
-                routeAdapter = new RouteWithStopLocationAdapter(Activity, favoriteRoutes);
+                routeAdapter = new FavoriteRouteAdapter(Activity, favoriteRoutes, ChildFragmentManager);
                 routeAdapter.ItemClick += OnRouteItemClick;
                 routeRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
                 routeRecyclerView.SetAdapter(routeAdapter);
@@ -238,9 +240,10 @@ namespace RosebudAppAndroid.Fragments
 
             foreach (var routeWithLocation in favoriteRoutes)
             {
-                StopLocation stopLocation = await RouteLocationHelper.GetClosestStop(routeWithLocation.Route, location.Latitude, location.Longitude);
-                await RouteLocationHelper.GetNextTimeForStop(routeWithLocation.Route, stopLocation);
-                routeWithLocation.StopLocation = stopLocation;
+                List<FavoriteRouteDirection> routeDirections = await RouteLocationHelper.GetClosestStops(routeWithLocation.Route, location.Latitude, location.Longitude);
+                routeWithLocation.Directions = routeDirections;
+
+                await RouteLocationHelper.GetNextTimeForFavoriteRoute(routeWithLocation);
                 routeAdapter.UpdateItem(routeWithLocation);
             }
         }

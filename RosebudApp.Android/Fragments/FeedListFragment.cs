@@ -21,10 +21,11 @@ using Android.Support.V7.App;
 using Android.App;
 using RosebudAppAndroid.Views;
 using Android.Support.V4.View;
+using FragmentSupport = Android.Support.V4.App.Fragment;
 
 namespace RosebudAppAndroid.Fragments
 {
-    public class FeedListFragment : Fragment
+    public class FeedListFragment : FragmentSupport
     {
         const string STATE_RECYCLER_VIEW = "state-recycler-view";
 

@@ -51,8 +51,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Cache\IStopCacheManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TripDirectionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\RouteLocationHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\StopLocation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\RouteWIthStopLocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\FavoriteRouteDirection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\FavoriteRoute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Comparators\DistanceComparator.cs" />
   </ItemGroup>
 </Project>

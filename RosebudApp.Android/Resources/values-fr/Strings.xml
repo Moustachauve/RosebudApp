@@ -22,7 +22,6 @@
     <string name="feed_list_favorite_empty">Vous n\'avez pas d\'agence de transport préférée.</string>
     <string name="route_list_favorite_empty">Vous n\'avez pas de route préférée.</string>
 
-	<string name="route_next_departure">Prochain départ</string>
     <string name="route_next_departure_no_service">Pas de service aujourd\'hui</string>
 
     <string name="feed_list_empty">Aucune agence de transport n\'est disponible pour le moment.</string>

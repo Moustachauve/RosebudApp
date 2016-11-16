@@ -30,7 +30,7 @@ using RosebudAppAndroid.Views;
 namespace RosebudAppAndroid.Activities
 {
     [Activity(Label = "StopTimesActivity")]
-    public class StopTimeActivity : AppCompatActivity
+    public class StopTimeActivity : AppCompatActivity, View.IOnClickListener
     {
         const string STATE_RECYCLER_VIEW = "state-recycler-view";
 
@@ -53,7 +53,7 @@ namespace RosebudAppAndroid.Activities
             SetContentView(Resource.Layout.stop_time);
 
             var toolbar = FindViewById<ToolbarCompat>(Resource.Id.my_awesome_toolbar);
-            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             loadingContainer = FindViewById<LoadingContainer>(Resource.Id.loading_container);
             stopTimeRecyclerView = FindViewById<RecyclerView>(Resource.Id.stop_time_recyclerview);
@@ -70,10 +70,7 @@ namespace RosebudAppAndroid.Activities
 
             loadingContainer.Refresh += PullToRefresh_Refresh;
 
-            toolbar.NavigationClick += delegate
-            {
-                OnBackPressed();
-            };
+            toolbar.SetNavigationOnClickListener(this);
 
             networkFragment.RetryLastRequest += async (object sender, EventArgs args) =>
             {
@@ -175,5 +172,10 @@ namespace RosebudAppAndroid.Activities
             StartActivity(detailsIntent);
         }
 
+        public void OnClick(View v)
+        {
+            //Back Button in nav bar
+            OnBackPressed();
+        }
     }
 }

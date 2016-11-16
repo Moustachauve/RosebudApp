@@ -61,7 +61,7 @@ namespace RosebudAppAndroid.Activities
 
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             navigationView = FindViewById<NavigationView>(Resource.Id.drawer_navigation_view);
-            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             if (savedInstanceState == null)
             {
@@ -89,7 +89,7 @@ namespace RosebudAppAndroid.Activities
 
         private void SelectDrawerItem(IMenuItem menuItem)
         {
-            Fragment fragment = null;
+            Android.Support.V4.App.Fragment fragment = null;
 
             switch (menuItem.ItemId)
             {
@@ -123,26 +123,26 @@ namespace RosebudAppAndroid.Activities
             return items.IndexOf(menuItem);
         }
 
-        private Fragment GetFragment(Type fragmentType)
+        private Android.Support.V4.App.Fragment GetFragment(Type fragmentType)
         {
             string fragmentTag = fragmentType.FullName;
 
-            Fragment fragment = FragmentManager.FindFragmentByTag(fragmentTag);
+            Android.Support.V4.App.Fragment fragment = SupportFragmentManager.FindFragmentByTag(fragmentTag);
 
             if (fragment == null)
             {
-                fragment = (Fragment)Activator.CreateInstance(fragmentType);
+                fragment = (Android.Support.V4.App.Fragment)Activator.CreateInstance(fragmentType);
             }
 
             return fragment;
         }
 
-        private void SetCurrentFragment(Fragment fragment)
+        private void SetCurrentFragment(Android.Support.V4.App.Fragment fragment)
         {
             Type fragmentType = fragment.GetType();
             string fragmentTag = fragmentType.FullName;
 
-            FragmentManager.BeginTransaction().Replace(Resource.Id.content, fragment, fragmentTag).Commit();
+            SupportFragmentManager.BeginTransaction().Replace(Resource.Id.content, fragment, fragmentTag).Commit();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

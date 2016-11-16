@@ -5,22 +5,46 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Android.Drm;
+using RosebudAppCore.Model.Enum;
 
 namespace RosebudAppCore.Utils
 {
     public static class RouteLocationHelper
     {
-        public static async Task<StopLocation> GetClosestStop(Route route, double lat, double lon)
+        public static async Task<List<FavoriteRouteDirection>> GetClosestStops(Route route, double lat, double lon)
         {
-            StopLocation stopLocation = new StopLocation();
+            List<FavoriteRouteDirection> favoriteRouteDirections = new List<FavoriteRouteDirection>();
             List<Stop> stops = await RouteAccessor.GetRouteStops(route.feed_id, route.route_id, Dependency.PreferenceManager.SelectedDatetime, false);
+
+            if (stops == null)
+                return favoriteRouteDirections;
+
+            if (TripDirectionHelper.HasMultipleDirection(stops))
+            {
+                favoriteRouteDirections.Add(GetClosestStopByDirection(stops, TripDirection.MainDirection, lat, lon));
+                favoriteRouteDirections.Add(GetClosestStopByDirection(stops, TripDirection.OppositeDirection, lat, lon));
+            }
+            else
+            {
+                favoriteRouteDirections.Add(GetClosestStopByDirection(stops, TripDirection.AnyDirection, lat, lon));
+            }
+
+
+            return favoriteRouteDirections;
+        }
+
+        private static FavoriteRouteDirection GetClosestStopByDirection(List<Stop> stops, TripDirection direction, double lat, double lon)
+        {
+            FavoriteRouteDirection stopLocation = new FavoriteRouteDirection();
 
             if (stops != null && stops.Count > 0)
             {
-                Stop closestStop = stops[0];
+                List<Stop> directionStops = TripDirectionHelper.GetStopsForDirection(stops, direction);
+
+                Stop closestStop = directionStops[0];
                 int closestStopInMeter = int.MaxValue;
 
-                foreach (var stop in stops)
+                foreach (var stop in directionStops)
                 {
                     int currentStopDistance = Dependency.LocationService.CalculateDistance(lat, lon, stop.stop_lat, stop.stop_lon);
 
@@ -38,34 +62,41 @@ namespace RosebudAppCore.Utils
             return stopLocation;
         }
 
-        public static async Task GetNextTimeForStop(Route route, StopLocation stopLocation)
+
+        public static async Task GetNextTimeForFavoriteRoute(FavoriteRoute favoriteRoute)
         {
-            if (stopLocation.Stop == null)
+            if (favoriteRoute.Directions == null || favoriteRoute.Directions.Count == 0)
                 return;
 
-            List<StopTime> stopTimes = await StopAccessor.GetStopTimes(route.feed_id, route.route_id, stopLocation.Stop.stop_id, stopLocation.Stop.direction_id, DateTime.Now, false);
-
-            if (stopTimes == null)
-                return;
-
-            DateTime now = DateTime.Now;
-            DateTime closestTime = DateTime.MaxValue;
-
-            foreach (var stopTime in stopTimes)
+            foreach (var direction in favoriteRoute.Directions)
             {
-                DateTime currentItemTime = TimeFormatter.StringToDateTime(stopTime.departure_time);
-                if (currentItemTime < now)
+                if (direction.Stop == null)
                     continue;
 
-                if(currentItemTime < closestTime)
-                {
-                    closestTime = currentItemTime;
-                }
-            }
+                List<StopTime> stopTimes = await StopAccessor.GetStopTimes(favoriteRoute.Route.feed_id, favoriteRoute.Route.route_id, direction.Stop.stop_id, direction.Stop.direction_id, DateTime.Now, false);
 
-            if(closestTime != DateTime.MaxValue)
-            {
-                stopLocation.NextDepartureTime = closestTime;
+                if (stopTimes == null)
+                    continue;
+
+                DateTime now = DateTime.Now;
+                DateTime closestTime = DateTime.MaxValue;
+
+                foreach (var stopTime in stopTimes)
+                {
+                    DateTime currentItemTime = TimeFormatter.StringToDateTime(stopTime.departure_time);
+                    if (currentItemTime < now)
+                        continue;
+
+                    if (currentItemTime < closestTime)
+                    {
+                        closestTime = currentItemTime;
+                    }
+                }
+
+                if (closestTime != DateTime.MaxValue)
+                {
+                    direction.NextDepartureTime = closestTime;
+                }
             }
         }
 

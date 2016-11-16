@@ -14,9 +14,9 @@ using Android.Support.V7.App;
 namespace RosebudAppAndroid.Activities
 {
 	[Activity(Label = "SettingsActivity", ParentActivity = typeof(MainActivity))]
-	public class SettingsActivity : AppCompatActivity
-	{
-		protected override void OnCreate(Bundle savedInstanceState)
+	public class SettingsActivity : AppCompatActivity, View.IOnClickListener
+    {
+        protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.settings);
@@ -25,11 +25,12 @@ namespace RosebudAppAndroid.Activities
 			var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.my_awesome_toolbar);
 			SetSupportActionBar(toolbar);
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
-
-			toolbar.NavigationClick += delegate
-			{
-				OnBackPressed();
-			};
 		}
-	}
+
+        public void OnClick(View v)
+        {
+            //Back Button in nav bar
+            OnBackPressed();
+        }
+    }
 }

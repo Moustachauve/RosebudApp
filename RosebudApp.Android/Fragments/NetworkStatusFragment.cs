@@ -15,10 +15,11 @@ using Android.Views.Animations;
 using System.Threading.Tasks;
 using RosebudAppCore.DataAccessor;
 using Android.Support.Design.Widget;
+using FragmentSupport = Android.Support.V4.App.Fragment;
 
 namespace RosebudAppAndroid.Fragments
 {
-    public class NetworkStatusFragment : Fragment
+    public class NetworkStatusFragment : FragmentSupport
     {
         TextView lblStatus;
         LinearLayout statusContainer;

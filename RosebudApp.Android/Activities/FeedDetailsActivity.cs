@@ -50,8 +50,8 @@ namespace RosebudAppAndroid.Activities
             base.OnCreate(savedInstanceState);
 
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
-
-            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
+            
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             routeRecyclerView = FindViewById<RecyclerView>(Resource.Id.route_recyclerview);
             //This line enable smooth scrolling inside the LoadingContainer

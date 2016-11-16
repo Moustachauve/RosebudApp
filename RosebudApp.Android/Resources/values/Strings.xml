@@ -22,7 +22,6 @@
     <string name="feed_list_favorite_empty">You do not have any favorite transport agency.</string>
     <string name="route_list_favorite_empty">You do not have any favorite route.</string>
 
-    <string name="route_next_departure">Next in</string>
     <string name="route_next_departure_no_service">No service today</string>
 
     <string name="feed_list_empty">No transport agency available at the moment.</string>

@@ -22,7 +22,7 @@ using RosebudApp.AndroidExpandableLayoutBinding;
 
 namespace RosebudAppAndroid.Activities
 {
-    public abstract class CalendarToolBarActivity : AppCompatActivity
+    public abstract class CalendarToolBarActivity : AppCompatActivity, View.IOnClickListener
     {
         protected int ActivityLayout;
         protected AppBarLayout appBarLayout;
@@ -60,7 +60,7 @@ namespace RosebudAppAndroid.Activities
             SetCalendarSelectedDate(Dependency.PreferenceManager.SelectedDatetime);
 
             //appBarLayout.OffsetChanged += AppBarLayoutOffsetChanged;
-            toolbar.NavigationClick += ToolbarNavigationClick;
+            toolbar.SetNavigationOnClickListener(this);
             btnDatePicker.Click += BtnDatePickerClick;
             calendarView.DateChanged += CalendarViewDateChanged;
             SelectedDateChange += OnSelectedDateChanged;
@@ -134,11 +134,12 @@ namespace RosebudAppAndroid.Activities
             ToggleDatePicker();
         }
 
-        private void ToolbarNavigationClick(object sender, Android.Support.V7.Widget.Toolbar.NavigationClickEventArgs e)
+        protected abstract void OnSelectedDateChanged(object sender, DateTime selectedDate);
+
+        public void OnClick(View v)
         {
+            //Back Button in nav bar
             OnBackPressed();
         }
-
-        protected abstract void OnSelectedDateChanged(object sender, DateTime selectedDate);
     }
 }

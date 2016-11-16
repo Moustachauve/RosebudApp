@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using RosebudAppCore.Model;
 namespace RosebudAppCore.Comparators
 {
-    public class TimeComparator : IComparer<StopLocation>
+    public class TimeComparator : IComparer<List<FavoriteRouteDirection>>
     {
         const int EQUAL = 0;
         const int GREATER = 1;
@@ -13,7 +13,7 @@ namespace RosebudAppCore.Comparators
         {
         }
 
-        public int Compare(StopLocation x, StopLocation y)
+        public int Compare(List<FavoriteRouteDirection> x, List<FavoriteRouteDirection> y)
         {
             bool xHasLocation = HasLocation(x);
             bool yHasLocation = HasLocation(y);
@@ -27,12 +27,40 @@ namespace RosebudAppCore.Comparators
             if (xHasLocation && !yHasLocation)
                 return LESSER;
 
-            return DateTime.Compare(x.NextDepartureTime, y.NextDepartureTime);
+            return DateTime.Compare(GetSmallestDate(x), GetSmallestDate(y));
         }
 
-        private bool HasLocation(StopLocation stopLocation)
+        private bool HasLocation(List<FavoriteRouteDirection> directions)
         {
-            return stopLocation != null && stopLocation.NextDepartureTime > DateTime.MinValue;
+            foreach (var direction in directions)
+            {
+                if (direction.Stop != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
+
+        private DateTime GetSmallestDate(List<FavoriteRouteDirection> directions)
+        {
+            if(directions.Count == 1)
+            {
+                return directions[0].NextDepartureTime;
+            }
+            else
+            {
+                if(directions[0].NextDepartureTime > directions[1].NextDepartureTime)
+                {
+                    return directions[0].NextDepartureTime;
+                }
+                else
+                {
+                    return directions[1].NextDepartureTime;
+                }
+            }
+        }
+
     }
 }

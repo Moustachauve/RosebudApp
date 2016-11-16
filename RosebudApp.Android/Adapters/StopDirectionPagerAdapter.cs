@@ -1,14 +1,9 @@
 ﻿using System;
 using Android.Support.V4.App;
-using Android.Hardware.Camera2;
-using RosebudAppCore;
 using System.Collections.Generic;
 using RosebudAppAndroid.Fragments;
 using RosebudAppCore.Model;
-using Android.Views.Animations;
-using Android.Runtime;
 using Android.Views;
-using Java.Lang;
 using System.Linq;
 using RosebudAppCore.Model.Enum;
 using RosebudAppCore.Utils;

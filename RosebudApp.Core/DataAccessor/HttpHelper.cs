@@ -14,8 +14,8 @@ namespace RosebudAppCore.DataAccessor
         const string LOG_TAG = "RosebudAppCore.HttpHelper";
 
         //public const string API_URL = "http://10.0.2.2:1337/";
-        //public const string API_URL = "http://192.168.0.40:1337/";
-        public const string API_URL = "http://cgagnier.ca:1337/";
+        public const string API_URL = "http://192.168.0.40:1337/";
+        //public const string API_URL = "http://cgagnier.ca:1337/";
 
         public static event Action ServerErrorOccured;
 

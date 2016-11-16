@@ -52,7 +52,7 @@ namespace RosebudAppAndroid.Activities
 
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
-            NetworkStatusFragment networkFragment = (NetworkStatusFragment)FragmentManager.FindFragmentById(Resource.Id.network_fragment);
+            NetworkStatusFragment networkFragment = (NetworkStatusFragment)SupportFragmentManager.FindFragmentById(Resource.Id.network_fragment);
 
             loadingContainer = FindViewById<LoadingContainer>(Resource.Id.loading_container);
             tabLayout = FindViewById<TabLayout>(Resource.Id.tab_layout);

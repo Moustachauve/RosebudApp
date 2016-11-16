@@ -14,10 +14,15 @@ using RosebudAppCore.DataAccessor;
 using RosebudAppCore.Comparators;
 using RosebudAppAndroid.Adapters.Events;
 using Android.Support.V4.Content;
+using Android.Support.V4.View;
+using Android.Support.V4.App;
+using Android.App;
+using Android.Support.V7.App;
+using Android.Support.Design.Widget;
 
 namespace RosebudAppAndroid.Adapters
 {
-    public class RouteWithStopLocationAdapter : SearchableRecyclerAdapter<RouteWithStopLocation>
+    public class FavoriteRouteAdapter : SearchableRecyclerAdapter<FavoriteRoute>
     {
         private bool isLocationVisible = true;
         public bool IsLocationVisible
@@ -33,43 +38,47 @@ namespace RosebudAppAndroid.Adapters
             }
         }
 
-        public RouteWithStopLocationAdapter(Context context, List<RouteWithStopLocation> routesWithStopLocation) : base(context, routesWithStopLocation)
+        protected int NextViewPagerId;
+
+        Android.Support.V4.App.FragmentManager FragmentManager;
+
+        public FavoriteRouteAdapter(Context context, List<FavoriteRoute> routesWithStopLocation, Android.Support.V4.App.FragmentManager fragmentManager) : base(context, routesWithStopLocation)
         {
+            FragmentManager = fragmentManager;
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             View view = Inflater.Inflate(Resource.Layout.route_stop_location_listitem, parent, false);
 
-            RouteWithStopLocationViewHolder viewHolder = new RouteWithStopLocationViewHolder(view, OnClick, this);
+            FavoriteRouteViewHolder viewHolder = new FavoriteRouteViewHolder(view, OnClick, this);
 
             return viewHolder;
         }
 
-        protected override List<RouteWithStopLocation> ApplyFilter()
+        protected override List<FavoriteRoute> ApplyFilter()
         {
             if (string.IsNullOrWhiteSpace(Filter))
-                return new List<RouteWithStopLocation>(AllItems);
+                return new List<FavoriteRoute>(AllItems);
             else
                 return AllItems.Where(r => r.Route.route_short_name.ContainsInsensitive(Filter)
                                       || r.Route.route_long_name.ContainsInsensitive(Filter))
                                       .ToList();
         }
 
-        protected override List<RouteWithStopLocation> ApplySort()
+        protected override List<FavoriteRoute> ApplySort()
         {
             AlphanumComparator naturalComparator = new AlphanumComparator();
             DistanceComparator distanceComparator = new DistanceComparator();
             TimeComparator timeComparator = new TimeComparator();
 
-            return AllItems.OrderByDescending(r => r.StopLocation != null && r.StopLocation.NextDepartureTime != DateTime.MinValue)
-                           .ThenBy(r => r.StopLocation, distanceComparator)
-                           .ThenBy(r => r.StopLocation, timeComparator)
+            return AllItems.OrderBy(r => r.Directions, distanceComparator)
+                           .ThenBy(r => r.Directions, timeComparator)
                            .ThenBy(r => r.Route.route_short_name, naturalComparator)
                            .ToList();
         }
 
-        public void UpdateItem(RouteWithStopLocation route)
+        public void UpdateItem(FavoriteRoute route)
         {
             for (int i = 0; i < AllItems.Count; i++)
             {
@@ -77,9 +86,10 @@ namespace RosebudAppAndroid.Adapters
                     continue;
 
                 AllItems[i].Route = route.Route;
-                AllItems[i].StopLocation = route.StopLocation;
-
+                AllItems[i].Directions = route.Directions;
+                
                 NotifyItemChanged(i);
+                
                 AllItems = ApplySort();
                 AnimateTo(AllItems);
 
@@ -87,45 +97,92 @@ namespace RosebudAppAndroid.Adapters
             }
         }
 
-        public class RouteWithStopLocationViewHolder : BaseViewHolder
+        public class FavoriteRouteViewHolder : BaseViewHolder
         {
             TextView lblRouteShortName;
-            TextView lblRouteLongName;
-            TextView lblRouteTimeNextBus;
-            TextView lblRouteClosestStop;
-            TextView lblRouteClosestStopDistance;
-            TextView lblRouteNextDeparture;
-            TextView lblRouteNextDepartureTimeUnit;
-            ProgressBar progressTimeRoute;
+            ViewPager viewPager;
+            FavoriteRouteDirectionPagerAdapter pagerAdapter;
+            TabLayout tabLayout;
+            Android.Support.V4.App.FragmentManager fragmentManager;
 
-            RouteWithStopLocation currentItem;
+            /* TextView lblRouteTimeNextBus;
+             TextView lblRouteClosestStop;
+             TextView lblRouteClosestStopDistance;
+             TextView lblRouteNextDeparture;
+             TextView lblRouteNextDepartureTimeUnit;
+             ProgressBar progressTimeRoute;*/
 
-            RouteWithStopLocationAdapter Adapter;
+            FavoriteRoute currentItem;
 
-            public RouteWithStopLocationViewHolder(View itemView, Action<int> listener, RouteWithStopLocationAdapter adapter) : base(itemView, listener)
+            FavoriteRouteAdapter Adapter;
+
+            public FavoriteRouteViewHolder(View itemView, Action<int> listener, FavoriteRouteAdapter adapter) : base(itemView, listener)
             {
+                Adapter = adapter;
+                fragmentManager = adapter.FragmentManager;
+
                 lblRouteShortName = view.FindViewById<TextView>(Resource.Id.lbl_route_short_name);
-                lblRouteLongName = view.FindViewById<TextView>(Resource.Id.lbl_route_long_name);
-                progressTimeRoute = view.FindViewById<ProgressBar>(Resource.Id.progress_time_route);
+                viewPager = view.FindViewById<ViewPager>(Resource.Id.direction_view_pager);
+                tabLayout = view.FindViewById<TabLayout>(Resource.Id.direction_tab_layout);
+
+                viewPager.Id = adapter.NextViewPagerId;
+                adapter.NextViewPagerId++;
+
+                /*progressTimeRoute = view.FindViewById<ProgressBar>(Resource.Id.progress_time_route);
                 lblRouteTimeNextBus = view.FindViewById<TextView>(Resource.Id.lbl_route_time_next_bus);
                 lblRouteClosestStop = view.FindViewById<TextView>(Resource.Id.lbl_route_closest_stop);
                 lblRouteClosestStopDistance = view.FindViewById<TextView>(Resource.Id.lbl_route_closest_stop_distance);
                 lblRouteNextDeparture = view.FindViewById<TextView>(Resource.Id.lbl_route_next_departure);
-                lblRouteNextDepartureTimeUnit = view.FindViewById<TextView>(Resource.Id.lbl_route_next_departure_time_unit);
-
-                Adapter = adapter;
+                lblRouteNextDepartureTimeUnit = view.FindViewById<TextView>(Resource.Id.lbl_route_next_departure_time_unit);*/
             }
 
-            public override void BindData(RouteWithStopLocation item, int position)
+            public override void BindData(FavoriteRoute item, int position)
             {
                 currentItem = item;
                 lblRouteShortName.Text = item.Route.route_short_name;
 
-                SetRouteLongName();
+                SetViewPager();
+
                 SetColor();
-                SetRouteLocationInfo();
+
+                //SetRouteLongName();
+                //
+                //SetRouteLocationInfo();
             }
 
+            private void SetViewPager()
+            {
+                if (pagerAdapter == null)
+                {
+                    pagerAdapter = new FavoriteRouteDirectionPagerAdapter(fragmentManager, currentItem);
+                    viewPager.Adapter = pagerAdapter;
+                    tabLayout.SetupWithViewPager(viewPager);
+                }
+                else
+                {
+                    pagerAdapter.NotifyDataSetChanged();
+                    pagerAdapter.ReplaceItem(currentItem);
+                }
+            }
+
+            private void SetColor()
+            {
+                Color routeColor;
+                if (!string.IsNullOrWhiteSpace(currentItem.Route.route_color))
+                {
+                    routeColor = Color.ParseColor(ColorHelper.FormatColor(currentItem.Route.route_color));
+                }
+                else
+                {
+                    routeColor = new Color(ContextCompat.GetColor(Adapter.Context, Resource.Color.default_item_color));
+                }
+
+                lblRouteShortName.SetBackgroundColor(routeColor);
+                lblRouteShortName.SetTextColor(ColorHelper.ContrastColor(routeColor));
+
+            }
+
+            /*
             private void SetRouteLongName()
             {
                 if (!string.IsNullOrWhiteSpace(currentItem.Route.route_long_name))
@@ -165,7 +222,7 @@ namespace RosebudAppAndroid.Adapters
 
                 lblRouteNextDeparture.Visibility = ViewStates.Visible;
 
-                if (currentItem.StopLocation == null)
+                if (currentItem.Directions == null)
                 {
                     if (Dependency.NetworkStatusMonitor.State == NetworkState.Disconnected)
                     {
@@ -182,7 +239,7 @@ namespace RosebudAppAndroid.Adapters
                 }
                 else
                 {
-                    if (currentItem.StopLocation.Stop == null)
+                    if (currentItem.Directions.Stop == null)
                     {
                         lblRouteClosestStop.Text = Adapter.Context.Resources.GetString(Resource.String.route_next_departure_no_service);
                         lblRouteTimeNextBus.Text = "--";
@@ -191,8 +248,8 @@ namespace RosebudAppAndroid.Adapters
                     }
                     else
                     {
-                        lblRouteClosestStop.Text = currentItem.StopLocation.Stop.stop_name;
-                        lblRouteClosestStopDistance.Text = RouteLocationHelper.FormatDistance(currentItem.StopLocation.DistanceInMeter);
+                        lblRouteClosestStop.Text = currentItem.Directions.Stop.stop_name;
+                        lblRouteClosestStopDistance.Text = RouteLocationHelper.FormatDistance(currentItem.Directions.DistanceInMeter);
 
                         SetRemainingTime();
 
@@ -218,14 +275,14 @@ namespace RosebudAppAndroid.Adapters
 
             void SetRemainingTime()
             {
-                if (currentItem.StopLocation.NextDepartureTime == DateTime.MinValue)
+                if (currentItem.Directions.NextDepartureTime == DateTime.MinValue)
                 {
                     lblRouteTimeNextBus.Text = "--";
                     lblRouteNextDepartureTimeUnit.Visibility = ViewStates.Gone;
                     return;
                 }
 
-                TimeSpan difference = currentItem.StopLocation.NextDepartureTime - DateTime.Now;
+                TimeSpan difference = currentItem.Directions.NextDepartureTime - DateTime.Now;
 
                 int timeDisplayed = 0;
 
@@ -249,7 +306,7 @@ namespace RosebudAppAndroid.Adapters
                 }
 
                 lblRouteTimeNextBus.Text = timeDisplayed.ToString();
-            }
+            }*/
         }
     }
 }
