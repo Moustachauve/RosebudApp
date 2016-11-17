@@ -13,9 +13,9 @@
 
     <attr path="/api/package[@name='com.prolificinteractive.materialcalendarview']/class[@name='WeekPagerAdapter']/method[@name='setDecorators']/parameter[@name='p0']" name="type">java.util.List&lt;MaterialCalendarLibrary.IDayViewDecorator&gt;</attr>
 
-    <attr path="/api/package[@name='com.prolificinteractive.materialcalendarview']/class[@name='WeekView']/method[@name='setSelectedDates']/parameter[@name='p0']" name="managedType">System.Collections.Generic.ICollection&lt;MaterialCalendarLibrary.CalendarDay&gt;</attr>
+    <!--<attr path="/api/package[@name='com.prolificinteractive.materialcalendarview']/class[@name='WeekView']/method[@name='setSelectedDates']/parameter[@name='p0']" name="managedType">System.Collections.Generic.ICollection&lt;MaterialCalendarLibrary.CalendarDay&gt;</attr>
 
-    <attr path="/api/package[@name='com.prolificinteractive.materialcalendarview']/class[@name='WeekView']/method[@name='setSelectedDates']/parameter[@name='p0']" name="type">java.util.Collection&lt;MaterialCalendarLibrary.CalendarDay&gt;</attr>
+    <attr path="/api/package[@name='com.prolificinteractive.materialcalendarview']/class[@name='WeekView']/method[@name='setSelectedDates']/parameter[@name='p0']" name="type">java.util.Collection&lt;MaterialCalendarLibrary.CalendarDay&gt;</attr>-->
 
     <attr path="/api/package[@name='com.prolificinteractive.materialcalendarview']" name="managedName">RosebudApp.AndroidMaterialCalendarBinding</attr>
     <attr path="/api/package[@name='com.prolificinteractive.materialcalendarview.format']" name="managedName">RosebudApp.AndroidMaterialCalendarBinding.Format</attr>
@@ -30,4 +30,6 @@
     <remove-node path="/api/package[@name='com.prolificinteractive.materialcalendarview']/class[@name='WeekPagerAdapter']" />
     <remove-node path="/api/package[@name='com.prolificinteractive.materialcalendarview']/class[@name='WeekView']" />
     <remove-node path="/api/package[@name='com.prolificinteractive.materialcalendarview']/interface[@name='Experimental']" />-->
+
+	<remove-node path="/api/package[@name='com.prolificinteractive.materialcalendarview']/class[@name='WeekView']" />
 </metadata>
